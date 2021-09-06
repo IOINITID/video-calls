@@ -8,6 +8,10 @@ Main page: 🖥️ https://ioinitid.github.io/video-calls/
 
 ---
 
+Storybook: 📖 https://ioinitid.github.io/video-calls/storybook/
+
+---
+
 Made with ❤️
 
 ---
