@@ -115,6 +115,7 @@ const App = () => {
     });
 
     peer.signal(callerSignal);
+
     connectionRef.current = peer;
   };
 
