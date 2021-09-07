@@ -23,6 +23,7 @@ const App = () => {
   const [idToCall, setIdToCall] = useState('');
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState('');
+  const [isCalling, setIsCalling] = useState(false);
 
   const myVideo = useRef<any>(null);
   const userVideo = useRef<any>(null);
@@ -77,6 +78,7 @@ const App = () => {
 
   const answerCall = () => {
     setCallAccepted(true);
+    setIsCalling(false);
 
     const peer = new Peer({
       initiator: false,
@@ -101,7 +103,8 @@ const App = () => {
 
   const leaveCall = () => {
     setCallEnded(true);
-    connectionRef.current.destroy();
+    setIsCalling(false);
+    connectionRef.current = null;
   };
 
   injectGlobal`
@@ -128,16 +131,6 @@ const App = () => {
     height: 100%;
     background: linear-gradient(to right, #292e49, #536976);
   }
-
-  .small-preview {
-    position: absolute;
-    top: 104px;
-    left: 104px;
-    width: 160px;
-    height: 104px;
-    border-radius: 24px;
-    transition: all 1s ease-in;
-  }
   `;
 
   return (
@@ -147,6 +140,7 @@ const App = () => {
         justify-content: center;
         align-items: center;
         grid-template-columns: 350px 1fr;
+        width: 100%;
         height: 100%;
       `}
     >
@@ -303,7 +297,10 @@ const App = () => {
                   background-color: #6bbf6b;
                 }
               `}
-              onClick={() => callUser(idToCall)}
+              onClick={() => {
+                callUser(idToCall);
+                setIsCalling(true);
+              }}
             >
               Call
             </button>
@@ -365,6 +362,53 @@ const App = () => {
               autoPlay
               ref={userVideo}
             />
+          ) : null}
+          {/* Is calling text */}
+          {isCalling && !callAccepted ? (
+            <div
+              className={css`
+                position: absolute;
+                bottom: 104px;
+                left: 50%;
+                display: grid;
+                row-gap: 24px;
+                transform: translateX(-50%);
+              `}
+            >
+              <div
+                className={css`
+                  font-size: 24px;
+                  font-family: sans-serif;
+                  color: #ffffff;
+                `}
+              >
+                Is calling...
+              </div>
+              <button
+                className={css`
+                  padding: 8px 16px;
+                  font-size: 16px;
+                  font-family: sans-serif;
+                  color: #ffffff;
+                  background-color: #ff3232;
+                  border: none;
+                  border-radius: 8px;
+                  cursor: pointer;
+
+                  &:hover,
+                  &:focus {
+                    background-color: #e52d2d;
+                  }
+
+                  &:active {
+                    background-color: #ff4646;
+                  }
+                `}
+                onClick={leaveCall}
+              >
+                Cancel
+              </button>
+            </div>
           ) : null}
           {/* Answer Call button */}
           {receivingCall && !callAccepted ? (
