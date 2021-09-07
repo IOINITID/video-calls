@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Peer from 'simple-peer';
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:8080');
+const socket = io('https://ioinitid-video-calls-server.herokuapp.com:8080');
 
 const App = () => {
   const [me, setMe] = useState('');
