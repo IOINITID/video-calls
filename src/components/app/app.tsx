@@ -9,18 +9,18 @@ const socket = io('http://localhost:8080');
 
 const App = () => {
   const [me, setMe] = useState('');
-  const [stream, setStream] = useState<MediaStream>();
+  const [stream, setStream] = useState<any>();
   const [receivingCall, setReceivingCall] = useState(false);
   const [caller, setCaller] = useState('');
   const [callerSignal, setCallerSignal] = useState<any>();
-  const [callAcepted, setCallAcepted] = useState(false);
+  const [callAccepted, setCallAccepted] = useState(false);
   const [idToCall, setIdToCall] = useState('');
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState('');
 
-  const myVideo = useRef<any>();
-  const userVideo = useRef<any>();
-  const connectionRef = useRef<any>();
+  const myVideo = useRef<any>(null);
+  const userVideo = useRef<any>(null);
+  const connectionRef = useRef<any>(null);
 
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
@@ -61,15 +61,15 @@ const App = () => {
     });
 
     socket.on('callAccepted', (signal) => {
-      setCallAcepted(true);
-      peer.signal = signal;
+      setCallAccepted(true);
+      peer.signal(signal);
     });
 
     connectionRef.current = peer;
   };
 
   const answerCall = () => {
-    setCallAcepted(true);
+    setCallAccepted(true);
 
     const peer = new Peer({
       initiator: false,
@@ -134,9 +134,10 @@ const App = () => {
       <div
         className={css`
           display: grid;
-          grid-template-columns: 400px 400px;
+          grid-template-columns: repeat(2, minmax(1fr, 400px));
         `}
       >
+        {/* User from video stream */}
         <div>
           {stream && (
             <video
@@ -151,8 +152,9 @@ const App = () => {
             />
           )}
         </div>
+        {/* User to video stream */}
         <div>
-          {callAcepted && !callEnded ? (
+          {callAccepted && !callEnded ? (
             <video
               className={css`
                 width: 400px;
@@ -165,6 +167,45 @@ const App = () => {
           ) : null}
         </div>
       </div>
+
+      {/* Inputs */}
+      <div>
+        <label htmlFor="user-from">
+          <input
+            type="text"
+            id="user-from"
+            name="user-from"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+          />
+        </label>
+        <CopyToClipboard text={me}>
+          <button>Copy ID</button>
+        </CopyToClipboard>
+        <label htmlFor="user-to">
+          <input
+            type="text"
+            id="user-to"
+            name="user-to"
+            value={idToCall}
+            onChange={(event) => setIdToCall(event.target.value)}
+          />
+        </label>
+        {callAccepted && !callEnded ? (
+          <button onClick={leaveCall}>End Call</button>
+        ) : (
+          <button onClick={() => callUser(idToCall)}>Call</button>
+        )}
+        <br />
+        {idToCall}
+      </div>
+      {/* Receiving call */}
+      {receivingCall && !callAccepted ? (
+        <div>
+          <div>{name} is calling...</div>
+          <button onClick={answerCall}>Answer</button>
+        </div>
+      ) : null}
     </div>
   );
 };
