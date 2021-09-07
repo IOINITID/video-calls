@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { css, injectGlobal } from '@emotion/css';
+import { css, cx, injectGlobal } from '@emotion/css';
 import { useEffect, useRef, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Peer from 'simple-peer';
@@ -126,6 +126,17 @@ const App = () => {
   .root {
     width: 100%;
     height: 100%;
+    background: linear-gradient(to right, #292e49, #536976);
+  }
+
+  .small-preview {
+    position: absolute;
+    top: 104px;
+    left: 104px;
+    width: 160px;
+    height: 104px;
+    border-radius: 24px;
+    transition: all 1s ease-in;
   }
   `;
 
@@ -135,84 +146,313 @@ const App = () => {
         display: grid;
         justify-content: center;
         align-items: center;
+        grid-template-columns: 350px 1fr;
         height: 100%;
       `}
     >
+      {/* Inputs */}
       <div
         className={css`
           display: grid;
-          grid-template-columns: repeat(2, minmax(1fr, 400px));
+          justify-content: center;
+          align-content: center;
+          align-items: center;
+          height: 100%;
+          padding: 24px;
+          box-shadow: 1px 0 0 0 rgb(255 255 255 / 25%);
+          row-gap: 16px;
+        `}
+      >
+        <div
+          className={css`
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            grid-template-columns: 1fr 100px;
+            column-gap: 16px;
+          `}
+        >
+          <label
+            className={css`
+              width: 100%;
+              height: 100%;
+              transition: all 1s ease-in;
+            `}
+            htmlFor="user-from"
+          >
+            <input
+              className={css`
+                padding: 8px 16px;
+                border: none;
+                border-radius: 8px;
+                outline: none;
+              `}
+              type="text"
+              id="user-from"
+              name="user-from"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              placeholder="Your name"
+            />
+          </label>
+          <CopyToClipboard text={me}>
+            <button
+              className={css`
+                margin: 0;
+                padding: 8px 16px;
+                font-size: 16px;
+                font-family: sans-serif;
+                color: #ffffff;
+                background-color: ${name ? '#da22ff' : '#a5a5a5'};
+                border: none;
+                border-radius: 8px;
+                cursor: ${name ? 'pointer' : 'default'};
+                pointer-events: ${name ? 'all' : 'none'};
+
+                &:hover,
+                &:focus {
+                  background-color: #c41ee5;
+                }
+
+                &:active {
+                  background-color: #dd38ff;
+                }
+              `}
+            >
+              Copy ID
+            </button>
+          </CopyToClipboard>
+        </div>
+        <div
+          className={css`
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            grid-template-columns: 1fr 100px;
+            column-gap: 16px;
+          `}
+        >
+          <label
+            className={css`
+              width: 100%;
+              height: 100%;
+            `}
+            htmlFor="user-to"
+          >
+            <input
+              className={css`
+                padding: 8px 16px;
+                border: none;
+                border-radius: 8px;
+                outline: none;
+              `}
+              type="text"
+              id="user-to"
+              name="user-to"
+              value={idToCall}
+              onChange={(event) => setIdToCall(event.target.value)}
+              placeholder="ID of user to call"
+            />
+          </label>
+          {callAccepted && !callEnded ? (
+            <button
+              className={css`
+                margin: 0;
+                padding: 8px 16px;
+                font-size: 16px;
+                font-family: sans-serif;
+                color: #ffffff;
+                background-color: #ff3232;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+
+                &:hover,
+                &:focus {
+                  background-color: #e52d2d;
+                }
+
+                &:active {
+                  background-color: #ff4646;
+                }
+              `}
+              onClick={leaveCall}
+            >
+              End Call
+            </button>
+          ) : (
+            <button
+              className={css`
+                margin: 0;
+                padding: 8px 16px;
+                font-size: 16px;
+                font-family: sans-serif;
+                color: #ffffff;
+                background-color: ${idToCall ? '#56cb56' : '#a5a5a5'};
+                border: none;
+                border-radius: 8px;
+                cursor: ${idToCall ? 'pointer' : 'default'};
+                pointer-events: ${idToCall ? 'all' : 'none'};
+
+                &:hover,
+                &:focus {
+                  background-color: #84d984;
+                }
+
+                &:active {
+                  background-color: #6bbf6b;
+                }
+              `}
+              onClick={() => callUser(idToCall)}
+            >
+              Call
+            </button>
+          )}
+        </div>
+      </div>
+      {/* Receiving call */}
+      <div
+        className={css`
+          position: relative;
+          display: grid;
+          width: 100%;
+          height: 100%;
         `}
       >
         {/* User from video stream */}
-        <div>
+        <div
+          className={css`
+            padding: 80px;
+          `}
+        >
           {stream && (
             <video
-              className={css`
-                width: 400px;
-                height: 100%;
-              `}
+              className={cx(
+                css`
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  border-radius: 24px;
+                `,
+                callAccepted &&
+                  !callEnded &&
+                  css`
+                    position: absolute;
+                    top: 104px;
+                    left: 104px;
+                    width: 160px;
+                    height: 104px;
+                    border-radius: 24px;
+                    transition: all 1s ease-in;
+                  `
+              )}
               playsInline
               muted
               autoPlay
               ref={myVideo}
             />
           )}
-        </div>
-        {/* User to video stream */}
-        <div>
+          {/* User to video stream */}
           {callAccepted && !callEnded ? (
             <video
               className={css`
-                width: 400px;
+                width: 100%;
                 height: 100%;
+                object-fit: cover;
+                border-radius: 24px;
               `}
               playsInline
               autoPlay
               ref={userVideo}
             />
           ) : null}
-        </div>
-      </div>
+          {/* Answer Call button */}
+          {receivingCall && !callAccepted ? (
+            <div
+              className={css`
+                position: absolute;
+                bottom: 104px;
+                left: 50%;
+                display: grid;
+                row-gap: 24px;
+                transform: translateX(-50%);
+              `}
+            >
+              <div
+                className={css`
+                  font-size: 24px;
+                  font-family: sans-serif;
+                  color: #ffffff;
+                `}
+              >
+                {name ? name : 'Unknown'} is calling...
+              </div>
+              <button
+                className={css`
+                  padding: 8px 16px;
+                  font-size: 16px;
+                  font-family: sans-serif;
+                  color: #ffffff;
+                  background-color: #56cb56;
+                  border: none;
+                  border-radius: 8px;
+                  cursor: pointer;
 
-      {/* Inputs */}
-      <div>
-        <label htmlFor="user-from">
-          <input
-            type="text"
-            id="user-from"
-            name="user-from"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
-        </label>
-        <CopyToClipboard text={me}>
-          <button>Copy ID</button>
-        </CopyToClipboard>
-        <label htmlFor="user-to">
-          <input
-            type="text"
-            id="user-to"
-            name="user-to"
-            value={idToCall}
-            onChange={(event) => setIdToCall(event.target.value)}
-          />
-        </label>
-        {callAccepted && !callEnded ? (
-          <button onClick={leaveCall}>End Call</button>
-        ) : (
-          <button onClick={() => callUser(idToCall)}>Call</button>
-        )}
-        <br />
-        {idToCall}
-      </div>
-      {/* Receiving call */}
-      {receivingCall && !callAccepted ? (
-        <div>
-          <div>{name} is calling...</div>
-          <button onClick={answerCall}>Answer</button>
+                  &:hover,
+                  &:focus {
+                    background-color: #84d984;
+                  }
+
+                  &:active {
+                    background-color: #6bbf6b;
+                  }
+                `}
+                onClick={answerCall}
+              >
+                Answer
+              </button>
+            </div>
+          ) : null}
+          {/* End Call button */}
+          {callAccepted && !callEnded ? (
+            <div
+              className={css`
+                position: absolute;
+                bottom: 104px;
+                left: 50%;
+                display: grid;
+                row-gap: 24px;
+                transform: translateX(-50%);
+              `}
+            >
+              <button
+                className={css`
+                  padding: 8px 16px;
+                  font-size: 16px;
+                  font-family: sans-serif;
+                  color: #ffffff;
+                  background-color: #ff3232;
+                  border: none;
+                  border-radius: 8px;
+                  cursor: pointer;
+
+                  &:hover,
+                  &:focus {
+                    background-color: #e52d2d;
+                  }
+
+                  &:active {
+                    background-color: #ff4646;
+                  }
+                `}
+                onClick={leaveCall}
+              >
+                End Call
+              </button>
+            </div>
+          ) : null}
         </div>
-      ) : null}
+      </div>
     </div>
   );
 };
