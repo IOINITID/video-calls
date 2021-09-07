@@ -2,7 +2,7 @@
 import { css, cx, injectGlobal } from '@emotion/css';
 import { useEffect, useRef, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Peer from 'simple-peer';
+import Peer, { Instance, SignalData } from 'simple-peer';
 import { io } from 'socket.io-client';
 
 const socket = io('https://ioinitid-video-calls-server.herokuapp.com', {
@@ -15,28 +15,30 @@ const socket = io('https://ioinitid-video-calls-server.herokuapp.com', {
 
 const App = () => {
   const [me, setMe] = useState('');
-  const [stream, setStream] = useState<any>();
+  const [stream, setStream] = useState<MediaStream>();
   const [receivingCall, setReceivingCall] = useState(false);
   const [caller, setCaller] = useState('');
-  const [callerSignal, setCallerSignal] = useState<any>();
+  const [callerSignal, setCallerSignal] = useState<SignalData | string>('');
   const [callAccepted, setCallAccepted] = useState(false);
   const [idToCall, setIdToCall] = useState('');
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState('');
   const [isCalling, setIsCalling] = useState(false);
 
-  const myVideo = useRef<any>(null);
-  const userVideo = useRef<any>(null);
-  const connectionRef = useRef<any>(null);
+  const myVideo = useRef<HTMLVideoElement | null>(null);
+  const userVideo = useRef<HTMLVideoElement | null>(null);
+  const connectionRef = useRef<Instance | null>(null);
 
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream: MediaStream) => {
       setStream(stream);
-      myVideo.current.srcObject = stream;
+
+      if (myVideo.current) {
+        myVideo.current.srcObject = stream;
+      }
     });
 
     socket.on('me', (id) => {
-      console.log('me', id);
       setMe(id);
     });
 
@@ -45,6 +47,17 @@ const App = () => {
       setCaller(data.from);
       setName(data.name);
       setCallerSignal(data.signal);
+    });
+
+    socket.on('callEnded', () => {
+      setCallEnded(true);
+      setIsCalling(false);
+
+      if (userVideo.current) {
+        userVideo.current.srcObject = null;
+      }
+
+      connectionRef.current = null;
     });
   }, []);
 
@@ -64,8 +77,10 @@ const App = () => {
       });
     });
 
-    peer.on('stream', (stream) => {
-      userVideo.current.srcObject = stream;
+    peer.on('stream', (stream: MediaStream) => {
+      if (userVideo.current) {
+        userVideo.current.srcObject = stream;
+      }
     });
 
     socket.on('callAccepted', (signal) => {
@@ -93,8 +108,10 @@ const App = () => {
       });
     });
 
-    peer.on('stream', (stream) => {
-      userVideo.current.srcObject = stream;
+    peer.on('stream', (stream: MediaStream) => {
+      if (userVideo.current) {
+        userVideo.current.srcObject = stream;
+      }
     });
 
     peer.signal(callerSignal);
@@ -104,7 +121,10 @@ const App = () => {
   const leaveCall = () => {
     setCallEnded(true);
     setIsCalling(false);
+
     connectionRef.current = null;
+
+    socket.close();
   };
 
   injectGlobal`
