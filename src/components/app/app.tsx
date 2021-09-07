@@ -10,7 +10,7 @@ const App = () => {
   const [stream, setStream] = useState<MediaStream>();
   const [receivingCall, setReceivingCall] = useState(false);
   const [caller, setCaller] = useState('');
-  const [callerSignal, setCallerSignal] = useState();
+  const [callerSignal, setCallerSignal] = useState<any>();
   const [callAcepted, setCallAcepted] = useState(false);
   const [idToCall, setIdToCall] = useState('');
   const [callEnded, setCallEnded] = useState(false);
@@ -64,6 +64,35 @@ const App = () => {
     });
 
     connectionRef.current = peer;
+  };
+
+  const answerCall = () => {
+    setCallAcepted(true);
+
+    const peer = new Peer({
+      initiator: false,
+      trickle: false,
+      stream: stream,
+    });
+
+    peer.on('signal', (data) => {
+      socket.emit('answerCall', {
+        signal: data,
+        to: caller,
+      });
+    });
+
+    peer.on('stream', (stream) => {
+      userVideo.current.srcObject = stream;
+    });
+
+    peer.signal(callerSignal);
+    connectionRef.current = peer;
+  };
+
+  const leaveCall = () => {
+    setCallEnded(true);
+    connectionRef.current.destroy();
   };
 
   return <div></div>;
