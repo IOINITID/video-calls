@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Peer from 'simple-peer';
 import { io } from 'socket.io-client';
@@ -7,7 +7,7 @@ const socket = io('http://localhost:8080');
 
 const App = () => {
   const [me, setMe] = useState('');
-  const [stream, setStream] = useState();
+  const [stream, setStream] = useState<MediaStream>();
   const [receivingCall, setReceivingCall] = useState(false);
   const [caller, setCaller] = useState('');
   const [callerSignal, setCallerSignal] = useState();
@@ -15,6 +15,56 @@ const App = () => {
   const [idToCall, setIdToCall] = useState('');
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState('');
+
+  const myVideo = useRef<any>();
+  const userVideo = useRef<any>();
+  const connectionRef = useRef<any>();
+
+  useEffect(() => {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+      setStream(stream);
+      myVideo.current.srcObject = stream;
+    });
+
+    socket.on('me', (id) => {
+      setMe(id);
+    });
+
+    socket.on('callUser', (data) => {
+      setReceivingCall(true);
+      setCaller(data.from);
+      setName(data.name);
+      setCallerSignal(data.signal);
+    });
+  }, []);
+
+  const callUser = (id: string) => {
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      stream: stream,
+    });
+
+    peer.on('signal', (data) => {
+      socket.emit('callUser', {
+        userToCall: id,
+        signalData: data,
+        from: me,
+        name: name,
+      });
+    });
+
+    peer.on('stream', (stream) => {
+      userVideo.current.srcObject = stream;
+    });
+
+    socket.on('callAccepted', (signal) => {
+      setCallAcepted(true);
+      peer.signal = signal;
+    });
+
+    connectionRef.current = peer;
+  };
 
   return <div></div>;
 };
