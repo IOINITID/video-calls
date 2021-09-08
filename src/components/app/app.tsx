@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Peer, { Instance, SignalData } from 'simple-peer';
 import { io } from 'socket.io-client';
+import notificationCallSound from '../../assets/notication-call-sound.mp3';
 
 const socket = io('https://ioinitid-video-calls-server.herokuapp.com', {
   transports: ['websocket'],
@@ -24,10 +25,12 @@ const App = () => {
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState('');
   const [isCalling, setIsCalling] = useState(false);
+  const [audioInterval, setAudioInterval] = useState<any>(null);
 
   const myVideo = useRef<HTMLVideoElement | null>(null);
   const userVideo = useRef<HTMLVideoElement | null>(null);
   const connectionRef = useRef<Instance | null>(null);
+  const audioCallRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream: MediaStream) => {
@@ -125,6 +128,14 @@ const App = () => {
 
     connectionRef.current = null;
 
+    clearInterval(audioInterval);
+
+    if (audioCallRef.current) {
+      audioCallRef.current.src = '';
+      audioCallRef.current.pause();
+      audioCallRef.current.load();
+    }
+
     socket.close();
   };
 
@@ -165,6 +176,7 @@ const App = () => {
         height: 100%;
       `}
     >
+      <audio ref={audioCallRef} />
       {/* Inputs */}
       <div
         className={css`
@@ -319,6 +331,21 @@ const App = () => {
                 }
               `}
               onClick={() => {
+                if (audioCallRef.current) {
+                  audioCallRef.current.src = notificationCallSound;
+                  audioCallRef.current.play();
+                  audioCallRef.current.volume = 0.5;
+                }
+
+                setAudioInterval(
+                  setInterval(() => {
+                    if (audioCallRef.current) {
+                      audioCallRef.current.src = notificationCallSound;
+                      audioCallRef.current.play();
+                      audioCallRef.current.volume = 0.5;
+                    }
+                  }, 2000)
+                );
                 callUser(idToCall);
                 setIsCalling(true);
               }}
