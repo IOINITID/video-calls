@@ -1,10 +1,11 @@
-export const DeviceWidth = {
-  Desktop: 1440,
-  Tablet: 768,
-  Mobile: 320,
-};
+import { createTheme, colors } from '@mui/material';
 
-export enum Retina {
-  Dppx = 1.5,
-  Dpi = 144,
-}
+export const theme = createTheme({
+  palette: {
+    primary: {
+      light: colors.indigo.A400,
+      main: colors.indigo[500],
+      dark: colors.indigo[800],
+    },
+  },
+});

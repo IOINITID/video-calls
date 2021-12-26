@@ -7,6 +7,7 @@ import { setLogin, setLogout } from '../../../modules/user/store/user';
 import { axiosInstance } from '../../services/axios-instance';
 import { getLogout } from '../../services/get-logout';
 import { AuthorizationResponse } from '../../types';
+import { Box } from '@mui/material';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ const AppContainer = () => {
   }, []);
 
   return (
-    <div>
+    <Box sx={{ display: 'grid', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
       {isAuthorizated ? (
         <div>
           <h1>{isAuthorizated ? `Пользователь авторизован ${userEmail}.` : 'Пользователь не авторизован.'}</h1>
@@ -72,7 +73,7 @@ const AppContainer = () => {
       ) : (
         <Authorization />
       )}
-    </div>
+    </Box>
   );
 };
 
