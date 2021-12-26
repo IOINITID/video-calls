@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
-import { store } from './core/store/index';
 import { Provider } from 'react-redux';
+import { store } from './core/store/index';
 import { AppContainer } from './core/containers/app-container/app-container';
 
 const Root = () => {
