@@ -1,8 +1,11 @@
 import { memo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { registration } from '../../../registration/services';
+import { setLogin } from '../../../user/store/user';
 import { authorization } from '../../services';
 
 const Authorization = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -38,6 +41,10 @@ const Authorization = () => {
             const response = await authorization(email, password);
 
             localStorage.setItem('token', response.data.accessToken);
+
+            dispatch(
+              setLogin({ id: response.data.user.id, email: response.data.user.email, token: response.data.accessToken })
+            );
           } catch (error) {
             console.log(error);
           }
@@ -51,6 +58,10 @@ const Authorization = () => {
             const response = await registration(email, password);
 
             localStorage.setItem('token', response.data.accessToken);
+
+            dispatch(
+              setLogin({ id: response.data.user.id, email: response.data.user.email, token: response.data.accessToken })
+            );
           } catch (error) {
             console.log(error);
           }

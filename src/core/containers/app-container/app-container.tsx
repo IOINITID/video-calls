@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Authorization } from '../../../modules/authorization/pages/authorization';
 import { userEmailSelector, userIsAuthorizatedSelector } from '../../../modules/user/store/selectors';
-import { setLogin } from '../../../modules/user/store/user';
+import { setLogin, setLogout } from '../../../modules/user/store/user';
 import { axiosInstance } from '../../services/axios-instance';
 import { getLogout } from '../../services/get-logout';
 import { AuthorizationResponse } from '../../types';
@@ -54,7 +54,15 @@ const AppContainer = () => {
           >
             Получить пользователей
           </button>
-          <button onClick={getLogout}>Logout</button>
+          <button
+            onClick={() => {
+              getLogout();
+
+              dispatch(setLogout());
+            }}
+          >
+            Logout
+          </button>
           <br />
           Пользователи:
           {users?.map((user) => {

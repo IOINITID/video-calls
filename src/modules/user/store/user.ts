@@ -21,7 +21,9 @@ export const userSlice = createSlice({
     },
     setLogout: (state: UserState) => {
       state.id = '';
+      state.email = '';
       state.token = '';
+      state.isAuthorizated = false;
       localStorage.removeItem('token');
     },
   },
