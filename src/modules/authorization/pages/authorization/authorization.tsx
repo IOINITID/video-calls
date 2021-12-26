@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { authorization } from '../../services/authorization';
-import { registration } from '../../services/registration';
+import { memo, useState } from 'react';
+import { registration } from '../../../registration/services';
+import { authorization } from '../../services';
 
-const AuthorizationForm = () => {
+const Authorization = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -62,4 +62,4 @@ const AuthorizationForm = () => {
   );
 };
 
-export { AuthorizationForm };
+export const AuthorizationMemoized = memo(Authorization);

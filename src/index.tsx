@@ -1,12 +1,12 @@
 import ReactDOM from 'react-dom';
-import store from './store/index';
+import { store } from './core/store/index';
 import { Provider } from 'react-redux';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { AuthorizationResponse } from './types';
-import { getLogout } from './services/get-logout';
-import { AuthorizationForm } from './components/authorization-form';
-import { axiosInstance } from './services/axios-instance';
+import { AuthorizationResponse } from './core/types';
+import { getLogout } from './core/services/get-logout';
+import { Authorization } from './modules/authorization/pages/authorization';
+import { axiosInstance } from './core/services/axios-instance';
 
 const Root = () => {
   const [isAuth, setIsAuth] = useState(false);
@@ -60,7 +60,7 @@ const Root = () => {
             })}
           </div>
         ) : (
-          <AuthorizationForm />
+          <Authorization />
         )}
       </div>
     </Provider>
