@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Authorization } from '../../../modules/authorization/pages/authorization';
 import { userEmailSelector, userIsAuthorizatedSelector } from '../../../modules/user/store/selectors';
 import { setLogin, setLogout } from '../../../modules/user/store/user';
 import { axiosInstance } from '../../services/axios-instance';
 import { getLogout } from '../../services/get-logout';
 import { AuthorizationResponse } from '../../types';
 import { Box } from '@mui/material';
+import { PublicRoutes } from '../../routes/public';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
@@ -71,7 +71,7 @@ const AppContainer = () => {
           })}
         </div>
       ) : (
-        <Authorization />
+        <PublicRoutes />
       )}
     </Box>
   );

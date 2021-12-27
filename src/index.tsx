@@ -5,6 +5,7 @@ import { AppContainer } from './core/containers/app-container/app-container';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './core/theme';
 import { injectGlobal } from '@emotion/css';
+import { HashRouter } from 'react-router-dom';
 
 const Root = () => {
   injectGlobal`
@@ -42,7 +43,9 @@ const Root = () => {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <AppContainer />
+        <HashRouter>
+          <AppContainer />
+        </HashRouter>
       </ThemeProvider>
     </Provider>
   );
