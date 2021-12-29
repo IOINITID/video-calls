@@ -13,12 +13,13 @@ const Registration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [isShowPassword, setIsShowPassword] = useState(false);
 
   const getRegistration = async () => {
     try {
-      const response = await registration(email, password);
+      const response = await registration(email, name, password);
 
       localStorage.setItem('token', response.data.accessToken);
 
@@ -60,10 +61,21 @@ const Registration = () => {
                   type="email"
                   id="email"
                   name="email"
-                  label="Логин"
+                  label="Адрес электронной почты"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   placeholder="Введите ваш email"
+                  autoComplete="off"
+                  fullWidth
+                />
+                <TextField
+                  type="text"
+                  id="name"
+                  name="name"
+                  label="Имя пользователя"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  placeholder="Введите ваше имя"
                   autoComplete="off"
                   fullWidth
                 />

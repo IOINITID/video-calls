@@ -1,26 +1,24 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { userEmailSelector, userIdSelector, userIsAuthorizatedSelector } from '../../../modules/user/store/selectors';
-import { setLogin, setLogout } from '../../../modules/user/store/user';
+import { userIdSelector, userIsAuthorizatedSelector } from '../../../modules/user/store/selectors';
+import { setLogin, setUsers } from '../../../modules/user/store/user';
 import { axiosInstance } from '../../services/axios-instance';
-import { getLogout } from '../../services/get-logout';
 import { AuthorizationResponse } from '../../types';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { PublicRoutes } from '../../routes/public';
 import { io } from 'socket.io-client';
-import { theme } from '../../theme';
+import { UserResponse } from '../../../modules/user/store/types';
+import { PrivateRoutes } from '../../routes/private';
 
-const socket = io('http://localhost:8080', {
+export const socket = io('http://localhost:8080', {
   transports: ['websocket'],
 });
 
 const AppContainer = () => {
   const dispatch = useDispatch();
   const isAuthorizated = useSelector(userIsAuthorizatedSelector);
-  const userEmail = useSelector(userEmailSelector);
   const userId = useSelector(userIdSelector);
-  const [users, setUsers] = useState<{ _id: string; email: string; status: string }[]>([]);
 
   const checkAuth = async () => {
     try {
@@ -41,11 +39,9 @@ const AppContainer = () => {
   };
 
   const getUsers = async () => {
-    const response = await axiosInstance.get<{ _id: string; email: string; status: string }[]>('/users', {
-      withCredentials: true,
-    });
+    const response = await axiosInstance.get<UserResponse[]>('/users');
 
-    setUsers(response.data);
+    dispatch(setUsers(response.data));
   };
 
   useEffect(() => {
@@ -69,47 +65,10 @@ const AppContainer = () => {
   }, [userId]);
 
   return (
-    <Box sx={{ display: 'grid', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-      {isAuthorizated ? (
-        <div>
-          <h1>{isAuthorizated ? `Пользователь авторизован ${userEmail}.` : 'Пользователь не авторизован.'}</h1>
-          <button
-            onClick={() => {
-              getLogout();
-
-              socket.emit('on-disconnect', userId);
-
-              dispatch(setLogout());
-            }}
-          >
-            Logout
-          </button>
-          <br />
-          Пользователи:
-          {users?.map((user) => {
-            return (
-              <div key={user._id}>
-                <Box
-                  sx={{
-                    display: 'inline-grid',
-                    gridAutoFlow: 'column',
-                    columnGap: '16px',
-                    backgroundColor: theme.palette.common.white,
-                    borderRadius: '8px',
-                    border: `1px solid ${theme.palette.grey[300]}`,
-                    padding: '8px 16px',
-                  }}
-                >
-                  <Typography>{user.email}</Typography>
-                  <Typography>{user.status}</Typography>
-                </Box>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <PublicRoutes />
-      )}
+    <Box
+      sx={{ display: 'grid', alignItems: 'center', justifyContent: 'center', height: '100vh', position: 'relative' }}
+    >
+      {isAuthorizated ? <PrivateRoutes /> : <PublicRoutes />}
     </Box>
   );
 };

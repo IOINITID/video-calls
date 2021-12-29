@@ -3,4 +3,11 @@ export type UserState = {
   email: string;
   token: string;
   isAuthorizated: boolean;
+  users: UserResponse[];
+};
+
+export type UserResponse = {
+  _id: string;
+  email: string;
+  status: string;
 };

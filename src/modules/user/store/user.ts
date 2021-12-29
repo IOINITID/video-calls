@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserState } from './types';
+import { UserResponse, UserState } from './types';
 
 const initialState: UserState = {
   id: '',
   email: '',
   token: localStorage.getItem('token') || '',
   isAuthorizated: false,
+  users: [],
 };
 
 export const userSlice = createSlice({
@@ -26,9 +27,12 @@ export const userSlice = createSlice({
       state.isAuthorizated = false;
       localStorage.removeItem('token');
     },
+    setUsers: (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
+      state.users = payload;
+    },
   },
 });
 
-export const { setLogin, setLogout } = userSlice.actions;
+export const { setLogin, setLogout, setUsers } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
