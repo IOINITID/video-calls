@@ -4,6 +4,8 @@ export type UserState = {
   token: string;
   isAuthorizated: boolean;
   users: UserResponse[];
+  friends: UserResponse[];
+  invites: UserResponse[];
 };
 
 export type UserResponse = {

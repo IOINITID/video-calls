@@ -2,6 +2,10 @@ import { useSelector } from 'react-redux';
 import { Typography, Box } from '@mui/material';
 import { userUsersSelector } from '../../../modules/user/store/selectors';
 import { theme } from '../../theme';
+import { Button } from '../button';
+import axios from 'axios';
+import { axiosInstance } from '../../services/axios-instance';
+import { socket } from '../../containers/app-container/app-container';
 
 const UserList = () => {
   const users = useSelector(userUsersSelector);
@@ -16,6 +20,7 @@ const UserList = () => {
             sx={{
               display: 'inline-grid',
               gridAutoFlow: 'column',
+              alignItems: 'center',
               columnGap: '16px',
               backgroundColor: theme.palette.common.white,
               borderRadius: '8px',
@@ -25,6 +30,34 @@ const UserList = () => {
           >
             <Typography>{user.email}</Typography>
             <Typography>{user.status}</Typography>
+
+            <Box sx={{ display: 'grid', gridAutoFlow: 'column', columnGap: '16px' }}>
+              <Button
+                variant="contained"
+                onClick={async () => {
+                  const response = await axiosInstance.post('/add-invite-to-friends', { friendId: user._id });
+
+                  socket.emit('on-add-invite-to-friends', user._id);
+
+                  return response.data;
+                }}
+              >
+                Добавить в друзья
+              </Button>
+              <Button
+                variant="contained"
+                onClick={async () => {
+                  const response = await axiosInstance.post('/add-to-friends', { friendId: user._id });
+
+                  return response.data;
+                }}
+              >
+                Принять
+              </Button>
+              <Button variant="contained" onClick={() => null}>
+                Отклонить
+              </Button>
+            </Box>
           </Box>
         );
       })}

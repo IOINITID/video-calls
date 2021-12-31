@@ -1,4 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getFriends } from '../../../core/services/get-friends';
+import { getInvites } from '../../../core/services/get-invites';
+import { getUsers } from '../../../core/services/get-users';
 import { UserResponse, UserState } from './types';
 
 const initialState: UserState = {
@@ -7,6 +10,8 @@ const initialState: UserState = {
   token: localStorage.getItem('token') || '',
   isAuthorizated: false,
   users: [],
+  friends: [],
+  invites: [],
 };
 
 export const userSlice = createSlice({
@@ -27,12 +32,20 @@ export const userSlice = createSlice({
       state.isAuthorizated = false;
       localStorage.removeItem('token');
     },
-    setUsers: (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getUsers.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
       state.users = payload;
-    },
+    });
+    builder.addCase(getFriends.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
+      state.friends = payload;
+    });
+    builder.addCase(getInvites.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
+      state.invites = payload;
+    });
   },
 });
 
-export const { setLogin, setLogout, setUsers } = userSlice.actions;
+export const { setLogin, setLogout } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
