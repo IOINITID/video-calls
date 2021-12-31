@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getApprovals } from '../../../core/services/get-approvals';
 import { getFriends } from '../../../core/services/get-friends';
 import { getInvites } from '../../../core/services/get-invites';
 import { getUsers } from '../../../core/services/get-users';
@@ -12,6 +13,7 @@ const initialState: UserState = {
   users: [],
   friends: [],
   invites: [],
+  approvals: [],
 };
 
 export const userSlice = createSlice({
@@ -42,6 +44,9 @@ export const userSlice = createSlice({
     });
     builder.addCase(getInvites.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
       state.invites = payload;
+    });
+    builder.addCase(getApprovals.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
+      state.approvals = payload;
     });
   },
 });

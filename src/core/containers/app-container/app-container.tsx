@@ -11,6 +11,7 @@ import { PrivateRoutes } from '../../routes/private';
 import { getUsers } from '../../services/get-users';
 import { getFriends } from '../../services/get-friends';
 import { getInvites } from '../../services/get-invites';
+import { getApprovals } from '../../services/get-approvals';
 
 export const socket = io('http://localhost:8080', {
   transports: ['websocket'],
@@ -46,21 +47,37 @@ const AppContainer = () => {
   }, []);
 
   useEffect(() => {
+    // TODO: Запрашивать при изменении конкретных данных точечно
+    // dispatch(getUsers());
+    // dispatch(getInvites());
+    // dispatch(getFriends());
+
     if (userId) {
       socket.emit('on-connect', userId);
 
       socket.on('on-connect', () => {
         dispatch(getUsers());
         dispatch(getFriends());
+        dispatch(getInvites());
+        dispatch(getApprovals());
       });
 
       socket.on('on-disconnect', () => {
         dispatch(getUsers());
         dispatch(getFriends());
+        dispatch(getInvites());
+        dispatch(getApprovals());
       });
 
       socket.on('on-add-invite-to-friends', () => {
         dispatch(getInvites());
+        dispatch(getApprovals());
+      });
+
+      socket.on('on-add-to-friends', () => {
+        dispatch(getFriends());
+        dispatch(getInvites());
+        dispatch(getApprovals());
       });
     }
   }, [userId]);

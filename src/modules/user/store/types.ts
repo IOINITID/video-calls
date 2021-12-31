@@ -6,6 +6,7 @@ export type UserState = {
   users: UserResponse[];
   friends: UserResponse[];
   invites: UserResponse[];
+  approvals: UserResponse[];
 };
 
 export type UserResponse = {
