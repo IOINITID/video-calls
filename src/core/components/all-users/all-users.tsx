@@ -16,6 +16,7 @@ import { axiosInstance } from '../../services/axios-instance';
 import { getLogout } from '../../services/get-logout';
 import { theme } from '../../theme';
 import { Button } from '../button';
+import { User } from '../user';
 
 const AllUsers = () => {
   const dispatch = useDispatch();
@@ -46,8 +47,7 @@ const AllUsers = () => {
               padding: '8px 16px',
             }}
           >
-            <Typography>{user.email}</Typography>
-            <Typography>{user.status}</Typography>
+            <User name="User Name" status={user.status} email={user.email} />
             <Box sx={{ display: 'grid', gridAutoFlow: 'column', columnGap: '16px' }}>
               <Button
                 variant="contained"
@@ -61,7 +61,7 @@ const AllUsers = () => {
               >
                 Добавить в друзья
               </Button>
-              <Button
+              {/* <Button
                 variant="contained"
                 onClick={async () => {
                   const response = await axiosInstance.post('/add-to-friends', { friendId: user._id });
@@ -70,10 +70,10 @@ const AllUsers = () => {
                 }}
               >
                 Принять
-              </Button>
-              <Button variant="contained" onClick={() => null}>
+              </Button> */}
+              {/* <Button variant="contained" onClick={() => null}>
                 Отклонить
-              </Button>
+              </Button> */}
             </Box>
           </Box>
         );
@@ -95,8 +95,7 @@ const AllUsers = () => {
               padding: '8px 16px',
             }}
           >
-            <Typography>{friend.email}</Typography>
-            <Typography>{friend.status}</Typography>
+            <User name="User Name" status={friend.status} email={friend.email} />
             <Box sx={{ display: 'grid', gridAutoFlow: 'column', columnGap: '16px' }}>
               <Button
                 variant="contained"
@@ -131,8 +130,7 @@ const AllUsers = () => {
               padding: '8px 16px',
             }}
           >
-            <Typography>{invite.email}</Typography>
-            <Typography>{invite.status}</Typography>
+            <User name="User Name" status={invite.status} email={invite.email} />
             <Box sx={{ display: 'grid', gridAutoFlow: 'column', columnGap: '16px' }}>
               <Button
                 variant="contained"
@@ -148,7 +146,13 @@ const AllUsers = () => {
               </Button>
               <Button
                 variant="contained"
-                onClick={() => {
+                onClick={async () => {
+                  const response = await axiosInstance.post('/remove-invite-to-friends', { friendId: invite._id });
+
+                  socket.emit('on-remove-invite-to-friends', invite._id); // Отправка события пользователю, который ждет принятия или отклонения приглашения
+
+                  return response.data;
+
                   // TODO: Добавить отклонение приглашения
                 }}
               >
@@ -175,13 +179,18 @@ const AllUsers = () => {
               padding: '8px 16px',
             }}
           >
-            <Typography>{approval.email}</Typography>
-            <Typography>{approval.status}</Typography>
-            <Box sx={{ display: 'grid', gridAutoFlow: 'column', columnGap: '16px' }}>
+            <User name="User Name" status={approval.status} email={approval.email} />
+            <Box sx={{ display: 'grid', gridAutoFlow: 'column', alignItems: 'center', columnGap: '16px' }}>
               <Typography>Ожидает подтверждения</Typography>
               <Button
                 variant="contained"
-                onClick={() => {
+                onClick={async () => {
+                  const response = await axiosInstance.post('/remove-invite-to-friends', { friendId: approval._id });
+
+                  socket.emit('on-remove-invite-to-friends', approval._id); // Отправка события пользователю, который ожидает принятия или отклонения приглашения в друзья
+
+                  return response.data;
+
                   // TODO: Добавить отклонение приглашения
                 }}
               >
