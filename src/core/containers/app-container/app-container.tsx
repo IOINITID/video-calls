@@ -79,6 +79,10 @@ const AppContainer = () => {
         dispatch(getInvites());
         dispatch(getApprovals());
       });
+
+      socket.on('on-remove-from-friends', () => {
+        dispatch(getFriends());
+      });
     }
   }, [userId]);
 

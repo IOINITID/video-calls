@@ -97,6 +97,20 @@ const AllUsers = () => {
           >
             <Typography>{friend.email}</Typography>
             <Typography>{friend.status}</Typography>
+            <Box sx={{ display: 'grid', gridAutoFlow: 'column', columnGap: '16px' }}>
+              <Button
+                variant="contained"
+                onClick={async () => {
+                  const response = await axiosInstance.post('/remove-from-friends', { friendId: friend._id });
+
+                  socket.emit('on-remove-from-friends', friend._id); // Отправка события пользователю, которого удаляют из друзей
+
+                  return response.data;
+                }}
+              >
+                Удалить
+              </Button>
+            </Box>
           </Box>
         );
       })}
