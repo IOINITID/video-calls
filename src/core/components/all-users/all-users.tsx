@@ -1,6 +1,7 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Link } from '@mui/material';
 import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   userApprovalsSelector,
   userEmailSelector,
@@ -20,6 +21,7 @@ import { User } from '../user';
 
 const AllUsers = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const users = useSelector(userUsersSelector);
   const friends = useSelector(userFriendsSelector);
   const invites = useSelector(userInvitesSelector);
@@ -204,6 +206,16 @@ const AllUsers = () => {
       <Box sx={{ display: 'grid', rowGap: '8px' }}>
         <Typography variant="h5">
           {isAuthorizated ? `Пользователь авторизован: ${userEmail}.` : 'Пользователь не авторизован.'}
+        </Typography>
+        <Typography variant="h5">
+          <Link sx={{ cursor: 'pointer' }} underline="hover" onClick={() => navigate('/profile')}>
+            Посмотреть профиль
+          </Link>
+        </Typography>
+        <Typography variant="h5">
+          <Link sx={{ cursor: 'pointer' }} underline="hover" onClick={() => navigate('/channels')}>
+            Каналы
+          </Link>
         </Typography>
         <Button
           variant="contained"

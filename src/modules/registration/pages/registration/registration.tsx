@@ -27,6 +27,7 @@ const Registration = () => {
         setLogin({
           id: response.data.user.id,
           email: response.data.user.email,
+          name: response.data.user.name,
           token: response.data.accessToken,
         })
       );

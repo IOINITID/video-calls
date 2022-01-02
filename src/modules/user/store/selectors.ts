@@ -8,3 +8,4 @@ export const userUsersSelector = (state: RootState) => state.user.users;
 export const userFriendsSelector = (state: RootState) => state.user.friends;
 export const userInvitesSelector = (state: RootState) => state.user.invites;
 export const userApprovalsSelector = (state: RootState) => state.user.approvals;
+export const userNameSelector = (state: RootState) => state.user.name;

@@ -4,6 +4,7 @@ export type AuthorizationResponse = {
   user: {
     id: string;
     email: string;
+    name: string;
   };
 };
 

@@ -1,6 +1,7 @@
 export type UserState = {
   id: string;
   email: string;
+  name: string;
   token: string;
   isAuthorizated: boolean;
   users: UserResponse[];
@@ -12,5 +13,6 @@ export type UserState = {
 export type UserResponse = {
   _id: string;
   email: string;
+  name: string;
   status: string;
 };

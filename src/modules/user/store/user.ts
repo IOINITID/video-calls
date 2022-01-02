@@ -8,6 +8,7 @@ import { UserResponse, UserState } from './types';
 const initialState: UserState = {
   id: '',
   email: '',
+  name: '',
   token: localStorage.getItem('token') || '',
   isAuthorizated: false,
   users: [],
@@ -20,9 +21,13 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setLogin: (state: UserState, { payload }: PayloadAction<{ id: string; email: string; token: string }>) => {
+    setLogin: (
+      state: UserState,
+      { payload }: PayloadAction<{ id: string; email: string; name: string; token: string }>
+    ) => {
       state.id = payload.id;
       state.email = payload.email;
+      state.name = payload.name;
       state.token = payload.token;
       state.isAuthorizated = true;
       localStorage.setItem('token', payload.token);
@@ -30,6 +35,7 @@ export const userSlice = createSlice({
     setLogout: (state: UserState) => {
       state.id = '';
       state.email = '';
+      state.name = '';
       state.token = '';
       state.isAuthorizated = false;
       localStorage.removeItem('token');
