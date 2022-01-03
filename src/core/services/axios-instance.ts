@@ -1,10 +1,11 @@
 import axios from 'axios';
+import { APPLICATION_URL } from '../constants';
 import { AuthorizationResponse } from '../types';
 import { getLogout } from './get-logout';
 
 const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: 'http://localhost:8080/api',
+  baseURL: `${APPLICATION_URL}/api`,
 });
 
 axiosInstance.interceptors.request.use((config) => {
@@ -24,7 +25,7 @@ axiosInstance.interceptors.response.use(
 
     if (error.response.status === 401) {
       try {
-        const response = await axios.get<AuthorizationResponse>('http://localhost:8080/api/refresh', {
+        const response = await axios.get<AuthorizationResponse>(`${APPLICATION_URL}/api/refresh`, {
           withCredentials: true,
         });
 
