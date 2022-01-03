@@ -13,7 +13,10 @@ import { getFriends } from '../../services/get-friends';
 import { getInvites } from '../../services/get-invites';
 import { getApprovals } from '../../services/get-approvals';
 
-export const socket = io('http://localhost:8080', {
+// https://ioinitid-video-calls-server.herokuapp.com
+// http://localhost:8080
+
+export const socket = io('https://ioinitid-video-calls-server.herokuapp.com', {
   transports: ['websocket'],
 });
 
