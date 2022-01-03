@@ -1,21 +1,35 @@
-import { memo, useEffect, useRef } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Button } from '../../../../core/components/button';
 import { theme } from '../../../../core/theme';
+import { socket } from '../../../../core/containers/app-container/app-container';
+import { useSelector } from 'react-redux';
+import { userIdSelector } from '../../../user/store/selectors';
 
 const Channels = () => {
+  const userId = useSelector(userIdSelector);
+  const [myStream, setStream] = useState<MediaStream>();
+
   const myVideoStream = useRef<HTMLVideoElement | null>(null);
+  const userVideoStream = useRef<HTMLVideoElement | null>(null);
 
   const getMediaStream = async () => {
-    const myMediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    try {
+      const myMediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
 
-    if (myVideoStream.current) {
-      myVideoStream.current.srcObject = myMediaStream;
+      setStream(myMediaStream);
+
+      if (myVideoStream.current) {
+        myVideoStream.current.srcObject = myMediaStream;
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    getMediaStream();
+    // TODO: Добавить включение видео и аудио
+    // getMediaStream();
   }, []);
 
   return (
@@ -34,7 +48,15 @@ const Channels = () => {
       <Box sx={{ display: 'grid', padding: '16px' }}>
         <Box sx={{ display: 'grid', rowGap: '8px' }}>
           <Typography variant="h5">Общие (текст):</Typography>
-          <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
+          <Button
+            sx={{ backgroundColor: theme.palette.common.white }}
+            variant="outlined"
+            color="primary"
+            onClick={() => {
+              // TODO: Добавить модель комнаты и сообщений
+              socket.emit('on-channel-join', 'id-1', userId);
+            }}
+          >
             Чат 1
           </Button>
           <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">

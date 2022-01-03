@@ -15,20 +15,25 @@ const socket = io('https://ioinitid-video-calls-server.herokuapp.com', {
 // });
 
 const App = () => {
-  const [me, setMe] = useState('');
-  const [stream, setStream] = useState<MediaStream>();
-  const [receivingCall, setReceivingCall] = useState(false);
-  const [caller, setCaller] = useState('');
-  const [callerSignal, setCallerSignal] = useState<SignalData | string>('');
-  const [callAccepted, setCallAccepted] = useState(false);
-  const [idToCall, setIdToCall] = useState('');
-  const [callEnded, setCallEnded] = useState(false);
-  const [name, setName] = useState('');
-  const [isCalling, setIsCalling] = useState(false);
-  const [audioInterval, setAudioInterval] = useState<any>(null);
+  const [me, setMe] = useState(''); // Мой id
+  const [idToCall, setIdToCall] = useState(''); // Id того кому звонить
+
+  const [name, setName] = useState(''); // Мое имя
+  const [caller, setCaller] = useState(''); // Имя того кто звонит
+
+  const [stream, setStream] = useState<MediaStream>(); // Мой видео стрим
+  const [callerSignal, setCallerSignal] = useState<SignalData | string>(''); // Сигнал того кто звонит
+
+  const [isCalling, setIsCalling] = useState(false); // Звоню я или нет
+  const [receivingCall, setReceivingCall] = useState(false); // Звонят мне или нет
+  const [callAccepted, setCallAccepted] = useState(false); // Звонок прят или нет
+  const [callEnded, setCallEnded] = useState(false); // Звонок закончен или нет
+
+  const [audioInterval, setAudioInterval] = useState<any>(null); // Для аудиозвука
 
   const myVideo = useRef<HTMLVideoElement | null>(null);
   const userVideo = useRef<HTMLVideoElement | null>(null);
+
   const connectionRef = useRef<Instance | null>(null);
   const audioCallRef = useRef<HTMLAudioElement | null>(null);
 
