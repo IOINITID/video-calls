@@ -11,6 +11,7 @@ import { User } from '../../../../core/components/user';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from '../../../../core/components/navigation';
 import notificationCallSound from '../../../../core/assets/notication-call-sound.mp3';
+import { Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-material';
 
 const Channels = () => {
   const navigate = useNavigate();
@@ -25,23 +26,23 @@ const Channels = () => {
   const [isIncomingCall, setIsIncomingCall] = useState(false); // Звонят мне или нет
   const [isCallAccepted, setIsCallAccepted] = useState(false); // Вызов принят или нет
   const [isCallCanceled, setIsCallCanceled] = useState(false); // Вызов отменен или нет
-
   const [audioStream, setAudioStream] = useState<MediaStreamTrack[] | null>(null); // Аудио дорожка пользователя
   const [videoStream, setVideoStream] = useState<MediaStreamTrack[] | null>(null); // Видео дорожка пользователя
+  const [isAudio, setIsAudio] = useState(true); // Включен ли мой звуковой поток
+  const [isVideo, setIsVideo] = useState(true); // Включен ли мой видеоs поток
 
   const myVideoStream = useRef<HTMLVideoElement | null>(null); // Мое видео
   const userVideoStream = useRef<HTMLVideoElement | null>(null); // Видео пользователя с кем звонок
-
   const audioInterval = useRef<ReturnType<typeof setTimeout> | null>(null); // Ссылка на аудио интервал при входящем звонке
-
   const audioCallTheme = useRef<HTMLAudioElement | null>(null); // Аудио пользователя
-
   const connectionRef = useRef<Instance | null>(null); // Ссылка соединения
 
   // Получает медиа стрим (аудио и видео)
   const getMediaStream = async ({ video = true, audio = true }: { video?: boolean; audio?: boolean } = {}) => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video, audio });
+
+      console.log('stream', stream);
 
       // Установка всего стрима пользователя
       setStream(stream);
@@ -61,47 +62,40 @@ const Channels = () => {
   };
 
   // Останавливает стрим (аудио и видео), все дорожки
-  const stopMediaStream = (stream: MediaStream) => {
+  const handleStopMediaStream = (stream: MediaStream) => {
     if (stream) {
       stream.getTracks().forEach((value) => value.stop());
     }
   };
 
-  // Останавливает аудио стрим
-  const stopAudioStream = () => {
+  // Переключает аудио стрим
+  const handleSwitchAudioStream = (isAudio: boolean) => {
     if (audioStream) {
       audioStream.forEach((value) => {
-        value.enabled = false;
+        value.enabled = isAudio;
       });
     }
   };
 
-  // Включает аудио стрим
-  const enableAudioStream = () => {
-    if (audioStream) {
-      audioStream.forEach((value) => {
-        value.enabled = true;
-      });
-    }
-  };
-
-  // Останавливает аудио стрим
-  const stopVideoStream = () => {
+  // Переключает видео стрим
+  const handleSwitchVideoStream = (isVideo: boolean) => {
     if (videoStream) {
       videoStream.forEach((value) => {
-        value.enabled = false;
+        value.enabled = isVideo;
+        // value.stop(); // Отключает видеострим полностью (индикатор)
       });
     }
   };
 
-  // Включает аудио стрим
-  const enableVideoStream = () => {
-    if (videoStream) {
-      videoStream.forEach((value) => {
-        value.enabled = true;
-      });
-    }
-  };
+  // Переключает микрофон пользователя
+  useEffect(() => {
+    handleSwitchAudioStream(isAudio);
+  }, [isAudio]);
+
+  // Переключает видео пользователя
+  useEffect(() => {
+    handleSwitchVideoStream(isVideo);
+  }, [isVideo]);
 
   useEffect(() => {
     // TODO: Добавить включение видео и аудио
@@ -164,6 +158,8 @@ const Channels = () => {
       trickle: false,
       stream,
     });
+
+    console.log('peer', peer);
 
     // Обработка события сигнала
     // TODO: При клике передавать id пользователя которому звоним вместо (user-id-to-call)
@@ -407,39 +403,69 @@ const Channels = () => {
 
                       // Отключает мой стрим
                       if (stream) {
-                        stopMediaStream(stream);
+                        handleStopMediaStream(stream);
                       }
                     }}
                   >
                     Назад
                   </Link>
-                  <Button
-                    onClick={() => {
-                      stopAudioStream();
-                    }}
-                  >
-                    Отключить микрофон
+                  <Button onClick={() => setIsAudio(!isAudio)}>
+                    {isAudio ? (
+                      <Box
+                        sx={{
+                          display: 'grid',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          padding: '8px',
+                          borderRadius: '50%',
+                          backgroundColor: theme.palette.common.white,
+                        }}
+                      >
+                        <Mic />
+                      </Box>
+                    ) : (
+                      <Box
+                        sx={{
+                          display: 'grid',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          padding: '8px',
+                          borderRadius: '50%',
+                          backgroundColor: theme.palette.common.white,
+                        }}
+                      >
+                        <MicOff />
+                      </Box>
+                    )}
                   </Button>
-                  <Button
-                    onClick={() => {
-                      enableAudioStream();
-                    }}
-                  >
-                    Включить микрофон
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      stopVideoStream();
-                    }}
-                  >
-                    Отключить видео
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      enableVideoStream();
-                    }}
-                  >
-                    Включить видео
+                  <Button onClick={() => setIsVideo(!isVideo)}>
+                    {isVideo ? (
+                      <Box
+                        sx={{
+                          display: 'grid',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          padding: '8px',
+                          borderRadius: '50%',
+                          backgroundColor: theme.palette.common.white,
+                        }}
+                      >
+                        <Videocam />
+                      </Box>
+                    ) : (
+                      <Box
+                        sx={{
+                          display: 'grid',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          padding: '8px',
+                          borderRadius: '50%',
+                          backgroundColor: theme.palette.common.white,
+                        }}
+                      >
+                        <VideocamOff />
+                      </Box>
+                    )}
                   </Button>
                 </Typography>
               </Box>
@@ -459,7 +485,7 @@ const Channels = () => {
             {/* Мое видео */}
             <Box sx={{ position: 'relative', width: '300px', borderRadius: '32px' }}>
               <video style={{ width: '300px',
-    borderRadius: '32px' }} ref={myVideoStream} autoPlay playsInline />
+    borderRadius: '32px' }} ref={myVideoStream} autoPlay muted playsInline />
             </Box>
             {/* Видео пользователя которому звонят */}
             {isCallAccepted && !isCallCanceled && (
