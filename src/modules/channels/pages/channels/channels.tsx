@@ -9,6 +9,7 @@ import { userFriendsSelector, userIdSelector } from '../../../user/store/selecto
 import Peer, { Instance, SignalData } from 'simple-peer';
 import { User } from '../../../../core/components/user';
 import { useNavigate } from 'react-router-dom';
+import { Navigation } from '../../../../core/components/navigation';
 
 const Channels = () => {
   const navigate = useNavigate();
@@ -137,7 +138,8 @@ const Channels = () => {
     <Box
       sx={{
         display: 'grid',
-        gridTemplateColumns: '300px 900px',
+        gridTemplateColumns: 'max-content 1fr',
+        columnGap: '16px',
         width: '100%',
         height: '100%',
         alignContent: 'start',
@@ -146,147 +148,161 @@ const Channels = () => {
         left: '0',
       }}
     >
-      <Box sx={{ display: 'grid', padding: '16px' }}>
-        <Box sx={{ display: 'grid', rowGap: '8px' }}>
-          <Typography variant="h5">Общие (текст):</Typography>
-          <Button
-            sx={{ backgroundColor: theme.palette.common.white }}
-            variant="outlined"
-            color="primary"
-            onClick={() => {
-              // TODO: Добавить модель комнаты и сообщений
-              socket.emit('on-channel-join', 'id-1', userId);
-            }}
-          >
-            Чат 1
-          </Button>
-          <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
-            Чат 2
-          </Button>
-          <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
-            Чат 3
-          </Button>
-        </Box>
-        <Box sx={{ display: 'grid', rowGap: '8px' }}>
-          <Typography variant="h5">Аудио (аудио и видео):</Typography>
-          <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
-            Чат 1
-          </Button>
-          <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
-            Чат 2
-          </Button>
-          <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
-            Чат 3
-          </Button>
-        </Box>
-        <Box sx={{ display: 'grid', rowGap: '8px', position: 'relative' }}>
-          <Box sx={{ display: 'grid', rowGap: '8px', position: 'absolute', padding: '16px 0px' }}>
-            <Typography variant="h5">Все друзья:</Typography>
-            {friends?.map((friend) => {
-              return (
-                <Box
-                  key={friend._id}
-                  sx={{
-                    display: 'inline-grid',
-                    gridTemplateColumns: 'repeat(3, max-content)',
-                    columnGap: '16px',
-                    backgroundColor: theme.palette.common.white,
-                    borderRadius: '8px',
-                    border: `1px solid ${theme.palette.grey[300]}`,
-                    padding: '8px 16px',
-                  }}
-                >
-                  <User email={friend.email} name={friend.name} status={friend.status} />
-                  {/* Когда пользователь звонит и нет входящего вызова */}
-                  {isCall && !isIncomingCall && !isCallAccepted && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        setIsCall(false);
-                        setIsCallCanceled(true);
+      <Navigation />
 
-                        socket.emit('on-call-end', friend._id);
-                      }}
-                    >
-                      Отклонить звонок
-                    </Button>
-                  )}
-                  {/* Когда пользователь не звонит и нет входящего вызова */}
-                  {!isCall && !isIncomingCall && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        handleCallUser(friend._id);
-                      }}
-                    >
-                      Позвонить пользователю
-                    </Button>
-                  )}
-                  {/* Когда пользователю звонят */}
-                  {isIncomingCall && !isCallAccepted && (
-                    <Button variant="contained" color="primary" onClick={handleCallAnswer}>
-                      Принять вызов
-                    </Button>
-                  )}
-                  {/* Когда пользователю звонят и вызов еще не принят */}
-                  {isIncomingCall && !isCallAccepted && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        socket.emit('on-call-end', friend._id);
-                      }}
-                    >
-                      Отклонить вызов
-                    </Button>
-                  )}
-                  {/* Когда вызов принят и еще не отменен */}
-                  {isCallAccepted && !isCallCanceled && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        socket.emit('on-call-end', friend._id);
-                      }}
-                    >
-                      Закончить вызов
-                    </Button>
-                  )}
-                </Box>
-              );
-            })}
-            <Typography variant="h5">
-              <Link sx={{ cursor: 'pointer' }} underline="hover" onClick={() => navigate(-1)}>
-                Назад
-              </Link>
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
       <Box
         sx={{
           display: 'grid',
-          backgroundColor: theme.palette.common.white,
+          gridTemplateColumns: 'max-content 1fr',
           width: '100%',
-          margin: '16px',
-          borderRadius: '16px',
+          height: '100%',
+          alignContent: 'start',
         }}
       >
-        <Box sx={{ display: 'grid', gridAutoFlow: 'column', alignItems: 'center', gap: '32px', padding: '32px' }}>
-          {/* Мое видео */}
-          <Box sx={{ position: 'relative', width: '300px', borderRadius: '32px' }}>
-            <video style={{ width: '300px',
-    borderRadius: '32px' }} ref={myVideoStream} autoPlay muted playsInline />
+        <Box>
+          <Box sx={{ display: 'grid', padding: '16px' }}>
+            <Box sx={{ display: 'grid', rowGap: '8px' }}>
+              <Typography variant="h5">Общие (текст):</Typography>
+              <Button
+                sx={{ backgroundColor: theme.palette.common.white }}
+                variant="outlined"
+                color="primary"
+                onClick={() => {
+                  // TODO: Добавить модель комнаты и сообщений
+                  socket.emit('on-channel-join', 'id-1', userId);
+                }}
+              >
+                Чат 1
+              </Button>
+              <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
+                Чат 2
+              </Button>
+              <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
+                Чат 3
+              </Button>
+            </Box>
+            <Box sx={{ display: 'grid', rowGap: '8px' }}>
+              <Typography variant="h5">Аудио (аудио и видео):</Typography>
+              <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
+                Чат 1
+              </Button>
+              <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
+                Чат 2
+              </Button>
+              <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
+                Чат 3
+              </Button>
+            </Box>
+            <Box sx={{ display: 'grid', rowGap: '8px', position: 'relative' }}>
+              <Box sx={{ display: 'grid', rowGap: '8px', position: 'absolute', padding: '16px 0px' }}>
+                <Typography variant="h5">Все друзья:</Typography>
+                {friends?.map((friend) => {
+                  return (
+                    <Box
+                      key={friend._id}
+                      sx={{
+                        display: 'inline-grid',
+                        gridTemplateColumns: 'repeat(3, max-content)',
+                        columnGap: '16px',
+                        backgroundColor: theme.palette.common.white,
+                        borderRadius: '8px',
+                        border: `1px solid ${theme.palette.grey[300]}`,
+                        padding: '8px 16px',
+                      }}
+                    >
+                      <User email={friend.email} name={friend.name} status={friend.status} />
+                      {/* Когда пользователь звонит и нет входящего вызова */}
+                      {isCall && !isIncomingCall && !isCallAccepted && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            setIsCall(false);
+                            setIsCallCanceled(true);
+
+                            socket.emit('on-call-end', friend._id);
+                          }}
+                        >
+                          Отклонить звонок
+                        </Button>
+                      )}
+                      {/* Когда пользователь не звонит и нет входящего вызова */}
+                      {!isCall && !isIncomingCall && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            handleCallUser(friend._id);
+                          }}
+                        >
+                          Позвонить пользователю
+                        </Button>
+                      )}
+                      {/* Когда пользователю звонят */}
+                      {isIncomingCall && !isCallAccepted && (
+                        <Button variant="contained" color="primary" onClick={handleCallAnswer}>
+                          Принять вызов
+                        </Button>
+                      )}
+                      {/* Когда пользователю звонят и вызов еще не принят */}
+                      {isIncomingCall && !isCallAccepted && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            socket.emit('on-call-end', friend._id);
+                          }}
+                        >
+                          Отклонить вызов
+                        </Button>
+                      )}
+                      {/* Когда вызов принят и еще не отменен */}
+                      {isCallAccepted && !isCallCanceled && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            socket.emit('on-call-end', friend._id);
+                          }}
+                        >
+                          Закончить вызов
+                        </Button>
+                      )}
+                    </Box>
+                  );
+                })}
+                <Typography variant="h5">
+                  <Link sx={{ cursor: 'pointer' }} underline="hover" onClick={() => navigate(-1)}>
+                    Назад
+                  </Link>
+                </Typography>
+              </Box>
+            </Box>
           </Box>
-          {/* Видео пользователя которому звонят */}
-          {isCallAccepted && !isCallCanceled && (
+        </Box>
+        <Box
+          sx={{
+            display: 'grid',
+            backgroundColor: theme.palette.common.white,
+            width: '100%',
+            margin: '16px',
+            borderRadius: '16px',
+          }}
+        >
+          <Box sx={{ display: 'grid', gridAutoFlow: 'column', alignItems: 'center', gap: '32px', padding: '32px' }}>
+            {/* Мое видео */}
             <Box sx={{ position: 'relative', width: '300px', borderRadius: '32px' }}>
               <video style={{ width: '300px',
-    borderRadius: '32px' }} ref={userVideoStream} autoPlay playsInline />
+    borderRadius: '32px' }} ref={myVideoStream} autoPlay muted playsInline />
             </Box>
-          )}
+            {/* Видео пользователя которому звонят */}
+            {isCallAccepted && !isCallCanceled && (
+              <Box sx={{ position: 'relative', width: '300px', borderRadius: '32px' }}>
+                <video style={{ width: '300px',
+    borderRadius: '32px' }} ref={userVideoStream} autoPlay playsInline />
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
     </Box>
