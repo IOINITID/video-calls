@@ -13,6 +13,7 @@ import { getFriends } from '../../services/get-friends';
 import { getInvites } from '../../services/get-invites';
 import { getApprovals } from '../../services/get-approvals';
 import { API_URL } from '../../constants';
+import { App } from '../../components/app';
 
 export const socket = io(API_URL, {
   transports: ['websocket'],
@@ -105,7 +106,7 @@ const AppContainer = () => {
     <Box
       sx={{ display: 'grid', alignItems: 'center', justifyContent: 'center', height: '100vh', position: 'relative' }}
     >
-      {isAuthorizated ? <PrivateRoutes /> : <PublicRoutes />}
+      <App isAuthorizated={isAuthorizated} />
     </Box>
   );
 };
