@@ -9,7 +9,6 @@ import { HashRouter } from 'react-router-dom';
 
 const Root = () => {
   injectGlobal`
-
     *,
     *::before,
     *::after {

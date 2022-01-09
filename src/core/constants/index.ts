@@ -9,4 +9,7 @@ export const Retina = {
   Dpi: 144,
 };
 
-export const APPLICATION_URL = 'https://ioinitid-video-calls-server.herokuapp.com';
+export const API_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8080'
+    : 'https://ioinitid-video-calls-server.herokuapp.com';

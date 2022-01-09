@@ -12,12 +12,9 @@ import { getUsers } from '../../services/get-users';
 import { getFriends } from '../../services/get-friends';
 import { getInvites } from '../../services/get-invites';
 import { getApprovals } from '../../services/get-approvals';
-import { APPLICATION_URL } from '../../constants';
+import { API_URL } from '../../constants';
 
-// https://ioinitid-video-calls-server.herokuapp.com
-// http://localhost:8080
-
-export const socket = io(APPLICATION_URL, {
+export const socket = io(API_URL, {
   transports: ['websocket'],
 });
 
@@ -28,7 +25,7 @@ const AppContainer = () => {
 
   const checkAuth = async () => {
     try {
-      const response = await axios.get<AuthorizationResponse>(`${APPLICATION_URL}/api/refresh`, {
+      const response = await axios.get<AuthorizationResponse>(`${API_URL}/api/refresh`, {
         withCredentials: true,
       });
 

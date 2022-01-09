@@ -19,6 +19,10 @@ const Channels = () => {
   const [stream, setStream] = useState<MediaStream>(); // Мой стрим
   const [signal, setSignal] = useState<SignalData | string>(''); // Сигнал от пользователя, который звонит
   const [userIdThatCall, setUserIdThatCall] = useState(''); // Id пользователя, который звонит
+  const [isCall, setIsCall] = useState(false); // Звоню я или нет
+  const [isIncomingCall, setIsIncomingCall] = useState(false); // Звонят мне или нет
+  const [isCallAccepted, setIsCallAccepted] = useState(false); // Вызов принят или нет
+  const [isCallCanceled, setIsCallCanceled] = useState(false); // Вызов отменен или нет
 
   const myVideoStream = useRef<HTMLVideoElement | null>(null); // Мое видео
   const userVideoStream = useRef<HTMLVideoElement | null>(null); // Видео пользователя с кем звонок
@@ -46,10 +50,28 @@ const Channels = () => {
     socket.on('on-call', (signal, user) => {
       setSignal(signal);
       setUserIdThatCall(user);
+
+      setIsIncomingCall(true);
+    });
+
+    socket.on('on-call-end', () => {
+      // TODO: Доделать логику отображения при принятии вызова и его отмене
+      setIsCall(false);
+      setIsCallCanceled(false);
+      setIsCallAccepted(false);
+      setIsIncomingCall(false);
+
+      if (userVideoStream.current) {
+        userVideoStream.current.srcObject = null;
+      }
+
+      connectionRef.current = null;
     });
   }, []);
 
   const handleCallUser = (userIdToCall: string) => {
+    setIsCall(true);
+
     // Создается инстанс peer соединения
     const peer = new Peer({
       initiator: true,
@@ -72,6 +94,8 @@ const Channels = () => {
 
     // Обработка события когда пользователь которому звонят приян вызов
     socket.on('on-call-answer', (data: SignalData) => {
+      setIsCallAccepted(true);
+
       // Установка сигнала
       peer.signal(data);
     });
@@ -81,6 +105,9 @@ const Channels = () => {
   };
 
   const handleCallAnswer = () => {
+    setIsCall(false);
+    setIsCallAccepted(true);
+
     const peer = new Peer({
       initiator: false,
       trickle: false,
@@ -170,18 +197,63 @@ const Channels = () => {
                   }}
                 >
                   <User email={friend.email} name={friend.name} status={friend.status} />
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      handleCallUser(friend._id);
-                    }}
-                  >
-                    Позвонить
-                  </Button>
-                  <Button variant="contained" color="primary" onClick={handleCallAnswer}>
-                    Принять
-                  </Button>
+                  {/* Когда пользователь звонит и нет входящего вызова */}
+                  {isCall && !isIncomingCall && !isCallAccepted && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        setIsCall(false);
+                        setIsCallCanceled(true);
+
+                        socket.emit('on-call-end', friend._id);
+                      }}
+                    >
+                      Отклонить звонок
+                    </Button>
+                  )}
+                  {/* Когда пользователь не звонит и нет входящего вызова */}
+                  {!isCall && !isIncomingCall && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        handleCallUser(friend._id);
+                      }}
+                    >
+                      Позвонить пользователю
+                    </Button>
+                  )}
+                  {/* Когда пользователю звонят */}
+                  {isIncomingCall && !isCallAccepted && (
+                    <Button variant="contained" color="primary" onClick={handleCallAnswer}>
+                      Принять вызов
+                    </Button>
+                  )}
+                  {/* Когда пользователю звонят и вызов еще не принят */}
+                  {isIncomingCall && !isCallAccepted && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        socket.emit('on-call-end', friend._id);
+                      }}
+                    >
+                      Отклонить вызов
+                    </Button>
+                  )}
+                  {/* Когда вызов принят и еще не отменен */}
+                  {isCallAccepted && !isCallCanceled && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        socket.emit('on-call-end', friend._id);
+                      }}
+                    >
+                      Закончить вызов
+                    </Button>
+                  )}
                 </Box>
               );
             })}
@@ -203,14 +275,18 @@ const Channels = () => {
         }}
       >
         <Box sx={{ display: 'grid', gridAutoFlow: 'column', alignItems: 'center', gap: '32px', padding: '32px' }}>
+          {/* Мое видео */}
           <Box sx={{ position: 'relative', width: '300px', borderRadius: '32px' }}>
             <video style={{ width: '300px',
     borderRadius: '32px' }} ref={myVideoStream} autoPlay muted playsInline />
           </Box>
-          <Box sx={{ position: 'relative', width: '300px', borderRadius: '32px' }}>
-            <video style={{ width: '300px',
+          {/* Видео пользователя которому звонят */}
+          {isCallAccepted && !isCallCanceled && (
+            <Box sx={{ position: 'relative', width: '300px', borderRadius: '32px' }}>
+              <video style={{ width: '300px',
     borderRadius: '32px' }} ref={userVideoStream} autoPlay playsInline />
-          </Box>
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>
