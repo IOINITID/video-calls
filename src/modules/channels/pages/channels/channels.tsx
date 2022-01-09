@@ -26,6 +26,9 @@ const Channels = () => {
   const [isCallAccepted, setIsCallAccepted] = useState(false); // Вызов принят или нет
   const [isCallCanceled, setIsCallCanceled] = useState(false); // Вызов отменен или нет
 
+  const [audioStream, setAudioStream] = useState<MediaStreamTrack[] | null>(null); // Аудио дорожка пользователя
+  const [videoStream, setVideoStream] = useState<MediaStreamTrack[] | null>(null); // Видео дорожка пользователя
+
   const myVideoStream = useRef<HTMLVideoElement | null>(null); // Мое видео
   const userVideoStream = useRef<HTMLVideoElement | null>(null); // Видео пользователя с кем звонок
 
@@ -35,17 +38,68 @@ const Channels = () => {
 
   const connectionRef = useRef<Instance | null>(null); // Ссылка соединения
 
+  // Получает медиа стрим (аудио и видео)
   const getMediaStream = async ({ video = true, audio = true }: { video?: boolean; audio?: boolean } = {}) => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video, audio });
 
+      // Установка всего стрима пользователя
       setStream(stream);
+
+      // Установка аудио стрима пользователя
+      setAudioStream(stream.getAudioTracks());
+
+      // Установка видеострима пользователя
+      setVideoStream(stream.getVideoTracks());
 
       if (myVideoStream.current) {
         myVideoStream.current.srcObject = stream;
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  // Останавливает стрим (аудио и видео), все дорожки
+  const stopMediaStream = (stream: MediaStream) => {
+    if (stream) {
+      stream.getTracks().forEach((value) => value.stop());
+    }
+  };
+
+  // Останавливает аудио стрим
+  const stopAudioStream = () => {
+    if (audioStream) {
+      audioStream.forEach((value) => {
+        value.enabled = false;
+      });
+    }
+  };
+
+  // Включает аудио стрим
+  const enableAudioStream = () => {
+    if (audioStream) {
+      audioStream.forEach((value) => {
+        value.enabled = true;
+      });
+    }
+  };
+
+  // Останавливает аудио стрим
+  const stopVideoStream = () => {
+    if (videoStream) {
+      videoStream.forEach((value) => {
+        value.enabled = false;
+      });
+    }
+  };
+
+  // Включает аудио стрим
+  const enableVideoStream = () => {
+    if (videoStream) {
+      videoStream.forEach((value) => {
+        value.enabled = true;
+      });
     }
   };
 
@@ -345,9 +399,48 @@ const Channels = () => {
                   );
                 })}
                 <Typography variant="h5">
-                  <Link sx={{ cursor: 'pointer' }} underline="hover" onClick={() => navigate(-1)}>
+                  <Link
+                    sx={{ cursor: 'pointer' }}
+                    underline="hover"
+                    onClick={() => {
+                      navigate(-1);
+
+                      // Отключает мой стрим
+                      if (stream) {
+                        stopMediaStream(stream);
+                      }
+                    }}
+                  >
                     Назад
                   </Link>
+                  <Button
+                    onClick={() => {
+                      stopAudioStream();
+                    }}
+                  >
+                    Отключить микрофон
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      enableAudioStream();
+                    }}
+                  >
+                    Включить микрофон
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      stopVideoStream();
+                    }}
+                  >
+                    Отключить видео
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      enableVideoStream();
+                    }}
+                  >
+                    Включить видео
+                  </Button>
                 </Typography>
               </Box>
             </Box>
@@ -366,7 +459,7 @@ const Channels = () => {
             {/* Мое видео */}
             <Box sx={{ position: 'relative', width: '300px', borderRadius: '32px' }}>
               <video style={{ width: '300px',
-    borderRadius: '32px' }} ref={myVideoStream} autoPlay muted playsInline />
+    borderRadius: '32px' }} ref={myVideoStream} autoPlay playsInline />
             </Box>
             {/* Видео пользователя которому звонят */}
             {isCallAccepted && !isCallCanceled && (
