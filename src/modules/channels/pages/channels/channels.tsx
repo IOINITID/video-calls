@@ -10,6 +10,7 @@ import Peer, { Instance, SignalData } from 'simple-peer';
 import { User } from '../../../../core/components/user';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from '../../../../core/components/navigation';
+import notificationCallSound from '../../../../core/assets/notication-call-sound.mp3';
 
 const Channels = () => {
   const navigate = useNavigate();
@@ -27,6 +28,10 @@ const Channels = () => {
 
   const myVideoStream = useRef<HTMLVideoElement | null>(null); // Мое видео
   const userVideoStream = useRef<HTMLVideoElement | null>(null); // Видео пользователя с кем звонок
+
+  const audioInterval = useRef<ReturnType<typeof setTimeout> | null>(null); // Ссылка на аудио интервал при входящем звонке
+
+  const audioCallTheme = useRef<HTMLAudioElement | null>(null); // Аудио пользователя
 
   const connectionRef = useRef<Instance | null>(null); // Ссылка соединения
 
@@ -53,6 +58,20 @@ const Channels = () => {
       setUserIdThatCall(user);
 
       setIsIncomingCall(true);
+
+      // Включает звук при входящем вызове
+      if (audioCallTheme.current) {
+        audioCallTheme.current.src = notificationCallSound;
+        audioCallTheme.current.play();
+      }
+
+      // Включает интервал повтора аудио через 2 секунды
+      audioInterval.current = setInterval(() => {
+        if (audioCallTheme.current) {
+          audioCallTheme.current.src = notificationCallSound;
+          audioCallTheme.current.play();
+        }
+      }, 2000);
     });
 
     socket.on('on-call-end', () => {
@@ -64,6 +83,18 @@ const Channels = () => {
 
       if (userVideoStream.current) {
         userVideoStream.current.srcObject = null;
+      }
+
+      // Выключает звук при вызове
+      if (audioCallTheme.current) {
+        audioCallTheme.current.src = '';
+        audioCallTheme.current.pause();
+        audioCallTheme.current.load();
+      }
+
+      // Очищает повтор аудио при принятии входящего вызова
+      if (audioInterval.current) {
+        clearInterval(audioInterval.current);
       }
 
       connectionRef.current = null;
@@ -99,10 +130,37 @@ const Channels = () => {
 
       // Установка сигнала
       peer.signal(data);
+
+      // Выключает звук при вызове
+      if (audioCallTheme.current) {
+        audioCallTheme.current.src = '';
+        audioCallTheme.current.pause();
+        audioCallTheme.current.load();
+      }
+
+      // Очищает повтор аудио при принятии входящего вызова
+      if (audioInterval.current) {
+        clearInterval(audioInterval.current);
+      }
     });
 
     // Установка ооединения
     connectionRef.current = peer;
+
+    // Включает звук при вызове
+    if (audioCallTheme.current) {
+      audioCallTheme.current.src = notificationCallSound;
+      audioCallTheme.current.play();
+    }
+
+    // Включает интервал повтора аудио через 2 секунды
+
+    audioInterval.current = setInterval(() => {
+      if (audioCallTheme.current) {
+        audioCallTheme.current.src = notificationCallSound;
+        audioCallTheme.current.play();
+      }
+    }, 2000);
   };
 
   const handleCallAnswer = () => {
@@ -132,6 +190,18 @@ const Channels = () => {
 
     // Установка ооединения
     connectionRef.current = peer;
+
+    // Выключает звук при вызове
+    if (audioCallTheme.current) {
+      audioCallTheme.current.src = '';
+      audioCallTheme.current.pause();
+      audioCallTheme.current.load();
+    }
+
+    // Очищает повтор аудио при принятии входящего вызова
+    if (audioInterval.current) {
+      clearInterval(audioInterval.current);
+    }
   };
 
   return (
@@ -148,6 +218,9 @@ const Channels = () => {
         left: '0',
       }}
     >
+      {/* Музыка при звонке или входящем вызове */}
+      <audio ref={audioCallTheme} />
+
       <Navigation />
 
       <Box
