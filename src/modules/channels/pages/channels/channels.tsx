@@ -306,7 +306,7 @@ const Channels = () => {
                 color="primary"
                 onClick={() => {
                   // TODO: Добавить модель комнаты и сообщений
-                  socket.emit('on-channel-join', 'id-1', userId);
+                  socket.emit('on-channel-join', 'channel-text-1', userId);
                 }}
               >
                 Чат 1
