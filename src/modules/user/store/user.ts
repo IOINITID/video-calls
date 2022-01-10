@@ -15,6 +15,10 @@ const initialState: UserState = {
   friends: [],
   invites: [],
   approvals: [],
+  isCall: false,
+  isIncomingCall: false,
+  isCallAccepted: false,
+  isCallCanceled: false,
 };
 
 export const userSlice = createSlice({
@@ -40,6 +44,18 @@ export const userSlice = createSlice({
       state.isAuthorizated = false;
       localStorage.removeItem('token');
     },
+    setIsCall: (state: UserState, { payload }: PayloadAction<boolean>) => {
+      state.isCall = payload;
+    },
+    setIsIncomingCall: (state: UserState, { payload }: PayloadAction<boolean>) => {
+      state.isIncomingCall = payload;
+    },
+    setIsCallAccepted: (state: UserState, { payload }: PayloadAction<boolean>) => {
+      state.isCallAccepted = payload;
+    },
+    setIsCallCanceled: (state: UserState, { payload }: PayloadAction<boolean>) => {
+      state.isCallCanceled = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getUsers.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
@@ -57,6 +73,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setLogin, setLogout } = userSlice.actions;
+export const { setLogin, setLogout, setIsCall, setIsIncomingCall, setIsCallAccepted, setIsCallCanceled } =
+  userSlice.actions;
 
 export const userReducer = userSlice.reducer;

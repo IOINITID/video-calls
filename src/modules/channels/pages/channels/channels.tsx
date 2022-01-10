@@ -4,28 +4,42 @@ import { Box, Typography, Link } from '@mui/material';
 import { Button } from '../../../../core/components/button';
 import { theme } from '../../../../core/theme';
 import { socket } from '../../../../core/containers/app-container/app-container';
-import { useSelector } from 'react-redux';
-import { userFriendsSelector, userIdSelector } from '../../../user/store/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  userFriendsSelector,
+  userIdSelector,
+  userIsCallAcceptedSelector,
+  userIsCallCanceledSelector,
+  userIsCallSelector,
+  userIsIncomingCallSelector,
+} from '../../../user/store/selectors';
 import Peer, { Instance, SignalData } from 'simple-peer';
 import { User } from '../../../../core/components/user';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from '../../../../core/components/navigation';
 import notificationCallSound from '../../../../core/assets/notication-call-sound.mp3';
 import { Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-material';
+import { setIsCall, setIsCallAccepted, setIsCallCanceled, setIsIncomingCall } from '../../../user/store/user';
 
 const Channels = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const userId = useSelector(userIdSelector);
   const friends = useSelector(userFriendsSelector);
 
+  const isCall = useSelector(userIsCallSelector); // Звоню я или нет
+  const isIncomingCall = useSelector(userIsIncomingCallSelector); // Звонят мне или нет
+  const isCallAccepted = useSelector(userIsCallAcceptedSelector); // Вызов принят или нет
+  const isCallCanceled = useSelector(userIsCallCanceledSelector); // Вызов отменен или нет
+
   const [stream, setStream] = useState<MediaStream>(); // Мой стрим
   const [signal, setSignal] = useState<SignalData | string>(''); // Сигнал от пользователя, который звонит
   const [userIdThatCall, setUserIdThatCall] = useState(''); // Id пользователя, который звонит
-  const [isCall, setIsCall] = useState(false); // Звоню я или нет
-  const [isIncomingCall, setIsIncomingCall] = useState(false); // Звонят мне или нет
-  const [isCallAccepted, setIsCallAccepted] = useState(false); // Вызов принят или нет
-  const [isCallCanceled, setIsCallCanceled] = useState(false); // Вызов отменен или нет
+  // const [isCall, setIsCall] = useState(false); // Звоню я или нет
+  // const [isIncomingCall, setIsIncomingCall] = useState(false); // Звонят мне или нет
+  // const [isCallAccepted, setIsCallAccepted] = useState(false); // Вызов принят или нет
+  // const [isCallCanceled, setIsCallCanceled] = useState(false); // Вызов отменен или нет
   const [audioStream, setAudioStream] = useState<MediaStreamTrack[] | null>(null); // Аудио дорожка пользователя
   const [videoStream, setVideoStream] = useState<MediaStreamTrack[] | null>(null); // Видео дорожка пользователя
   const [isAudio, setIsAudio] = useState(true); // Включен ли мой звуковой поток
@@ -105,7 +119,7 @@ const Channels = () => {
       setSignal(signal);
       setUserIdThatCall(user);
 
-      setIsIncomingCall(true);
+      dispatch(setIsIncomingCall(true));
 
       // Включает звук при входящем вызове
       if (audioCallTheme.current) {
@@ -124,10 +138,10 @@ const Channels = () => {
 
     socket.on('on-call-end', () => {
       // TODO: Доделать логику отображения при принятии вызова и его отмене
-      setIsCall(false);
-      setIsCallCanceled(false);
-      setIsCallAccepted(false);
-      setIsIncomingCall(false);
+      dispatch(setIsCall(false));
+      dispatch(setIsIncomingCall(false));
+      dispatch(setIsCallAccepted(false));
+      dispatch(setIsCallCanceled(false));
 
       if (userVideoStream.current) {
         userVideoStream.current.srcObject = null;
@@ -150,7 +164,7 @@ const Channels = () => {
   }, []);
 
   const handleCallUser = (userIdToCall: string) => {
-    setIsCall(true);
+    dispatch(setIsCall(true));
 
     // Создается инстанс peer соединения
     const peer = new Peer({
@@ -176,7 +190,7 @@ const Channels = () => {
 
     // Обработка события когда пользователь которому звонят приян вызов
     socket.on('on-call-answer', (data: SignalData) => {
-      setIsCallAccepted(true);
+      dispatch(setIsCallAccepted(true));
 
       // Установка сигнала
       peer.signal(data);
@@ -214,7 +228,7 @@ const Channels = () => {
   };
 
   const handleCallAnswer = () => {
-    setIsCall(false);
+    dispatch(setIsCall(false));
     setIsCallAccepted(true);
 
     const peer = new Peer({
@@ -340,7 +354,7 @@ const Channels = () => {
                           variant="contained"
                           color="primary"
                           onClick={() => {
-                            setIsCall(false);
+                            dispatch(setIsCall(false));
                             setIsCallCanceled(true);
 
                             socket.emit('on-call-end', friend._id);

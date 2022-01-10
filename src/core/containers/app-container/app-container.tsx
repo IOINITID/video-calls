@@ -5,9 +5,7 @@ import { userIdSelector, userIsAuthorizatedSelector } from '../../../modules/use
 import { setLogin } from '../../../modules/user/store/user';
 import { AuthorizationResponse } from '../../types';
 import { Box } from '@mui/material';
-import { PublicRoutes } from '../../routes/public';
 import { io } from 'socket.io-client';
-import { PrivateRoutes } from '../../routes/private';
 import { getUsers } from '../../services/get-users';
 import { getFriends } from '../../services/get-friends';
 import { getInvites } from '../../services/get-invites';
@@ -107,6 +105,39 @@ const AppContainer = () => {
       sx={{ display: 'grid', alignItems: 'center', justifyContent: 'center', height: '100vh', position: 'relative' }}
     >
       <App isAuthorizated={isAuthorizated} />
+
+      {/* Модальное окно при входящем вызове */}
+      {/* TODO: Доделать вызов во всем приложении а не только на странице каналы */}
+      {/* <Modal open={isIncomingCall}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridAutoFlow: 'column',
+            columnGap: '16px',
+            padding: '32px',
+            backgroundColor: theme.palette.common.white,
+          }}
+        >
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => {
+              navigate('/channels');
+            }}
+          >
+            Принять
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              navigate('/');
+            }}
+          >
+            Отклонить
+          </Button>
+        </Box>
+      </Modal> */}
     </Box>
   );
 };

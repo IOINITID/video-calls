@@ -8,6 +8,10 @@ export type UserState = {
   friends: UserResponse[];
   invites: UserResponse[];
   approvals: UserResponse[];
+  isCall: boolean;
+  isIncomingCall: boolean;
+  isCallAccepted: boolean;
+  isCallCanceled: boolean;
 };
 
 export type UserResponse = {

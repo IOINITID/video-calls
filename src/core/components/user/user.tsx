@@ -16,7 +16,10 @@ const User = ({ name, status, email }: { name: string; status: string; email: st
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         color={status === 'online' ? 'success' : 'error'}
       >
-        <Avatar sx={{ backgroundColor: colors.deepPurple[500] }}>{firstName[0] + lastName[0]}</Avatar>
+        <Avatar sx={{ backgroundColor: colors.deepPurple[500] }}>
+          {firstName && firstName[0]}
+          {lastName && lastName[0]}
+        </Avatar>
       </Badge>
       <Typography>{email}</Typography>
     </Box>

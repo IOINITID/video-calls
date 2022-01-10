@@ -9,3 +9,7 @@ export const userFriendsSelector = (state: RootState) => state.user.friends;
 export const userInvitesSelector = (state: RootState) => state.user.invites;
 export const userApprovalsSelector = (state: RootState) => state.user.approvals;
 export const userNameSelector = (state: RootState) => state.user.name;
+export const userIsCallSelector = (state: RootState) => state.user.isCall;
+export const userIsIncomingCallSelector = (state: RootState) => state.user.isIncomingCall;
+export const userIsCallAcceptedSelector = (state: RootState) => state.user.isCallAccepted;
+export const userIsCallCanceledSelector = (state: RootState) => state.user.isCallCanceled;
