@@ -54,7 +54,7 @@ const Channels = () => {
   const [isVideo, setIsVideo] = useState(true); // Включен ли мой видеоs поток
   const [message, setMessage] = useState<string>(''); // Сообщение пользователя в чат
   const [channel, setChannel] = useState<string>('');
-  const [channelType, setChannelType] = useState<'text' | 'video' | null>('video'); // Тип канала в который вошел пользователь
+  const [channelType, setChannelType] = useState<'text' | 'video' | null>(null); // Тип канала в который вошел пользователь
 
   const myVideoStream = useRef<HTMLVideoElement | null>(null); // Мое видео
   const userVideoStream = useRef<HTMLVideoElement | null>(null); // Видео пользователя с кем звонок
@@ -119,6 +119,8 @@ const Channels = () => {
 
       // ON-MESSAGE - событие отправки сообщения в канал
       socket.emit('on-message', channel, message, userId);
+
+      setMessage('');
     }
   };
 
@@ -274,7 +276,7 @@ const Channels = () => {
 
   const handleCallAnswer = () => {
     dispatch(setIsCall(false));
-    setIsCallAccepted(true);
+    dispatch(setIsCallAccepted(true));
 
     const peer = new Peer({
       initiator: false,
@@ -424,7 +426,7 @@ const Channels = () => {
                         </Button>
                       )}
                       {/* Когда пользователь не звонит и нет входящего вызова */}
-                      {!isCall && !isIncomingCall && (
+                      {!isCall && !isIncomingCall && friend.status === 'online' && (
                         <Button
                           variant="contained"
                           color="primary"
@@ -584,11 +586,16 @@ const Channels = () => {
               rowGap: '16px',
             }}
           >
-            <Box>
+            <Box sx={{ padding: '8px' }}>
               <Typography>Сообщения:</Typography>
-              <Box sx={{ overflow: 'scroll', height: '240px' }}>
+              <Box sx={{ display: 'grid', overflow: 'scroll', height: '240px' }}>
                 {channelMessages.map((message) => {
-                  return <Typography key={message._id}>{message.text}</Typography>;
+                  return (
+                    <Box key={message._id} sx={{ padding: '8px' }}>
+                      <User name={message.author.name} status={message.author.status} email={message.author.email} />
+                      <Typography>{message.text}</Typography>
+                    </Box>
+                  );
                 })}
               </Box>
             </Box>

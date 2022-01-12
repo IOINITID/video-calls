@@ -4,7 +4,7 @@ import { Avatar, colors, Badge, Box, Typography } from '@mui/material';
 const User = ({ name, status, email }: { name: string; status: string; email: string }) => {
   // alt, src
 
-  const [firstName, lastName] = name.split(' ');
+  const [firstName, lastName] = name ? name.split(' ') : '';
 
   return (
     <Box
@@ -21,7 +21,7 @@ const User = ({ name, status, email }: { name: string; status: string; email: st
           {lastName && lastName[0]}
         </Avatar>
       </Badge>
-      <Typography>{email}</Typography>
+      <Typography>{email && email}</Typography>
     </Box>
   );
 };
