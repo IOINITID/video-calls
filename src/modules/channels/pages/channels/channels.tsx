@@ -54,6 +54,7 @@ const Channels = () => {
   const [isVideo, setIsVideo] = useState(true); // Включен ли мой видеоs поток
   const [message, setMessage] = useState<string>(''); // Сообщение пользователя в чат
   const [channel, setChannel] = useState<string>('');
+  const [channelType, setChannelType] = useState<'text' | 'video' | null>('video'); // Тип канала в который вошел пользователь
 
   const myVideoStream = useRef<HTMLVideoElement | null>(null); // Мое видео
   const userVideoStream = useRef<HTMLVideoElement | null>(null); // Видео пользователя с кем звонок
@@ -357,6 +358,9 @@ const Channels = () => {
 
                       // Установка id канала
                       setChannel(channel._id);
+
+                      // Установка типа канала
+                      setChannelType(channel.type);
                     }}
                   >
                     {channel.title}
@@ -376,6 +380,9 @@ const Channels = () => {
                     onClick={() => {
                       // TODO: Добавить модель комнаты и сообщений
                       socket.emit('on-channel-join', channel._id, userId);
+
+                      // Установка типа канала
+                      setChannelType(channel.type);
                     }}
                   >
                     {channel.title}
@@ -548,7 +555,15 @@ const Channels = () => {
             borderRadius: '16px',
           }}
         >
-          <Box sx={{ display: 'none', gridAutoFlow: 'column', alignItems: 'center', gap: '32px', padding: '32px' }}>
+          <Box
+            sx={{
+              display: channelType === 'video' ? 'grid' : 'none',
+              gridAutoFlow: 'column',
+              alignItems: 'center',
+              gap: '32px',
+              padding: '32px',
+            }}
+          >
             {/* Мое видео */}
             <Box sx={{ position: 'relative', width: '300px', borderRadius: '32px' }}>
               <video style={{ width: '300px',
@@ -562,7 +577,13 @@ const Channels = () => {
               </Box>
             )}
           </Box>
-          <Box sx={{ display: 'grid', gridTemplateRows: '1fr max-content', rowGap: '16px' }}>
+          <Box
+            sx={{
+              display: channelType === 'text' ? 'grid' : 'none',
+              gridTemplateRows: '1fr max-content',
+              rowGap: '16px',
+            }}
+          >
             <Box>
               <Typography>Сообщения:</Typography>
               <Box sx={{ overflow: 'scroll', height: '240px' }}>
