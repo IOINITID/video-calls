@@ -49,7 +49,7 @@ const AllUsers = () => {
               padding: '8px 16px',
             }}
           >
-            <User name={user.name} status={user.status} email={user.email} />
+            <User id={user._id} name={user.name} status={user.status} email={user.email} />
             <Box sx={{ display: 'grid', gridAutoFlow: 'column', columnGap: '16px' }}>
               <Button
                 variant="contained"
@@ -97,7 +97,7 @@ const AllUsers = () => {
               padding: '8px 16px',
             }}
           >
-            <User name={friend.name} status={friend.status} email={friend.email} />
+            <User id={friend._id} name={friend.name} status={friend.status} email={friend.email} />
             <Box sx={{ display: 'grid', gridAutoFlow: 'column', columnGap: '16px' }}>
               <Button
                 variant="contained"
@@ -132,7 +132,7 @@ const AllUsers = () => {
               padding: '8px 16px',
             }}
           >
-            <User name={invite.name} status={invite.status} email={invite.email} />
+            <User id={invite._id} name={invite.name} status={invite.status} email={invite.email} />
             <Box sx={{ display: 'grid', gridAutoFlow: 'column', columnGap: '16px' }}>
               <Button
                 variant="contained"
@@ -181,7 +181,7 @@ const AllUsers = () => {
               padding: '8px 16px',
             }}
           >
-            <User name={approval.name} status={approval.status} email={approval.email} />
+            <User id={approval._id} name={approval.name} status={approval.status} email={approval.email} />
             <Box sx={{ display: 'grid', gridAutoFlow: 'column', alignItems: 'center', columnGap: '16px' }}>
               <Typography>Ожидает подтверждения</Typography>
               <Button

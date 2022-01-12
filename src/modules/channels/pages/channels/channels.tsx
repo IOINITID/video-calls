@@ -409,7 +409,7 @@ const Channels = () => {
                         padding: '8px 16px',
                       }}
                     >
-                      <User email={friend.email} name={friend.name} status={friend.status} />
+                      <User id={friend._id} email={friend.email} name={friend.name} status={friend.status} />
                       {/* Когда пользователь звонит и нет входящего вызова */}
                       {isCall && !isIncomingCall && !isCallAccepted && (
                         <Button
@@ -592,7 +592,12 @@ const Channels = () => {
                 {channelMessages.map((message) => {
                   return (
                     <Box key={message._id} sx={{ padding: '8px' }}>
-                      <User name={message.author.name} status={message.author.status} email={message.author.email} />
+                      <User
+                        id={message._id}
+                        name={message.author.name}
+                        status={message.author.status}
+                        email={message.author.email}
+                      />
                       <Typography>{message.text}</Typography>
                     </Box>
                   );

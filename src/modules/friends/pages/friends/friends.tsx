@@ -11,7 +11,7 @@ const Friends = () => {
         top: '0',
         left: '0',
         display: 'grid',
-        gridTemplateColumns: 'repeat(2, max-content)',
+        gridTemplateColumns: 'max-content 1fr',
         width: '100%',
         height: '100%',
         alignContent: 'start',

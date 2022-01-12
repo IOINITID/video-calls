@@ -1,15 +1,13 @@
 import { memo } from 'react';
 import { Avatar, colors, Badge, Box, Typography } from '@mui/material';
 
-const User = ({ name, status, email }: { name: string; status: string; email: string }) => {
+const User = ({ id, name, status }: { id: string; name: string; status: string; email: string }) => {
   // alt, src
 
   const [firstName, lastName] = name ? name.split(' ') : '';
 
   return (
-    <Box
-      sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, max-content)', columnGap: '8px', alignItems: 'center' }}
-    >
+    <Box sx={{ display: 'grid', gridTemplateColumns: 'max-content 1fr', columnGap: '8px', alignItems: 'center' }}>
       <Badge
         overlap="circular"
         variant="dot"
@@ -21,7 +19,11 @@ const User = ({ name, status, email }: { name: string; status: string; email: st
           {lastName && lastName[0]}
         </Avatar>
       </Badge>
-      <Typography>{email && email}</Typography>
+      <Box sx={{ display: 'grid', gridTemplateColumns: 'max-content' }}>
+        <Typography>
+          {name && name} <Typography component="span">{id && `#${id.slice(-4)}`}</Typography>
+        </Typography>
+      </Box>
     </Box>
   );
 };
