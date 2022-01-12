@@ -93,10 +93,6 @@ const AppContainer = () => {
         dispatch(getInvites());
         dispatch(getApprovals());
       });
-
-      socket.on('on-channel-join', (message) => {
-        console.log('Message to channel:', message);
-      });
     }
   }, [userId]);
 

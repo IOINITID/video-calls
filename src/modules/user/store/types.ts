@@ -12,6 +12,8 @@ export type UserState = {
   isIncomingCall: boolean;
   isCallAccepted: boolean;
   isCallCanceled: boolean;
+  channels: ChannelResponse[];
+  channelMessages: MessageResponse[];
 };
 
 export type UserResponse = {
@@ -19,4 +21,17 @@ export type UserResponse = {
   email: string;
   name: string;
   status: string;
+};
+
+export type ChannelResponse = {
+  _id: string;
+  title: string;
+  type: 'text' | 'video';
+};
+
+export type MessageResponse = {
+  _id: string;
+  text: string;
+  author: UserResponse;
+  created: Date;
 };

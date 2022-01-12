@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { addMessageToChannel } from '../../../core/services/add-message-to-channel';
 import { getApprovals } from '../../../core/services/get-approvals';
+import { getChannelMessages } from '../../../core/services/get-channel-messages';
+import { getChannels } from '../../../core/services/get-channels';
 import { getFriends } from '../../../core/services/get-friends';
 import { getInvites } from '../../../core/services/get-invites';
 import { getUsers } from '../../../core/services/get-users';
-import { UserResponse, UserState } from './types';
+import { ChannelResponse, MessageResponse, UserResponse, UserState } from './types';
 
 const initialState: UserState = {
   id: '',
@@ -19,6 +22,8 @@ const initialState: UserState = {
   isIncomingCall: false,
   isCallAccepted: false,
   isCallCanceled: false,
+  channels: [],
+  channelMessages: [],
 };
 
 export const userSlice = createSlice({
@@ -69,6 +74,15 @@ export const userSlice = createSlice({
     });
     builder.addCase(getApprovals.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
       state.approvals = payload;
+    });
+    builder.addCase(getChannels.fulfilled, (state: UserState, { payload }: PayloadAction<ChannelResponse[]>) => {
+      state.channels = payload;
+    });
+    builder.addCase(getChannelMessages.fulfilled, (state: UserState, { payload }: PayloadAction<MessageResponse[]>) => {
+      state.channelMessages = payload;
+    });
+    builder.addCase(addMessageToChannel.fulfilled, (state: UserState, { payload }: PayloadAction<MessageResponse>) => {
+      state.channelMessages = [...state.channelMessages, payload];
     });
   },
 });

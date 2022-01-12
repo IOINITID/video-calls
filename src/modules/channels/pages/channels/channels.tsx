@@ -6,6 +6,8 @@ import { theme } from '../../../../core/theme';
 import { socket } from '../../../../core/containers/app-container/app-container';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  userChannelMessagesSelector,
+  userChannelsSelector,
   userFriendsSelector,
   userIdSelector,
   userIsCallAcceptedSelector,
@@ -20,6 +22,10 @@ import { Navigation } from '../../../../core/components/navigation';
 import notificationCallSound from '../../../../core/assets/notication-call-sound.mp3';
 import { Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-material';
 import { setIsCall, setIsCallAccepted, setIsCallCanceled, setIsIncomingCall } from '../../../user/store/user';
+import { getChannels } from '../../../../core/services/get-channels';
+import { TextField } from '../../../../core/components/text-field';
+import { getChannelMessages } from '../../../../core/services/get-channel-messages';
+import { addMessageToChannel } from '../../../../core/services/add-message-to-channel';
 
 const Channels = () => {
   const dispatch = useDispatch();
@@ -27,6 +33,8 @@ const Channels = () => {
 
   const userId = useSelector(userIdSelector);
   const friends = useSelector(userFriendsSelector);
+  const channels = useSelector(userChannelsSelector);
+  const channelMessages = useSelector(userChannelMessagesSelector);
 
   const isCall = useSelector(userIsCallSelector); // Звоню я или нет
   const isIncomingCall = useSelector(userIsIncomingCallSelector); // Звонят мне или нет
@@ -44,6 +52,8 @@ const Channels = () => {
   const [videoStream, setVideoStream] = useState<MediaStreamTrack[] | null>(null); // Видео дорожка пользователя
   const [isAudio, setIsAudio] = useState(true); // Включен ли мой звуковой поток
   const [isVideo, setIsVideo] = useState(true); // Включен ли мой видеоs поток
+  const [message, setMessage] = useState<string>(''); // Сообщение пользователя в чат
+  const [channel, setChannel] = useState<string>('');
 
   const myVideoStream = useRef<HTMLVideoElement | null>(null); // Мое видео
   const userVideoStream = useRef<HTMLVideoElement | null>(null); // Видео пользователя с кем звонок
@@ -101,6 +111,16 @@ const Channels = () => {
     }
   };
 
+  // Добавляет сообщение в канал
+  const handleSendMessage = () => {
+    if (channel && message) {
+      // dispatch(addMessageToChannel({ channel, message }));
+
+      // ON-MESSAGE - событие отправки сообщения в канал
+      socket.emit('on-message', channel, message, userId);
+    }
+  };
+
   // Переключает микрофон пользователя
   useEffect(() => {
     handleSwitchAudioStream(isAudio);
@@ -110,6 +130,18 @@ const Channels = () => {
   useEffect(() => {
     handleSwitchVideoStream(isVideo);
   }, [isVideo]);
+
+  // Получает список все каналов, текст и видео
+  useEffect(() => {
+    dispatch(getChannels());
+  }, []);
+
+  // Получение сообщений в канале
+  useEffect(() => {
+    if (channel) {
+      dispatch(getChannelMessages({ channel }));
+    }
+  }, [channel]);
 
   useEffect(() => {
     // TODO: Добавить включение видео и аудио
@@ -160,6 +192,18 @@ const Channels = () => {
       }
 
       connectionRef.current = null;
+    });
+
+    // ON-CHANNEL-JOIN - событие подключения пользователей к комнате
+    socket.on('on-channel-join', (message: string) => {
+      console.log('Сообщение в канале:', message);
+    });
+
+    // ON-MESSAGE - событие получения сообщения в канал
+    socket.on('on-message', (channel: string) => {
+      if (channel) {
+        dispatch(getChannelMessages({ channel }));
+      }
     });
   }, []);
 
@@ -300,35 +344,44 @@ const Channels = () => {
           <Box sx={{ display: 'grid', padding: '16px' }}>
             <Box sx={{ display: 'grid', rowGap: '8px' }}>
               <Typography variant="h5">Общие (текст):</Typography>
-              <Button
-                sx={{ backgroundColor: theme.palette.common.white }}
-                variant="outlined"
-                color="primary"
-                onClick={() => {
-                  // TODO: Добавить модель комнаты и сообщений
-                  socket.emit('on-channel-join', 'channel-text-1', userId);
-                }}
-              >
-                Чат 1
-              </Button>
-              <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
-                Чат 2
-              </Button>
-              <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
-                Чат 3
-              </Button>
+              {channels.map((channel) => {
+                return channel.type === 'text' ? (
+                  <Button
+                    key={channel._id}
+                    sx={{ backgroundColor: theme.palette.common.white }}
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => {
+                      // TODO: Добавить модель комнаты и сообщений
+                      socket.emit('on-channel-join', channel._id, userId);
+
+                      // Установка id канала
+                      setChannel(channel._id);
+                    }}
+                  >
+                    {channel.title}
+                  </Button>
+                ) : null;
+              })}
             </Box>
             <Box sx={{ display: 'grid', rowGap: '8px' }}>
               <Typography variant="h5">Аудио (аудио и видео):</Typography>
-              <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
-                Чат 1
-              </Button>
-              <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
-                Чат 2
-              </Button>
-              <Button sx={{ backgroundColor: theme.palette.common.white }} variant="outlined" color="primary">
-                Чат 3
-              </Button>
+              {channels.map((channel) => {
+                return channel.type === 'video' ? (
+                  <Button
+                    key={channel._id}
+                    sx={{ backgroundColor: theme.palette.common.white }}
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => {
+                      // TODO: Добавить модель комнаты и сообщений
+                      socket.emit('on-channel-join', channel._id, userId);
+                    }}
+                  >
+                    {channel.title}
+                  </Button>
+                ) : null;
+              })}
             </Box>
             <Box sx={{ display: 'grid', rowGap: '8px', position: 'relative' }}>
               <Box sx={{ display: 'grid', rowGap: '8px', position: 'absolute', padding: '16px 0px' }}>
@@ -495,7 +548,7 @@ const Channels = () => {
             borderRadius: '16px',
           }}
         >
-          <Box sx={{ display: 'grid', gridAutoFlow: 'column', alignItems: 'center', gap: '32px', padding: '32px' }}>
+          <Box sx={{ display: 'none', gridAutoFlow: 'column', alignItems: 'center', gap: '32px', padding: '32px' }}>
             {/* Мое видео */}
             <Box sx={{ position: 'relative', width: '300px', borderRadius: '32px' }}>
               <video style={{ width: '300px',
@@ -508,6 +561,30 @@ const Channels = () => {
     borderRadius: '32px' }} ref={userVideoStream} autoPlay playsInline />
               </Box>
             )}
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateRows: '1fr max-content', rowGap: '16px' }}>
+            <Box>
+              <Typography>Сообщения:</Typography>
+              <Box sx={{ overflow: 'scroll', height: '240px' }}>
+                {channelMessages.map((message) => {
+                  return <Typography key={message._id}>{message.text}</Typography>;
+                })}
+              </Box>
+            </Box>
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr max-content', columnGap: '16px' }}>
+              <TextField
+                type="text"
+                id="message"
+                name="message"
+                label="Сообщение"
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
+                placeholder="Введите текст сообщения"
+              />
+              <Button variant="contained" color="primary" onClick={handleSendMessage}>
+                Отправить сообщение
+              </Button>
+            </Box>
           </Box>
         </Box>
       </Box>
