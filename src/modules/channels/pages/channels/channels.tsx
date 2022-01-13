@@ -19,13 +19,12 @@ import Peer, { Instance, SignalData } from 'simple-peer';
 import { User } from '../../../../core/components/user';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from '../../../../core/components/navigation';
-import notificationCallSound from '../../../../core/assets/notication-call-sound.mp3';
+import notificationCallSound from '../../../../core/assets/sounds/notication-call-sound.mp3';
 import { Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-material';
 import { setIsCall, setIsCallAccepted, setIsCallCanceled, setIsIncomingCall } from '../../../user/store/user';
 import { getChannels } from '../../../../core/services/get-channels';
 import { TextField } from '../../../../core/components/text-field';
 import { getChannelMessages } from '../../../../core/services/get-channel-messages';
-import { addMessageToChannel } from '../../../../core/services/add-message-to-channel';
 
 const Channels = () => {
   const dispatch = useDispatch();

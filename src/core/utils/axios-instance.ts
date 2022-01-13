@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { API_URL } from '../constants';
-import { AuthorizationResponse } from '../types';
-import { getLogout } from './get-logout';
+import { checkAuthorizationService } from '../services/index';
+import { API_URL, APPLICATION_URL } from '../constants';
+import { logoutService } from '../services/logout-service';
 
 const axiosInstance = axios.create({
   withCredentials: true,
@@ -25,17 +25,19 @@ axiosInstance.interceptors.response.use(
 
     if (error.response.status === 401) {
       try {
-        const response = await axios.get<AuthorizationResponse>(`${API_URL}/api/refresh`, {
-          withCredentials: true,
-        });
+        const response = await checkAuthorizationService();
 
-        localStorage.setItem('token', response.data.accessToken);
+        localStorage.setItem('token', response.accessToken);
 
         return axiosInstance.request(originalRequest);
       } catch (error) {
         console.log(error);
 
-        getLogout();
+        await logoutService();
+
+        localStorage.removeItem('token');
+
+        location.href = APPLICATION_URL;
       }
     }
 

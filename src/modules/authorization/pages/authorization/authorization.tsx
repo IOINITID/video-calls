@@ -2,39 +2,20 @@ import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from '../../../../core/components/button';
 import { TextField } from '../../../../core/components/text-field';
-import { setLogin } from '../../../user/store/user';
-import { authorization } from '../../services';
 import { Box, InputAdornment, IconButton, Typography, Link } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import authorizationImage from '../../../../core/assets/authorization-image.jpg';
 import { theme } from '../../../../core/theme';
 import { useNavigate } from 'react-router-dom';
+import { authorizationAction } from '../../../user/store/actions';
+import authorizationImage from '../../../../core/assets/images/authorization-image.jpg';
 
 const Authorization = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isShowPassword, setIsShowPassword] = useState(false);
-
-  const getLogin = async () => {
-    try {
-      const response = await authorization(email, password);
-
-      localStorage.setItem('token', response.data.accessToken);
-
-      dispatch(
-        setLogin({
-          id: response.data.user.id,
-          email: response.data.user.email,
-          name: response.data.user.name,
-          token: response.data.accessToken,
-        })
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <Box
@@ -91,7 +72,14 @@ const Authorization = () => {
                 />
               </Box>
             </Box>
-            <Button variant="contained" color="primary" size="large" onClick={getLogin}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={() => {
+                dispatch(authorizationAction({ email, password }));
+              }}
+            >
               Войти
             </Button>
           </Box>
@@ -102,6 +90,7 @@ const Authorization = () => {
               underline="hover"
               onClick={(event) => {
                 event.preventDefault();
+
                 navigate('/registration');
               }}
             >

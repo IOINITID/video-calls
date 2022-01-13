@@ -2,6 +2,7 @@ import { Box, Typography, Link } from '@mui/material';
 import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { logoutAction } from '../../../modules/user/store/actions';
 import {
   userApprovalsSelector,
   userEmailSelector,
@@ -11,10 +12,8 @@ import {
   userIsAuthorizatedSelector,
   userUsersSelector,
 } from '../../../modules/user/store/selectors';
-import { setLogout } from '../../../modules/user/store/user';
 import { socket } from '../../containers/app-container/app-container';
-import { axiosInstance } from '../../services/axios-instance';
-import { getLogout } from '../../services/get-logout';
+import { axiosInstance } from '../../utils/axios-instance';
 import { theme } from '../../theme';
 import { Button } from '../button';
 import { User } from '../user';
@@ -221,9 +220,9 @@ const AllUsers = () => {
           variant="contained"
           color="primary"
           onClick={() => {
-            getLogout();
+            dispatch(logoutAction());
+
             socket.emit('on-disconnect', userId);
-            dispatch(setLogout());
           }}
         >
           Выйти из аккаунта

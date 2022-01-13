@@ -1,40 +1,21 @@
 import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setLogin } from '../../../user/store/user';
-import { registration } from '../../services';
 import { Box, Typography, TextField, InputAdornment, IconButton, Link } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import authorizationImage from '../../../../core/assets/authorization-image.jpg';
 import { theme } from '../../../../core/theme';
 import { Button } from '../../../../core/components/button';
 import { useNavigate } from 'react-router-dom';
+import { registrationAction } from '../../../user/store/actions';
+import authorizationImage from '../../../../core/assets/images/authorization-image.jpg';
 
 const Registration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [isShowPassword, setIsShowPassword] = useState(false);
-
-  const getRegistration = async () => {
-    try {
-      const response = await registration(email, name, password);
-
-      localStorage.setItem('token', response.data.accessToken);
-
-      dispatch(
-        setLogin({
-          id: response.data.user.id,
-          email: response.data.user.email,
-          name: response.data.user.name,
-          token: response.data.accessToken,
-        })
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <Box
@@ -109,7 +90,14 @@ const Registration = () => {
                   политикой обработки персональных данных
                 </Link>
               </Typography>
-              <Button variant="contained" color="primary" size="large" onClick={getRegistration}>
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                onClick={() => {
+                  dispatch(registrationAction({ email, name, password }));
+                }}
+              >
                 Зарегистрироваться
               </Button>
             </Box>

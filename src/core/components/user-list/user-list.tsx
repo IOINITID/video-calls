@@ -3,8 +3,7 @@ import { Typography, Box } from '@mui/material';
 import { userUsersSelector } from '../../../modules/user/store/selectors';
 import { theme } from '../../theme';
 import { Button } from '../button';
-import axios from 'axios';
-import { axiosInstance } from '../../services/axios-instance';
+import { axiosInstance } from '../../utils/axios-instance';
 import { socket } from '../../containers/app-container/app-container';
 
 const UserList = () => {

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { axiosInstance } from './axios-instance';
+import { axiosInstance } from '../utils/axios-instance';
 
 export const getInvites = createAsyncThunk('user/getInvites', async () => {
   const response = await axiosInstance.get('/invites');

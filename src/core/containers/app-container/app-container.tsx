@@ -1,17 +1,15 @@
-import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userIdSelector, userIsAuthorizatedSelector } from '../../../modules/user/store/selectors';
-import { setLogin } from '../../../modules/user/store/user';
-import { AuthorizationResponse } from '../../types';
 import { Box } from '@mui/material';
 import { io } from 'socket.io-client';
 import { getUsers } from '../../services/get-users';
-import { getFriends } from '../../services/get-friends';
 import { getInvites } from '../../services/get-invites';
 import { getApprovals } from '../../services/get-approvals';
 import { API_URL } from '../../constants';
 import { App } from '../../components/app';
+import { checkAuthorizationAction } from '../../../modules/user/store/actions';
+import { getFriendsAction } from '../../../modules/friends/store/actions';
 
 export const socket = io(API_URL, {
   transports: ['websocket'],
@@ -22,32 +20,9 @@ const AppContainer = () => {
   const isAuthorizated = useSelector(userIsAuthorizatedSelector);
   const userId = useSelector(userIdSelector);
 
-  const checkAuth = async () => {
-    try {
-      const response = await axios.get<AuthorizationResponse>(`${API_URL}/api/refresh`, {
-        withCredentials: true,
-      });
-
-      if (response.data.accessToken) {
-        localStorage.setItem('token', response.data.accessToken);
-
-        dispatch(
-          setLogin({
-            id: response.data.user.id,
-            email: response.data.user.email,
-            name: response.data.user.name,
-            token: response.data.accessToken,
-          })
-        );
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      checkAuth();
+      dispatch(checkAuthorizationAction());
     }
   }, []);
 
@@ -62,14 +37,14 @@ const AppContainer = () => {
 
       socket.on('on-connect', () => {
         dispatch(getUsers());
-        dispatch(getFriends());
+        dispatch(getFriendsAction());
         dispatch(getInvites());
         dispatch(getApprovals());
       });
 
       socket.on('on-disconnect', () => {
         dispatch(getUsers());
-        dispatch(getFriends());
+        dispatch(getFriendsAction());
         dispatch(getInvites());
         dispatch(getApprovals());
       });
@@ -80,13 +55,13 @@ const AppContainer = () => {
       });
 
       socket.on('on-add-to-friends', () => {
-        dispatch(getFriends());
+        dispatch(getFriendsAction());
         dispatch(getInvites());
         dispatch(getApprovals());
       });
 
       socket.on('on-remove-from-friends', () => {
-        dispatch(getFriends());
+        dispatch(getFriendsAction());
       });
 
       socket.on('on-remove-invite-to-friends', () => {

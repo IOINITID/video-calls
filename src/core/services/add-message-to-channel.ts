@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { axiosInstance } from './axios-instance';
+import { axiosInstance } from '../utils/axios-instance';
 
 export const addMessageToChannel = createAsyncThunk(
   'user/addMessageToChannel',

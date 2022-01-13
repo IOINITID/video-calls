@@ -7,5 +7,3 @@ export type AuthorizationResponse = {
     name: string;
   };
 };
-
-export type RegistrationResponse = AuthorizationResponse;

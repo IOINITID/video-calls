@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { VoidFunctionComponent } from 'react';
 import { addMessageToChannel } from '../../../core/services/add-message-to-channel';
 import { getApprovals } from '../../../core/services/get-approvals';
 import { getChannelMessages } from '../../../core/services/get-channel-messages';
@@ -6,6 +7,9 @@ import { getChannels } from '../../../core/services/get-channels';
 import { getFriends } from '../../../core/services/get-friends';
 import { getInvites } from '../../../core/services/get-invites';
 import { getUsers } from '../../../core/services/get-users';
+import { AuthorizationResponse } from '../../../core/types';
+import { getFriendsAction } from '../../friends/store/actions';
+import { authorizationAction, checkAuthorizationAction, logoutAction, registrationAction } from './actions';
 import { ChannelResponse, MessageResponse, UserResponse, UserState } from './types';
 
 const initialState: UserState = {
@@ -30,25 +34,6 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setLogin: (
-      state: UserState,
-      { payload }: PayloadAction<{ id: string; email: string; name: string; token: string }>
-    ) => {
-      state.id = payload.id;
-      state.email = payload.email;
-      state.name = payload.name;
-      state.token = payload.token;
-      state.isAuthorizated = true;
-      localStorage.setItem('token', payload.token);
-    },
-    setLogout: (state: UserState) => {
-      state.id = '';
-      state.email = '';
-      state.name = '';
-      state.token = '';
-      state.isAuthorizated = false;
-      localStorage.removeItem('token');
-    },
     setIsCall: (state: UserState, { payload }: PayloadAction<boolean>) => {
       state.isCall = payload;
     },
@@ -66,7 +51,7 @@ export const userSlice = createSlice({
     builder.addCase(getUsers.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
       state.users = payload;
     });
-    builder.addCase(getFriends.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
+    builder.addCase(getFriendsAction.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
       state.friends = payload;
     });
     builder.addCase(getInvites.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
@@ -84,10 +69,50 @@ export const userSlice = createSlice({
     builder.addCase(addMessageToChannel.fulfilled, (state: UserState, { payload }: PayloadAction<MessageResponse>) => {
       state.channelMessages = [...state.channelMessages, payload];
     });
+    builder.addCase(
+      authorizationAction.fulfilled,
+      (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
+        state.id = payload.user.id;
+        state.email = payload.user.email;
+        state.name = payload.user.name;
+        state.token = payload.accessToken;
+        state.isAuthorizated = true;
+        localStorage.setItem('token', payload.accessToken);
+      }
+    );
+    builder.addCase(
+      registrationAction.fulfilled,
+      (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
+        state.id = payload.user.id;
+        state.email = payload.user.email;
+        state.name = payload.user.name;
+        state.token = payload.accessToken;
+        state.isAuthorizated = true;
+        localStorage.setItem('token', payload.accessToken);
+      }
+    );
+    builder.addCase(
+      checkAuthorizationAction.fulfilled,
+      (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
+        state.id = payload.user.id;
+        state.email = payload.user.email;
+        state.name = payload.user.name;
+        state.token = payload.accessToken;
+        state.isAuthorizated = true;
+        localStorage.setItem('token', payload.accessToken);
+      }
+    );
+    builder.addCase(logoutAction.fulfilled, (state: UserState) => {
+      state.id = '';
+      state.email = '';
+      state.name = '';
+      state.token = '';
+      state.isAuthorizated = false;
+      localStorage.removeItem('token');
+    });
   },
 });
 
-export const { setLogin, setLogout, setIsCall, setIsIncomingCall, setIsCallAccepted, setIsCallCanceled } =
-  userSlice.actions;
+export const { setIsCall, setIsIncomingCall, setIsCallAccepted, setIsCallCanceled } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
