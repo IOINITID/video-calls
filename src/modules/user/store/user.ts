@@ -1,15 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { VoidFunctionComponent } from 'react';
 import { addMessageToChannel } from '../../../core/services/add-message-to-channel';
 import { getApprovals } from '../../../core/services/get-approvals';
 import { getChannelMessages } from '../../../core/services/get-channel-messages';
 import { getChannels } from '../../../core/services/get-channels';
-import { getFriends } from '../../../core/services/get-friends';
 import { getInvites } from '../../../core/services/get-invites';
 import { getUsers } from '../../../core/services/get-users';
 import { AuthorizationResponse } from '../../../core/types';
 import { getFriendsAction } from '../../friends/store/actions';
-import { authorizationAction, checkAuthorizationAction, logoutAction, registrationAction } from './actions';
+import {
+  authorizationAction,
+  checkAuthorizationAction,
+  logoutAction,
+  registrationAction,
+  serverLoadingAction,
+} from './actions';
 import { ChannelResponse, MessageResponse, UserResponse, UserState } from './types';
 
 const initialState: UserState = {
@@ -28,6 +32,7 @@ const initialState: UserState = {
   isCallCanceled: false,
   channels: [],
   channelMessages: [],
+  isLoading: false,
 };
 
 export const userSlice = createSlice({
@@ -69,6 +74,9 @@ export const userSlice = createSlice({
     builder.addCase(addMessageToChannel.fulfilled, (state: UserState, { payload }: PayloadAction<MessageResponse>) => {
       state.channelMessages = [...state.channelMessages, payload];
     });
+    builder.addCase(authorizationAction.pending, (state: UserState) => {
+      state.isLoading = true;
+    });
     builder.addCase(
       authorizationAction.fulfilled,
       (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
@@ -77,9 +85,13 @@ export const userSlice = createSlice({
         state.name = payload.user.name;
         state.token = payload.accessToken;
         state.isAuthorizated = true;
+        state.isLoading = false;
         localStorage.setItem('token', payload.accessToken);
       }
     );
+    builder.addCase(registrationAction.pending, (state: UserState) => {
+      state.isLoading = true;
+    });
     builder.addCase(
       registrationAction.fulfilled,
       (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
@@ -88,9 +100,13 @@ export const userSlice = createSlice({
         state.name = payload.user.name;
         state.token = payload.accessToken;
         state.isAuthorizated = true;
+        state.isLoading = false;
         localStorage.setItem('token', payload.accessToken);
       }
     );
+    builder.addCase(checkAuthorizationAction.pending, (state: UserState) => {
+      state.isLoading = true;
+    });
     builder.addCase(
       checkAuthorizationAction.fulfilled,
       (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
@@ -99,16 +115,27 @@ export const userSlice = createSlice({
         state.name = payload.user.name;
         state.token = payload.accessToken;
         state.isAuthorizated = true;
+        state.isLoading = false;
         localStorage.setItem('token', payload.accessToken);
       }
     );
+    builder.addCase(logoutAction.pending, (state: UserState) => {
+      state.isLoading = true;
+    });
     builder.addCase(logoutAction.fulfilled, (state: UserState) => {
       state.id = '';
       state.email = '';
       state.name = '';
       state.token = '';
       state.isAuthorizated = false;
+      state.isLoading = false;
       localStorage.removeItem('token');
+    });
+    builder.addCase(serverLoadingAction.pending, (state: UserState) => {
+      state.isLoading = true;
+    });
+    builder.addCase(serverLoadingAction.fulfilled, (state: UserState) => {
+      state.isLoading = false;
     });
   },
 });

@@ -15,3 +15,4 @@ export const userIsCallAcceptedSelector = (state: RootState) => state.user.isCal
 export const userIsCallCanceledSelector = (state: RootState) => state.user.isCallCanceled;
 export const userChannelsSelector = (state: RootState) => state.user.channels;
 export const userChannelMessagesSelector = (state: RootState) => state.user.channelMessages;
+export const userIsLoadingSelector = (state: RootState) => state.user.isLoading;

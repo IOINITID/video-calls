@@ -14,6 +14,7 @@ export type UserState = {
   isCallCanceled: boolean;
   channels: ChannelResponse[];
   channelMessages: MessageResponse[];
+  isLoading: boolean;
 };
 
 export type UserResponse = {
