@@ -47,6 +47,8 @@ const AppContainer = () => {
         dispatch(getFriendsAction());
         dispatch(getInvites());
         dispatch(getApprovals());
+
+        dispatch(checkAuthorizationAction()); // Для повторного получения статуса пользователя при подключении
       });
 
       socket.on('on-disconnect', () => {

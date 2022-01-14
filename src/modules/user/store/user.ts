@@ -20,6 +20,7 @@ const initialState: UserState = {
   id: '',
   email: '',
   name: '',
+  status: '',
   token: localStorage.getItem('token') || '',
   isAuthorizated: false,
   users: [],
@@ -83,6 +84,7 @@ export const userSlice = createSlice({
         state.id = payload.user.id;
         state.email = payload.user.email;
         state.name = payload.user.name;
+        state.status = payload.user.status;
         state.token = payload.accessToken;
         state.isAuthorizated = true;
         state.isLoading = false;
@@ -98,6 +100,7 @@ export const userSlice = createSlice({
         state.id = payload.user.id;
         state.email = payload.user.email;
         state.name = payload.user.name;
+        state.status = payload.user.status;
         state.token = payload.accessToken;
         state.isAuthorizated = true;
         state.isLoading = false;
@@ -113,6 +116,7 @@ export const userSlice = createSlice({
         state.id = payload.user.id;
         state.email = payload.user.email;
         state.name = payload.user.name;
+        state.status = payload.user.status;
         state.token = payload.accessToken;
         state.isAuthorizated = true;
         state.isLoading = false;
@@ -127,6 +131,7 @@ export const userSlice = createSlice({
       state.email = '';
       state.name = '';
       state.token = '';
+      state.status = '';
       state.isAuthorizated = false;
       state.isLoading = false;
       localStorage.removeItem('token');

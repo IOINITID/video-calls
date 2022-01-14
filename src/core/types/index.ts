@@ -5,5 +5,6 @@ export type AuthorizationResponse = {
     id: string;
     email: string;
     name: string;
+    status: string;
   };
 };

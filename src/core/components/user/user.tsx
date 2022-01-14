@@ -22,6 +22,15 @@ const User = ({ name, status }: { id: string; name: string; status: string; emai
             display: 'grid',
           },
         },
+        '.MuiBadge-badge': {
+          border: `1px solid ${theme.palette.common.white}`,
+        },
+        '.MuiBadge-colorSuccess': {
+          backgroundColor: theme.palette.success.light,
+        },
+        '.MuiBadge-colorError': {
+          backgroundColor: theme.palette.error.light,
+        },
       }}
     >
       <Badge
