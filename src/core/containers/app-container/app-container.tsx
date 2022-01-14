@@ -5,7 +5,6 @@ import {
   userIsAuthorizatedSelector,
   userIsLoadingSelector,
 } from '../../../modules/user/store/selectors';
-import { Box, CircularProgress } from '@mui/material';
 import { getUsers } from '../../services/get-users';
 import { getInvites } from '../../services/get-invites';
 import { getApprovals } from '../../services/get-approvals';
@@ -13,9 +12,11 @@ import { App } from '../../components/app';
 import { checkAuthorizationAction, serverLoadingAction } from '../../../modules/user/store/actions';
 import { getFriendsAction } from '../../../modules/friends/store/actions';
 import { socket } from '../../utils/socket';
+import { Loader } from '../../components/loader';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
+
   const isAuthorizated = useSelector(userIsAuthorizatedSelector);
   const userId = useSelector(userIdSelector);
   const isLoading = useSelector(userIsLoadingSelector);
@@ -73,53 +74,10 @@ const AppContainer = () => {
   }, [userId]);
 
   if (isLoading) {
-    return (
-      <Box
-        sx={{ display: 'grid', alignItems: 'center', justifyContent: 'center', height: '100vh', position: 'relative' }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <Loader />;
   }
 
-  return (
-    <>
-      <App isAuthorizated={isAuthorizated} />
-
-      {/* Модальное окно при входящем вызове */}
-      {/* TODO: Доделать вызов во всем приложении а не только на странице каналы */}
-      {/* <Modal open={isIncomingCall}>
-        <Box
-          sx={{
-            display: 'grid',
-            gridAutoFlow: 'column',
-            columnGap: '16px',
-            padding: '32px',
-            backgroundColor: theme.palette.common.white,
-          }}
-        >
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => {
-              navigate('/channels');
-            }}
-          >
-            Принять
-          </Button>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => {
-              navigate('/');
-            }}
-          >
-            Отклонить
-          </Button>
-        </Box>
-      </Modal> */}
-    </>
-  );
+  return <App isAuthorizated={isAuthorizated} />;
 };
 
 export { AppContainer };
