@@ -4,7 +4,7 @@ import { userUsersSelector } from '../../../modules/user/store/selectors';
 import { theme } from '../../theme';
 import { Button } from '../button';
 import { axiosInstance } from '../../utils/axios-instance';
-import { socket } from '../../containers/app-container/app-container';
+import { socket } from '../../utils/socket';
 
 const UserList = () => {
   const users = useSelector(userUsersSelector);

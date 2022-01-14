@@ -6,18 +6,13 @@ import {
   userIsLoadingSelector,
 } from '../../../modules/user/store/selectors';
 import { Box, CircularProgress } from '@mui/material';
-import { io } from 'socket.io-client';
 import { getUsers } from '../../services/get-users';
 import { getInvites } from '../../services/get-invites';
 import { getApprovals } from '../../services/get-approvals';
-import { API_URL } from '../../constants';
 import { App } from '../../components/app';
 import { checkAuthorizationAction, serverLoadingAction } from '../../../modules/user/store/actions';
 import { getFriendsAction } from '../../../modules/friends/store/actions';
-
-export const socket = io(API_URL, {
-  transports: ['websocket'],
-});
+import { socket } from '../../utils/socket';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
@@ -33,9 +28,6 @@ const AppContainer = () => {
 
   useEffect(() => {
     // TODO: Запрашивать при изменении конкретных данных точечно
-    // dispatch(getUsers());
-    // dispatch(getInvites());
-    // dispatch(getFriends());
 
     dispatch(serverLoadingAction());
 

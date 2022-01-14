@@ -3,7 +3,6 @@ import { memo, useEffect, useRef, useState } from 'react';
 import { Box, Typography, Link } from '@mui/material';
 import { Button } from '../../../../core/components/button';
 import { theme } from '../../../../core/theme';
-import { socket } from '../../../../core/containers/app-container/app-container';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   userChannelMessagesSelector,
@@ -25,6 +24,7 @@ import { setIsCall, setIsCallAccepted, setIsCallCanceled, setIsIncomingCall } fr
 import { getChannels } from '../../../../core/services/get-channels';
 import { TextField } from '../../../../core/components/text-field';
 import { getChannelMessages } from '../../../../core/services/get-channel-messages';
+import { socket } from '../../../../core/utils/socket';
 
 const Channels = () => {
   const dispatch = useDispatch();

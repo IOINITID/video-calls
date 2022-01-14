@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { checkAuthorizationService } from '../services/index';
-import { API_URL, APPLICATION_URL } from '../constants';
+import { API_URL } from '../constants';
 import { logoutService } from '../services/logout-service';
 
 const axiosInstance = axios.create({

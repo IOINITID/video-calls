@@ -12,11 +12,11 @@ import {
   userIsAuthorizatedSelector,
   userUsersSelector,
 } from '../../../modules/user/store/selectors';
-import { socket } from '../../containers/app-container/app-container';
 import { axiosInstance } from '../../utils/axios-instance';
 import { theme } from '../../theme';
 import { Button } from '../button';
 import { User } from '../user';
+import { socket } from '../../utils/socket';
 
 const AllUsers = () => {
   const dispatch = useDispatch();
