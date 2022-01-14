@@ -33,8 +33,24 @@ const FriendsLayout = () => {
           <Typography variant="h6">Личные сообщения</Typography>
         </Box>
         {/* Список сообщений от пользователей */}
-        <Box sx={{ padding: '0 8px', margin: '28px 0', overflow: 'scroll' }}>
-          <Box sx={{ display: 'grid', rowGap: '12px' }}>
+        <Box
+          sx={{
+            margin: '28px 4px',
+            overflowY: 'scroll',
+            '&::-webkit-scrollbar': {
+              width: '4px',
+            },
+            '&::-webkit-scrollbar-track': {
+              backgroundColor: 'none',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: theme.palette.grey[300],
+              border: `1px solid ${theme.palette.grey[500]}`,
+              borderRadius: '8px',
+            },
+          }}
+        >
+          <Box sx={{ display: 'grid', rowGap: '12px', padding: '0 4px' }}>
             {Array.from(Array(25).keys()).map((value) => {
               return <User key={value} id="1234" name="Имя Пользователя" status="online" email="userone@gmail.com" />;
             })}

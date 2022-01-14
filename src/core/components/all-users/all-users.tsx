@@ -21,6 +21,7 @@ import { socket } from '../../utils/socket';
 const AllUsers = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const users = useSelector(userUsersSelector);
   const friends = useSelector(userFriendsSelector);
   const invites = useSelector(userInvitesSelector);
