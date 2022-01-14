@@ -37,7 +37,7 @@ axiosInstance.interceptors.response.use(
 
         localStorage.removeItem('token');
 
-        location.href = APPLICATION_URL;
+        // location.href = APPLICATION_URL; // TODO: Добавить переход на авторизацию
       }
     }
 

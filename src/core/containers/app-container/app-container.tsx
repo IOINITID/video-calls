@@ -89,9 +89,7 @@ const AppContainer = () => {
   }
 
   return (
-    <Box
-      sx={{ display: 'grid', alignItems: 'center', justifyContent: 'center', height: '100vh', position: 'relative' }}
-    >
+    <>
       <App isAuthorizated={isAuthorizated} />
 
       {/* Модальное окно при входящем вызове */}
@@ -126,7 +124,7 @@ const AppContainer = () => {
           </Button>
         </Box>
       </Modal> */}
-    </Box>
+    </>
   );
 };
 
