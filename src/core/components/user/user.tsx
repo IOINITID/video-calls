@@ -4,8 +4,6 @@ import { theme } from '../../theme';
 import { DeleteOutline } from '@mui/icons-material';
 
 const User = ({ name, status }: { id: string; name: string; status: string; email: string }) => {
-  const [firstName, lastName] = name ? name.split(' ') : '';
-
   return (
     <Box
       sx={{
@@ -39,10 +37,7 @@ const User = ({ name, status }: { id: string; name: string; status: string; emai
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         color={status === 'online' ? 'success' : 'error'}
       >
-        <Avatar sx={{ backgroundColor: colors.deepPurple[500] }}>
-          {firstName && firstName[0]}
-          {lastName && lastName[0]}
-        </Avatar>
+        <Avatar sx={{ backgroundColor: colors.deepPurple[500] }} />
       </Badge>
       <Box sx={{ display: 'grid', gridTemplateColumns: 'max-content' }}>
         <Typography variant="body2">{name ? name : ''}</Typography>

@@ -1,15 +1,20 @@
 import { memo } from 'react';
 import { Box, Typography, Link } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { userEmailSelector, userNameSelector } from '../../../user/store/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { userEmailSelector, userIdSelector, userNameSelector } from '../../../user/store/selectors';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from '../../../../core/components/navigation';
+import { Button } from '../../../../core/components/button';
+import { logoutAction } from '../../../user/store/actions';
+import { socket } from '../../../../core/utils/socket';
 
 const Profile = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const userEmail = useSelector(userEmailSelector);
   const userName = useSelector(userNameSelector);
+  const userId = useSelector(userIdSelector);
 
   return (
     <Box
@@ -40,6 +45,17 @@ const Profile = () => {
           <Link sx={{ cursor: 'pointer' }} underline="hover" onClick={() => navigate(-1)}>
             Назад
           </Link>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              dispatch(logoutAction());
+
+              socket.emit('on-disconnect', userId);
+            }}
+          >
+            Выйти из аккаунта
+          </Button>
         </Typography>
       </Box>
     </Box>
