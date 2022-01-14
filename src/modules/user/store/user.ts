@@ -75,9 +75,6 @@ export const userSlice = createSlice({
     builder.addCase(addMessageToChannel.fulfilled, (state: UserState, { payload }: PayloadAction<MessageResponse>) => {
       state.channelMessages = [...state.channelMessages, payload];
     });
-    builder.addCase(authorizationAction.pending, (state: UserState) => {
-      state.isLoading = true;
-    });
     builder.addCase(
       authorizationAction.fulfilled,
       (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
@@ -87,13 +84,9 @@ export const userSlice = createSlice({
         state.status = payload.user.status;
         state.token = payload.accessToken;
         state.isAuthorizated = true;
-        state.isLoading = false;
         localStorage.setItem('token', payload.accessToken);
       }
     );
-    builder.addCase(registrationAction.pending, (state: UserState) => {
-      state.isLoading = true;
-    });
     builder.addCase(
       registrationAction.fulfilled,
       (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
@@ -103,13 +96,9 @@ export const userSlice = createSlice({
         state.status = payload.user.status;
         state.token = payload.accessToken;
         state.isAuthorizated = true;
-        state.isLoading = false;
         localStorage.setItem('token', payload.accessToken);
       }
     );
-    builder.addCase(checkAuthorizationAction.pending, (state: UserState) => {
-      state.isLoading = true;
-    });
     builder.addCase(
       checkAuthorizationAction.fulfilled,
       (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
@@ -119,13 +108,9 @@ export const userSlice = createSlice({
         state.status = payload.user.status;
         state.token = payload.accessToken;
         state.isAuthorizated = true;
-        state.isLoading = false;
         localStorage.setItem('token', payload.accessToken);
       }
     );
-    builder.addCase(logoutAction.pending, (state: UserState) => {
-      state.isLoading = true;
-    });
     builder.addCase(logoutAction.fulfilled, (state: UserState) => {
       state.id = '';
       state.email = '';
@@ -133,7 +118,6 @@ export const userSlice = createSlice({
       state.token = '';
       state.status = '';
       state.isAuthorizated = false;
-      state.isLoading = false;
       localStorage.removeItem('token');
     });
     builder.addCase(serverLoadingAction.pending, (state: UserState) => {
