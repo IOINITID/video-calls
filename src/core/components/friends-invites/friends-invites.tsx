@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { theme } from '../../theme';
 import { memo } from 'react';
 import { userInvitesSelector } from '../../../modules/user/store/selectors';
-import { UserFriends } from '../user-friends';
+import { UserAddToFriends } from '../user-add-to-friends';
 
 const FriendsInvites = () => {
   const invites = useSelector(userInvitesSelector);
@@ -31,9 +31,7 @@ const FriendsInvites = () => {
       }}
     >
       {invites.map((invite) => {
-        return invite.status === 'online' ? (
-          <UserFriends key={invite._id} name={invite.name} status={invite.status} />
-        ) : null;
+        return <UserAddToFriends key={invite._id} id={invite._id} name={invite.name} status={invite.status} />;
       })}
     </Box>
   );

@@ -1,9 +1,11 @@
 import { Avatar, Badge, Box, colors, Typography } from '@mui/material';
 import { memo } from 'react';
-import { Chat, Call, MoreVert } from '@mui/icons-material';
 import { theme } from '../../theme';
+import { axiosInstance } from '../../utils/axios-instance';
+import { socket } from '../../utils/socket';
+import { Button } from '../button';
 
-const UserFriends = ({ name, status }: { name: string; status: string }) => {
+const UserApprovals = ({ id, name, status }: { id: string; name: string; status: string }) => {
   return (
     <Box
       sx={{
@@ -49,24 +51,29 @@ const UserFriends = ({ name, status }: { name: string; status: string }) => {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 24px)',
+          gridTemplateColumns: 'repeat(2, max-content)',
           columnGap: '24px',
           alignItems: 'center',
           justifyContent: 'end',
         }}
       >
-        <Box sx={{ cursor: 'pointer' }}>
-          <Chat />
-        </Box>
-        <Box sx={{ cursor: 'pointer' }}>
-          <Call />
-        </Box>
-        <Box sx={{ cursor: 'pointer' }}>
-          <MoreVert />
-        </Box>
+        <Typography variant="body1">Ожидает добавления в друзья</Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={async () => {
+            const response = await axiosInstance.post('/remove-invite-to-friends', { friendId: id });
+
+            socket.emit('on-remove-invite-to-friends', id); // Отправка события пользователю который ждет принятия или отклонения приглашения
+
+            return response.data;
+          }}
+        >
+          Отклонить
+        </Button>
       </Box>
     </Box>
   );
 };
 
-export const UserFriendsMemoized = memo(UserFriends);
+export const UserApprovalsMemoized = memo(UserApprovals);

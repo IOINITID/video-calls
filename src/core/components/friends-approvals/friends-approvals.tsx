@@ -1,12 +1,13 @@
 import { useSelector } from 'react-redux';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { theme } from '../../theme';
 import { memo } from 'react';
-import { userFriendsSelector } from '../../../modules/user/store/selectors';
+import { userApprovalsSelector } from '../../../modules/user/store/selectors';
 import { UserFriends } from '../user-friends';
+import { UserApprovals } from '../user-approvals';
 
-const AllFriends = () => {
-  const friends = useSelector(userFriendsSelector);
+const FriendsApprovals = () => {
+  const approvals = useSelector(userApprovalsSelector);
 
   return (
     <Box
@@ -30,16 +31,11 @@ const AllFriends = () => {
         },
       }}
     >
-      <Box sx={{ padding: '8px 12px' }}>
-        <Typography variant="h6">Все друзья: {friends.length > 0 ? friends.length : 0}</Typography>
-      </Box>
-      <Box sx={{ display: 'grid', alignContent: 'start', rowGap: '8px' }}>
-        {friends.map((friend) => {
-          return <UserFriends key={friend._id} name={friend.name} status={friend.status} />;
-        })}
-      </Box>
+      {approvals.map((approval) => {
+        return <UserApprovals key={approval._id} id={approval._id} name={approval.name} status={approval.status} />;
+      })}
     </Box>
   );
 };
 
-export const AllFriendsMemoized = memo(AllFriends);
+export const FriendsApprovalsMemoized = memo(FriendsApprovals);

@@ -10,6 +10,7 @@ import { getFriendsAction } from '../../friends/store/actions';
 import {
   authorizationAction,
   checkAuthorizationAction,
+  getUsersAction,
   logoutAction,
   registrationAction,
   serverLoadingAction,
@@ -125,6 +126,9 @@ export const userSlice = createSlice({
     });
     builder.addCase(serverLoadingAction.fulfilled, (state: UserState) => {
       state.isLoading = false;
+    });
+    builder.addCase(getUsersAction.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
+      state.users = payload;
     });
   },
 });

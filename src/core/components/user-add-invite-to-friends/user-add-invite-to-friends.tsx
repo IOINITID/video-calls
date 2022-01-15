@@ -1,9 +1,11 @@
 import { Avatar, Badge, Box, colors, Typography } from '@mui/material';
 import { memo } from 'react';
-import { Chat, Call, MoreVert } from '@mui/icons-material';
 import { theme } from '../../theme';
+import { axiosInstance } from '../../utils/axios-instance';
+import { socket } from '../../utils/socket';
+import { Button } from '../button';
 
-const UserFriends = ({ name, status }: { name: string; status: string }) => {
+const UserAddInviteToFriends = ({ id, name, status }: { id: string; name: string; status: string }) => {
   return (
     <Box
       sx={{
@@ -49,24 +51,28 @@ const UserFriends = ({ name, status }: { name: string; status: string }) => {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 24px)',
+          gridTemplateColumns: 'repeat(1, max-content)',
           columnGap: '24px',
           alignItems: 'center',
           justifyContent: 'end',
         }}
       >
-        <Box sx={{ cursor: 'pointer' }}>
-          <Chat />
-        </Box>
-        <Box sx={{ cursor: 'pointer' }}>
-          <Call />
-        </Box>
-        <Box sx={{ cursor: 'pointer' }}>
-          <MoreVert />
-        </Box>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={async () => {
+            const response = await axiosInstance.post('/add-invite-to-friends', { friendId: id });
+
+            socket.emit('on-add-invite-to-friends', id);
+
+            return response.data;
+          }}
+        >
+          Добавить в друзья
+        </Button>
       </Box>
     </Box>
   );
 };
 
-export const UserFriendsMemoized = memo(UserFriends);
+export const UserAddInviteToFriendsMemoized = memo(UserAddInviteToFriends);

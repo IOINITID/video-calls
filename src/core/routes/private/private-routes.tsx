@@ -6,6 +6,8 @@ import { Profile } from '../../../modules/profile/pages/profile';
 import { FriendsInvites } from '../../components/friends-invites';
 import { AllFriends } from '../../components/all-friends';
 import { FriendsOnline } from '../../components/friends-online';
+import { FriendsApprovals } from '../../components/friends-approvals';
+import { AddToFriends } from '../../components/add-to-friends';
 
 const PrivateRoutes = () => {
   return (
@@ -14,9 +16,8 @@ const PrivateRoutes = () => {
         <Route path="all-friends" element={<AllFriends />} />
         <Route path="friends-online" element={<FriendsOnline />} />
         <Route path="friends-invites" element={<FriendsInvites />} />
-        {/* TODO: Доделать компоненты списка друзей */}
-        <Route path="friends-approvals" element={<FriendsOnline />} />
-        <Route path="add-to-friends" element={<FriendsOnline />} />
+        <Route path="friends-approvals" element={<FriendsApprovals />} />
+        <Route path="add-to-friends" element={<AddToFriends />} />
       </Route>
       <Route path="profile" element={<Profile />} />
       <Route path="channels" element={<Channels />} />
