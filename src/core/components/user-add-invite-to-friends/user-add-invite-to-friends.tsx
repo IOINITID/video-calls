@@ -1,11 +1,21 @@
 import { Avatar, Badge, Box, colors, Typography } from '@mui/material';
-import { memo } from 'react';
+import { Dispatch, memo, SetStateAction } from 'react';
 import { theme } from '../../theme';
 import { axiosInstance } from '../../utils/axios-instance';
 import { socket } from '../../utils/socket';
 import { Button } from '../button';
 
-const UserAddInviteToFriends = ({ id, name, status }: { id: string; name: string; status: string }) => {
+const UserAddInviteToFriends = ({
+  id,
+  name,
+  status,
+  setSearchValue,
+}: {
+  id: string;
+  name: string;
+  status: string;
+  setSearchValue: Dispatch<SetStateAction<string>>;
+}) => {
   return (
     <Box
       sx={{
@@ -61,6 +71,8 @@ const UserAddInviteToFriends = ({ id, name, status }: { id: string; name: string
           variant="contained"
           color="primary"
           onClick={async () => {
+            setSearchValue('');
+
             const response = await axiosInstance.post('/add-invite-to-friends', { friendId: id });
 
             socket.emit('on-add-invite-to-friends', id);

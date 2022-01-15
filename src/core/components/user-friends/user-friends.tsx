@@ -1,9 +1,13 @@
-import { Avatar, Badge, Box, colors, Typography } from '@mui/material';
-import { memo } from 'react';
+import { Avatar, Badge, Box, colors, Menu, MenuItem, Typography } from '@mui/material';
+import { memo, useState } from 'react';
 import { Chat, Call, MoreVert } from '@mui/icons-material';
 import { theme } from '../../theme';
+import { socket } from '../../utils/socket';
+import { axiosInstance } from '../../utils/axios-instance';
 
-const UserFriends = ({ name, status }: { name: string; status: string }) => {
+const UserFriends = ({ id, name, status }: { id: string; name: string; status: string }) => {
+  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+
   return (
     <Box
       sx={{
@@ -61,10 +65,34 @@ const UserFriends = ({ name, status }: { name: string; status: string }) => {
         <Box sx={{ cursor: 'pointer' }}>
           <Call />
         </Box>
-        <Box sx={{ cursor: 'pointer' }}>
+        <Box sx={{ cursor: 'pointer' }} onClick={(event) => setAnchorEl(event.currentTarget)}>
           <MoreVert />
         </Box>
       </Box>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={() => setAnchorEl(null)}>Написать</MenuItem>
+        <MenuItem onClick={() => setAnchorEl(null)}>Позвонить</MenuItem>
+        <MenuItem
+          onClick={async () => {
+            setAnchorEl(null);
+
+            const response = await axiosInstance.post('/remove-from-friends', { friendId: id });
+
+            socket.emit('on-remove-from-friends', id); // Отправка события пользователю, которого удаляют из друзей
+
+            return response.data;
+          }}
+        >
+          Удалить из друзей
+        </MenuItem>
+      </Menu>
     </Box>
   );
 };

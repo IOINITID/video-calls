@@ -48,7 +48,15 @@ const AddToFriends = () => {
         }}
       >
         {users.map((user) => {
-          return <UserAddInviteToFriends key={user._id} id={user._id} name={user.name} status={user.status} />;
+          return (
+            <UserAddInviteToFriends
+              key={user._id}
+              id={user._id}
+              name={user.name}
+              status={user.status}
+              setSearchValue={setSearchValue}
+            />
+          );
         })}
       </Box>
     </Box>
