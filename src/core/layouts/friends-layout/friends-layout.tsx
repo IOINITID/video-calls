@@ -5,12 +5,11 @@ import { Navigation } from '../../components/navigation';
 import { UserControl } from '../../components/user-control';
 import { User } from '../../components/user';
 import { Button } from '../../components/button';
-import { UserFriends } from '../../components/user-friends';
-import { userFriendsSelector } from '../../../modules/user/store/selectors';
-import { useSelector } from 'react-redux';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const FriendsLayout = () => {
-  const friends = useSelector(userFriendsSelector);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   return (
     <Box
@@ -93,49 +92,45 @@ const FriendsLayout = () => {
               columnGap: '8px',
             }}
           >
-            <Button variant="outlined" color="primary">
+            <Button
+              variant={pathname.includes('all-friends') ? 'contained' : 'outlined'}
+              color="primary"
+              onClick={() => navigate('all-friends')}
+            >
               Все друзья
             </Button>
-            <Button variant="text" color="primary">
+            <Button
+              variant={pathname.includes('friends-online') ? 'contained' : 'outlined'}
+              color="primary"
+              onClick={() => navigate('friends-online')}
+            >
               В сети
             </Button>
-            <Button variant="text" color="primary">
+            <Button
+              variant={pathname.includes('friends-invites') ? 'contained' : 'outlined'}
+              color="primary"
+              onClick={() => navigate('friends-invites')}
+            >
               Заявки
             </Button>
-            <Button variant="text" color="primary">
+            <Button
+              variant={pathname.includes('friends-approvals') ? 'contained' : 'outlined'}
+              color="primary"
+              onClick={() => navigate('friends-approvals')}
+            >
               Ожидание
             </Button>
-            <Button variant="contained" color="success">
+            <Button
+              variant={pathname.includes('add-to-friends') ? 'contained' : 'outlined'}
+              color="success"
+              onClick={() => navigate('add-to-friends')}
+            >
               Добавить в друзья
             </Button>
           </Box>
         </Box>
         {/* Содержимое вкладки */}
-        <Box
-          sx={{
-            padding: '0 8px 0 16px',
-            margin: '16px 8px 16px 0',
-            display: 'grid',
-            alignContent: 'start',
-            rowGap: '8px',
-            overflowY: 'scroll',
-            '&::-webkit-scrollbar': {
-              width: '4px',
-            },
-            '&::-webkit-scrollbar-track': {
-              backgroundColor: 'none',
-            },
-            '&::-webkit-scrollbar-thumb': {
-              backgroundColor: theme.palette.grey[300],
-              border: `1px solid ${theme.palette.grey[500]}`,
-              borderRadius: '8px',
-            },
-          }}
-        >
-          {friends.map((friend) => {
-            return <UserFriends key={friend._id} name={friend.name} status={friend.status} />;
-          })}
-        </Box>
+        <Outlet />
       </Box>
     </Box>
   );
