@@ -1,14 +1,31 @@
 import { memo } from 'react';
-import { Avatar, colors, Badge, Box, Typography } from '@mui/material';
+import { Avatar, colors, Badge, Box, Typography, IconButton } from '@mui/material';
 import { theme } from '../../theme';
 import { DeleteOutline } from '@mui/icons-material';
+import { socket } from '../../utils/socket';
+import { useSelector } from 'react-redux';
+import { userIdSelector } from '../../../modules/user/store/selectors';
+import { useNavigate } from 'react-router-dom';
 
-const User = ({ name, status }: { id: string; name: string; status: string; email: string }) => {
+const User = ({
+  name,
+  status,
+  channelId,
+}: {
+  id: string;
+  name: string;
+  status: string;
+  email: string;
+  channelId?: string;
+}) => {
+  const userId = useSelector(userIdSelector);
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
         display: 'grid',
-        gridTemplateColumns: 'max-content 1fr 24px',
+        gridTemplateColumns: 'max-content 1fr max-content',
         columnGap: '8px',
         alignItems: 'center',
         padding: '8px 12px',
@@ -30,6 +47,10 @@ const User = ({ name, status }: { id: string; name: string; status: string; emai
           backgroundColor: theme.palette.error.light,
         },
       }}
+      onClick={() => {
+        socket.emit('on-channel-join', channelId, userId);
+        navigate('/messages');
+      }}
     >
       <Badge
         overlap="circular"
@@ -44,7 +65,9 @@ const User = ({ name, status }: { id: string; name: string; status: string; emai
         <Typography variant="caption">В сети</Typography>
       </Box>
       <Box className="delete-icon" sx={{ display: 'none' }}>
-        <DeleteOutline sx={{ color: theme.palette.grey[700] }} />
+        <IconButton>
+          <DeleteOutline sx={{ color: theme.palette.grey[700] }} />
+        </IconButton>
       </Box>
     </Box>
   );

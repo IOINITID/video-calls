@@ -8,6 +8,7 @@ import { AllFriends } from '../../components/all-friends';
 import { FriendsOnline } from '../../components/friends-online';
 import { FriendsApprovals } from '../../components/friends-approvals';
 import { AddToFriends } from '../../components/add-to-friends';
+import { Messages } from '../../components/messages';
 
 const PrivateRoutes = () => {
   return (
@@ -19,6 +20,7 @@ const PrivateRoutes = () => {
         <Route path="friends-approvals" element={<FriendsApprovals />} />
         <Route path="add-to-friends" element={<AddToFriends />} />
       </Route>
+      <Route path="messages" element={<Messages />} />
       <Route path="profile" element={<Profile />} />
       <Route path="channels" element={<Channels />} />
       <Route path="*" element={<Navigate to="friends/all-friends" />} />

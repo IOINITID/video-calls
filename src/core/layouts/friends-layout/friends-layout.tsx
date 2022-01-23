@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { theme } from '../../theme';
 import { Navigation } from '../../components/navigation';
@@ -6,10 +6,27 @@ import { UserControl } from '../../components/user-control';
 import { User } from '../../components/user';
 import { Button } from '../../components/button';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../../utils/axios-instance';
 
 const FriendsLayout = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  const [usersMessages, setUsersMessages] = useState<any[]>();
+
+  useEffect(() => {
+    const getPersonalMessage = async () => {
+      const response = await axiosInstance.post('/get-personal-messages-channels');
+
+      setUsersMessages(response.data);
+    };
+
+    getPersonalMessage();
+  }, []);
+
+  useEffect(() => {
+    console.log('usersMessages', usersMessages);
+  }, [usersMessages]);
 
   return (
     <Box
@@ -28,7 +45,7 @@ const FriendsLayout = () => {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateRows: '72px 1fr 64px',
+          gridTemplateRows: '72px max-content 1fr 64px',
           backgroundColor: theme.palette.grey[400],
           overflow: 'hidden',
         }}
@@ -36,6 +53,12 @@ const FriendsLayout = () => {
         {/* Заголовок  */}
         <Box sx={{ padding: '24px 20px', borderBottom: `1px solid ${theme.palette.grey[600]}` }}>
           <Typography variant="h6">Личные сообщения</Typography>
+        </Box>
+        {/* Друзья */}
+        <Box sx={{ padding: '16px' }}>
+          <Button fullWidth variant="contained" onClick={() => navigate('/friends')}>
+            Друзья
+          </Button>
         </Box>
         {/* Список сообщений от пользователей */}
         <Box
@@ -56,8 +79,17 @@ const FriendsLayout = () => {
           }}
         >
           <Box sx={{ display: 'grid', rowGap: '12px', padding: '0 4px' }}>
-            {Array.from(Array(25).keys()).map((value) => {
-              return <User key={value} id="1234" name="Имя Пользователя" status="online" email="userone@gmail.com" />;
+            {usersMessages?.map((value: any) => {
+              return (
+                <User
+                  key={value.userData._id}
+                  id={value.userData._id}
+                  name={value.userData.name}
+                  status={value.userData.status}
+                  email={value.userData.email}
+                  channelId={value.value._id}
+                />
+              );
             })}
           </Box>
         </Box>
