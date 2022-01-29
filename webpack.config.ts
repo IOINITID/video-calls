@@ -10,7 +10,7 @@ const configuration: webpack.Configuration & { devServer?: webpackDevServer.Conf
     filename: 'scripts/[name].[contenthash].js',
     path: path.join(__dirname, 'dist'),
     clean: true,
-    publicPath: '/',
+    // publicPath: '/', // TODO: включать только для режима разработки через env переменную
   },
   devServer: {
     hot: true, // TODO: Добавить HMR для React
