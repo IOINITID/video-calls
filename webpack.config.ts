@@ -28,7 +28,11 @@ const configuration: webpack.Configuration & { devServer?: webpackDevServer.Conf
         test: /\.tsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: 'ts-loader',
+          loader: 'esbuild-loader',
+          options: {
+            loader: 'tsx',
+            target: 'es2015',
+          },
         },
       },
       {
@@ -74,6 +78,9 @@ const configuration: webpack.Configuration & { devServer?: webpackDevServer.Conf
       inject: true,
       scriptLoading: 'blocking',
       template: path.join(__dirname, 'src', 'index.html'),
+    }),
+    new webpack.ProvidePlugin({
+      React: 'react',
     }),
   ],
   devtool: 'source-map',
