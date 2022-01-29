@@ -75,7 +75,7 @@ const configuration: webpack.Configuration & { devServer?: webpackDevServer.Conf
   },
   plugins: [
     new htmlWebpackPlugin({
-      inject: true,
+      inject: 'body',
       scriptLoading: 'blocking',
       template: path.join(__dirname, 'src', 'index.html'),
     }),
