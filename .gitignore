@@ -15,3 +15,6 @@ src/stories
 # Build files
 public/
 dist/
+
+# Configuration files
+webpack.config.js
