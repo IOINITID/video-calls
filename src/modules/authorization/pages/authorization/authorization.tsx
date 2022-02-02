@@ -32,9 +32,7 @@ const Authorization = () => {
       >
         <Box>
           <img
-            style={{ width: '100%',
-    height: '100%',
-    objectFit: 'cover' }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             src={authorizationImage}
             alt="Илюстрация."
           />

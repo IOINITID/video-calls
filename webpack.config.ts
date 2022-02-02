@@ -2,6 +2,8 @@ import path from 'path';
 import webpack from 'webpack';
 import webpackDevServer from 'webpack-dev-server';
 import htmlWebpackPlugin from 'html-webpack-plugin';
+import dotenvWebpack from 'dotenv-webpack';
+import forkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 
 const configuration: webpack.Configuration & { devServer?: webpackDevServer.Configuration } = {
   mode: 'production',
@@ -16,6 +18,9 @@ const configuration: webpack.Configuration & { devServer?: webpackDevServer.Conf
     hot: true, // TODO: Добавить HMR для React
     port: 3000,
     historyApiFallback: true,
+  },
+  cache: {
+    type: 'filesystem',
   },
   optimization: {
     splitChunks: {
@@ -82,6 +87,10 @@ const configuration: webpack.Configuration & { devServer?: webpackDevServer.Conf
     new webpack.ProvidePlugin({
       React: 'react',
     }),
+    new dotenvWebpack({
+      path: path.join(__dirname, '.env.production'),
+    }) as typeof dotenvWebpack,
+    new forkTsCheckerWebpackPlugin(),
   ],
   devtool: 'source-map',
 };
