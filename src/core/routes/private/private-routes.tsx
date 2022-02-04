@@ -1,4 +1,4 @@
-import { lazy, memo } from 'react';
+import { lazy, memo, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 const Friends = lazy(() => import('modules/friends/pages/friends'));
@@ -13,19 +13,21 @@ const AddToFriends = lazy(() => import('core/components/add-to-friends'));
 
 const PrivateRoutes = () => {
   return (
-    <Routes>
-      <Route path="friends" element={<Friends />}>
-        <Route path="all-friends" element={<AllFriends />} />
-        <Route path="friends-online" element={<FriendsOnline />} />
-        <Route path="friends-invites" element={<FriendsInvites />} />
-        <Route path="friends-approvals" element={<FriendsApprovals />} />
-        <Route path="add-to-friends" element={<AddToFriends />} />
-      </Route>
-      <Route path="messages" element={<Messages />} />
-      <Route path="profile" element={<Profile />} />
-      <Route path="channels" element={<Channels />} />
-      <Route path="*" element={<Navigate to="friends/all-friends" />} />
-    </Routes>
+    <Suspense fallback="Загрузка...">
+      <Routes>
+        <Route path="friends" element={<Friends />}>
+          <Route path="all-friends" element={<AllFriends />} />
+          <Route path="friends-online" element={<FriendsOnline />} />
+          <Route path="friends-invites" element={<FriendsInvites />} />
+          <Route path="friends-approvals" element={<FriendsApprovals />} />
+          <Route path="add-to-friends" element={<AddToFriends />} />
+        </Route>
+        <Route path="messages" element={<Messages />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="channels" element={<Channels />} />
+        <Route path="*" element={<Navigate to="friends/all-friends" />} />
+      </Routes>
+    </Suspense>
   );
 };
 
