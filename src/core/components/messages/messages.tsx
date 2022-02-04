@@ -5,7 +5,7 @@ import { Navigation } from '../../components/navigation';
 import { UserControl } from '../../components/user-control';
 import { User } from '../../components/user';
 import { Button } from '../../components/button';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../utils/axios-instance';
 import { TextField } from '../text-field';
 import { socket } from '../../utils/socket';
@@ -15,7 +15,6 @@ import { getChannelMessages } from '../../services/get-channel-messages';
 
 const Messages = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   const userId = useSelector(userIdSelector);
   const dispatch = useDispatch();

@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { registrationAction } from '../../../user/store/actions';
 import authorizationImage from '../../../../core/assets/images/authorization-image.jpg';
 import { AuthorizationLayout } from '../../../../core/layouts/authorization-layout';
+import { css } from '@emotion/css';
 
 const Registration = () => {
   const dispatch = useDispatch();
@@ -32,9 +33,11 @@ const Registration = () => {
       >
         <Box>
           <img
-            style={{ width: '100%',
-    height: '100%',
-    objectFit: 'cover' }}
+            className={css`
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            `}
             src={authorizationImage}
             alt="Илюстрация."
           />

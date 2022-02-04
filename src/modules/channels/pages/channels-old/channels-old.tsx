@@ -25,6 +25,7 @@ import { getChannels } from '../../../../core/services/get-channels';
 import { TextField } from '../../../../core/components/text-field';
 import { getChannelMessages } from '../../../../core/services/get-channel-messages';
 import { socket } from '../../../../core/utils/socket';
+import { css } from '@emotion/css';
 
 const ChannelsOld = () => {
   const dispatch = useDispatch();
@@ -567,14 +568,29 @@ const ChannelsOld = () => {
           >
             {/* Мое видео */}
             <Box sx={{ position: 'relative', width: '300px', borderRadius: '32px' }}>
-              <video style={{ width: '300px',
-    borderRadius: '32px' }} ref={myVideoStream} autoPlay muted playsInline />
+              <video
+                className={css`
+                  width: 300px;
+                  border-radius: 32px;
+                `}
+                ref={myVideoStream}
+                autoPlay
+                muted
+                playsInline
+              />
             </Box>
             {/* Видео пользователя которому звонят */}
             {isCallAccepted && !isCallCanceled && (
               <Box sx={{ position: 'relative', width: '300px', borderRadius: '32px' }}>
-                <video style={{ width: '300px',
-    borderRadius: '32px' }} ref={userVideoStream} autoPlay playsInline />
+                <video
+                  className={css`
+                    width: 300px;
+                    border-radius: 32px;
+                  `}
+                  ref={userVideoStream}
+                  autoPlay
+                  playsInline
+                />
               </Box>
             )}
           </Box>

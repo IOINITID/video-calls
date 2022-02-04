@@ -11,7 +11,6 @@ import { axiosInstance } from '../../utils/axios-instance';
 const FriendsLayout = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
   const [usersMessages, setUsersMessages] = useState<any[]>();
 
   useEffect(() => {

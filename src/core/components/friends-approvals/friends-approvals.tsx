@@ -3,7 +3,6 @@ import { Box } from '@mui/material';
 import { theme } from '../../theme';
 import { memo } from 'react';
 import { userApprovalsSelector } from '../../../modules/user/store/selectors';
-import { UserFriends } from '../user-friends';
 import { UserApprovals } from '../user-approvals';
 
 const FriendsApprovals = () => {
