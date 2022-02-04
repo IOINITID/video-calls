@@ -1,14 +1,15 @@
-import { memo } from 'react';
+import { lazy, memo } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Channels } from '../../../modules/channels/pages/channels';
-import { Friends } from '../../../modules/friends/pages/friends';
-import { Profile } from '../../../modules/profile/pages/profile';
-import { FriendsInvites } from '../../components/friends-invites';
-import { AllFriends } from '../../components/all-friends';
-import { FriendsOnline } from '../../components/friends-online';
-import { FriendsApprovals } from '../../components/friends-approvals';
-import { AddToFriends } from '../../components/add-to-friends';
-import { Messages } from '../../components/messages';
+
+const Friends = lazy(() => import('modules/friends/pages/friends'));
+const Messages = lazy(() => import('core/components/messages'));
+const Profile = lazy(() => import('modules/profile/pages/profile'));
+const Channels = lazy(() => import('modules/channels/pages/channels'));
+const AllFriends = lazy(() => import('core/components/all-friends'));
+const FriendsOnline = lazy(() => import('core/components/friends-online'));
+const FriendsInvites = lazy(() => import('core/components/friends-invites'));
+const FriendsApprovals = lazy(() => import('core/components/friends-approvals'));
+const AddToFriends = lazy(() => import('core/components/add-to-friends'));
 
 const PrivateRoutes = () => {
   return (

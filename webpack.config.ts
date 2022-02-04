@@ -77,6 +77,10 @@ const configuration: webpack.Configuration & { devServer?: webpackDevServer.Conf
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    alias: {
+      core: path.join(__dirname, 'src', 'core'),
+      modules: path.join(__dirname, 'src', 'modules'),
+    },
   },
   plugins: [
     new htmlWebpackPlugin({

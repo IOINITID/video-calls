@@ -1,9 +1,12 @@
 import { memo } from 'react';
-import { PrivateRoutes } from '../../routes/private';
-import { PublicRoutes } from '../../routes/public';
+import { PrivateRoutes, PublicRoutes } from 'core/routes';
 
-const App = ({ isAuthorizated }: { isAuthorizated: boolean }) => {
-  return <>{isAuthorizated ? <PrivateRoutes /> : <PublicRoutes />}</>;
+export type AppProps = {
+  isAuthorizated: boolean;
+};
+
+const App = ({ isAuthorizated }: AppProps) => {
+  return isAuthorizated ? <PrivateRoutes /> : <PublicRoutes />;
 };
 
 export const AppMemoized = memo(App);
