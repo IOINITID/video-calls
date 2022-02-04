@@ -13,7 +13,6 @@ node_modules/
 src/stories
 
 # Build files
-public/
 dist/
 
 # Configuration files
