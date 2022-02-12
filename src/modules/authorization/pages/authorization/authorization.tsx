@@ -6,7 +6,7 @@ import { Box, InputAdornment, IconButton, Typography, Link } from '@mui/material
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { theme } from 'core/theme';
 import { useNavigate } from 'react-router-dom';
-import { authorizationAction } from 'modules/user/store/actions';
+import { postAuthorizationAction } from 'modules/user/store/actions';
 import authorizationImage from 'core/assets/images/authorization-image.jpg';
 import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { css } from '@emotion/css';
@@ -86,7 +86,7 @@ const Authorization = () => {
                 color="primary"
                 size="large"
                 onClick={() => {
-                  dispatch(authorizationAction({ email, password }));
+                  dispatch(postAuthorizationAction({ email, password }));
                 }}
               >
                 Войти

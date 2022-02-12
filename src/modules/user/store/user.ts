@@ -8,7 +8,6 @@ import { getUsers } from '../../../core/services/get-users';
 import { AuthorizationResponse } from '../../../core/types';
 import { getFriendsAction } from '../../friends/store/actions';
 import {
-  authorizationAction,
   checkAuthorizationAction,
   getUsersAction,
   logoutAction,
@@ -85,18 +84,6 @@ export const userSlice = createSlice({
     builder.addCase(addMessageToChannel.fulfilled, (state: UserState, { payload }: PayloadAction<MessageResponse>) => {
       state.channelMessages = [...state.channelMessages, payload];
     });
-    // builder.addCase(
-    //   authorizationAction.fulfilled,
-    //   (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
-    //     state.id = payload.user.id;
-    //     state.email = payload.user.email;
-    //     state.name = payload.user.name;
-    //     state.status = payload.user.status;
-    //     state.token = payload.accessToken;
-    //     state.isAuthorizated = true;
-    //     localStorage.setItem('token', payload.accessToken);
-    //   }
-    // );
     builder.addCase(
       registrationAction.fulfilled,
       (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
