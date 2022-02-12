@@ -41,6 +41,15 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setAuthorization: (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
+      state.id = payload.user.id;
+      state.email = payload.user.email;
+      state.name = payload.user.name;
+      state.status = payload.user.status;
+      state.token = payload.accessToken;
+      state.isAuthorizated = true;
+      localStorage.setItem('token', payload.accessToken);
+    },
     setIsCall: (state: UserState, { payload }: PayloadAction<boolean>) => {
       state.isCall = payload;
     },
@@ -76,18 +85,18 @@ export const userSlice = createSlice({
     builder.addCase(addMessageToChannel.fulfilled, (state: UserState, { payload }: PayloadAction<MessageResponse>) => {
       state.channelMessages = [...state.channelMessages, payload];
     });
-    builder.addCase(
-      authorizationAction.fulfilled,
-      (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
-        state.id = payload.user.id;
-        state.email = payload.user.email;
-        state.name = payload.user.name;
-        state.status = payload.user.status;
-        state.token = payload.accessToken;
-        state.isAuthorizated = true;
-        localStorage.setItem('token', payload.accessToken);
-      }
-    );
+    // builder.addCase(
+    //   authorizationAction.fulfilled,
+    //   (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
+    //     state.id = payload.user.id;
+    //     state.email = payload.user.email;
+    //     state.name = payload.user.name;
+    //     state.status = payload.user.status;
+    //     state.token = payload.accessToken;
+    //     state.isAuthorizated = true;
+    //     localStorage.setItem('token', payload.accessToken);
+    //   }
+    // );
     builder.addCase(
       registrationAction.fulfilled,
       (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
@@ -133,6 +142,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setIsCall, setIsIncomingCall, setIsCallAccepted, setIsCallCanceled } = userSlice.actions;
+export const { setAuthorization, setIsCall, setIsIncomingCall, setIsCallAccepted, setIsCallCanceled } =
+  userSlice.actions;
 
 export const userReducer = userSlice.reducer;

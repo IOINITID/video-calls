@@ -1,14 +1,14 @@
 import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button } from '../../../../core/components/button';
-import { TextField } from '../../../../core/components/text-field';
+import { Button } from 'core/components/button';
+import { TextField } from 'core/components/text-field';
 import { Box, InputAdornment, IconButton, Typography, Link } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { theme } from '../../../../core/theme';
+import { theme } from 'core/theme';
 import { useNavigate } from 'react-router-dom';
-import { authorizationAction } from '../../../user/store/actions';
-import authorizationImage from '../../../../core/assets/images/authorization-image.jpg';
-import { AuthorizationLayout } from '../../../../core/layouts/authorization-layout';
+import { authorizationAction } from 'modules/user/store/actions';
+import authorizationImage from 'core/assets/images/authorization-image.jpg';
+import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { css } from '@emotion/css';
 
 const Authorization = () => {

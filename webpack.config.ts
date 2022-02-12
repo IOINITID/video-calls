@@ -41,13 +41,17 @@ const configuration: webpack.Configuration & { devServer?: webpackDevServer.Conf
         },
       },
       {
-        test: /\icon.svg$/,
+        test: /icon.svg$/,
         use: {
           loader: '@svgr/webpack',
+          options: {
+            titleProp: true,
+            exportType: 'named',
+          },
         },
       },
       {
-        test: /\image.(jpe?g|png|wepb|gif|avif|svg)$/,
+        test: /image.(jpe?g|png|wepb|gif|avif|svg)$/,
         use: {
           loader: 'file-loader',
           options: {
@@ -65,11 +69,11 @@ const configuration: webpack.Configuration & { devServer?: webpackDevServer.Conf
         },
       },
       {
-        test: /\.mp3$/,
+        test: /audio.mp3$/,
         use: {
           loader: 'file-loader',
           options: {
-            name: 'assets/sounds/[name].[contenthash].[ext]',
+            name: 'assets/audios/[name].[contenthash].[ext]',
           },
         },
       },

@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { memo, useEffect, useRef, useState } from 'react';
 import { Box, Typography, Link } from '@mui/material';
-import { Button } from '../../../../core/components/button';
-import { theme } from '../../../../core/theme';
+import { Button } from 'core/components/button';
+import { theme } from 'core/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   userChannelMessagesSelector,
@@ -13,18 +13,18 @@ import {
   userIsCallCanceledSelector,
   userIsCallSelector,
   userIsIncomingCallSelector,
-} from '../../../user/store/selectors';
+} from 'modules/user/store/selectors';
 import Peer, { Instance, SignalData } from 'simple-peer';
-import { User } from '../../../../core/components/user';
+import { User } from 'core/components/user';
 import { useNavigate } from 'react-router-dom';
-import { Navigation } from '../../../../core/components/navigation';
-import notificationCallSound from '../../../../core/assets/sounds/notication-call-sound.mp3';
+import { Navigation } from 'core/components/navigation';
+import notificationCallAudio from 'core/assets/audios/notication-call-audio.mp3';
 import { Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-material';
 import { setIsCall, setIsCallAccepted, setIsCallCanceled, setIsIncomingCall } from '../../../user/store/user';
-import { getChannels } from '../../../../core/services/get-channels';
-import { TextField } from '../../../../core/components/text-field';
-import { getChannelMessages } from '../../../../core/services/get-channel-messages';
-import { socket } from '../../../../core/utils/socket';
+import { getChannels } from 'core/services/get-channels';
+import { TextField } from 'core/components/text-field';
+import { getChannelMessages } from 'core/services/get-channel-messages';
+import { socket } from 'core/utils/socket';
 import { css } from '@emotion/css';
 
 const ChannelsOld = () => {
@@ -158,14 +158,14 @@ const ChannelsOld = () => {
 
       // Включает звук при входящем вызове
       if (audioCallTheme.current) {
-        audioCallTheme.current.src = notificationCallSound;
+        audioCallTheme.current.src = notificationCallAudio;
         audioCallTheme.current.play();
       }
 
       // Включает интервал повтора аудио через 2 секунды
       audioInterval.current = setInterval(() => {
         if (audioCallTheme.current) {
-          audioCallTheme.current.src = notificationCallSound;
+          audioCallTheme.current.src = notificationCallAudio;
           audioCallTheme.current.play();
         }
       }, 2000);
@@ -260,7 +260,7 @@ const ChannelsOld = () => {
 
     // Включает звук при вызове
     if (audioCallTheme.current) {
-      audioCallTheme.current.src = notificationCallSound;
+      audioCallTheme.current.src = notificationCallAudio;
       audioCallTheme.current.play();
     }
 
@@ -268,7 +268,7 @@ const ChannelsOld = () => {
 
     audioInterval.current = setInterval(() => {
       if (audioCallTheme.current) {
-        audioCallTheme.current.src = notificationCallSound;
+        audioCallTheme.current.src = notificationCallAudio;
         audioCallTheme.current.play();
       }
     }, 2000);

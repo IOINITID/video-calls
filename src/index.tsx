@@ -1,11 +1,11 @@
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { store } from './core/store/index';
-import { AppContainer } from './core/containers/app-container/app-container';
-import { ThemeProvider } from '@mui/material';
-import { theme } from './core/theme';
-import { injectGlobal } from '@emotion/css';
 import { HashRouter } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material';
+import { injectGlobal } from '@emotion/css';
+import { store } from 'core/store';
+import { AppContainer } from 'core/containers/app-container';
+import { theme } from 'core/theme';
 
 const Root = () => {
   injectGlobal`
@@ -50,4 +50,4 @@ const Root = () => {
   );
 };
 
-ReactDOM.render(<Root />, document.querySelector('.root'));
+render(<Root />, document.querySelector('.root'));

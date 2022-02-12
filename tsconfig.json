@@ -6,6 +6,8 @@
     "target": "ES6",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "isolatedModules": true,
+    "skipLibCheck": true
   }
 }

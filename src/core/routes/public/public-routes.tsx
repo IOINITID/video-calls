@@ -1,7 +1,7 @@
 import { memo, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Authorization } from '../../../modules/authorization/pages/authorization';
-import { Registration } from '../../../modules/registration/pages/registration';
+import { Authorization } from 'modules/authorization/pages/authorization';
+import { Registration } from 'modules/registration/pages/registration';
 
 const PublicRoutes = () => {
   return (
