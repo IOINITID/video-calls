@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { PrivateRoutes, PublicRoutes } from 'core/routes';
 
-export type AppProps = {
+type AppProps = {
   isAuthorizated: boolean;
 };
 
