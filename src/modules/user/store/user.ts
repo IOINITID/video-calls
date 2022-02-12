@@ -7,13 +7,7 @@ import { getInvites } from '../../../core/services/get-invites';
 import { getUsers } from '../../../core/services/get-users';
 import { AuthorizationResponse } from '../../../core/types';
 import { getFriendsAction } from '../../friends/store/actions';
-import {
-  checkAuthorizationAction,
-  getUsersAction,
-  logoutAction,
-  registrationAction,
-  serverLoadingAction,
-} from './actions';
+import { getUsersAction, logoutAction, registrationAction, serverLoadingAction } from './actions';
 import { ChannelResponse, MessageResponse, UserResponse, UserState } from './types';
 
 const initialState: UserState = {
@@ -86,18 +80,6 @@ export const userSlice = createSlice({
     });
     builder.addCase(
       registrationAction.fulfilled,
-      (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
-        state.id = payload.user.id;
-        state.email = payload.user.email;
-        state.name = payload.user.name;
-        state.status = payload.user.status;
-        state.token = payload.accessToken;
-        state.isAuthorizated = true;
-        localStorage.setItem('token', payload.accessToken);
-      }
-    );
-    builder.addCase(
-      checkAuthorizationAction.fulfilled,
       (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
         state.id = payload.user.id;
         state.email = payload.user.email;

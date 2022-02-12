@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { checkAuthorizationService } from '../services/index';
+import { getAuthorizationRefreshService } from 'modules/user/services';
 import { API_URL } from '../constants';
 import { logoutService } from '../services/logout-service';
 
@@ -25,9 +25,9 @@ axiosInstance.interceptors.response.use(
 
     if (error.response.status === 401) {
       try {
-        const response = await checkAuthorizationService();
+        const response = await getAuthorizationRefreshService();
 
-        localStorage.setItem('token', response.accessToken);
+        localStorage.setItem('token', response.data.accessToken);
 
         return axiosInstance.request(originalRequest);
       } catch (error) {
