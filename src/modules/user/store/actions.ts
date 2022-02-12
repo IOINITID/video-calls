@@ -1,7 +1,12 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { registrationService } from '../../registration/services';
-import { logoutService, serverLoadingService } from '../../../core/services';
+import { logoutService } from '../../../core/services';
 import { getUsersService } from 'modules/user/services';
+
+/**
+ * Action for getting server status.
+ */
+export const getServerStatusAction = createAction('user/getServerStatusAction');
 
 /**
  * Action for authorization.
@@ -16,5 +21,4 @@ export const getAuthorizationRefreshAction = createAction('user/getAuthorization
 
 export const registrationAction = createAsyncThunk('user/registrationAction', registrationService);
 export const logoutAction = createAsyncThunk('user/logoutAction', logoutService);
-export const serverLoadingAction = createAsyncThunk('user/serverLoadingAction', serverLoadingService);
 export const getUsersAction = createAsyncThunk('user/getUsersAction', getUsersService);

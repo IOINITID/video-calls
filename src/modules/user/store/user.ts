@@ -7,7 +7,7 @@ import { getInvites } from '../../../core/services/get-invites';
 import { getUsers } from '../../../core/services/get-users';
 import { AuthorizationResponse } from '../../../core/types';
 import { getFriendsAction } from '../../friends/store/actions';
-import { getUsersAction, logoutAction, registrationAction, serverLoadingAction } from './actions';
+import { getUsersAction, logoutAction, registrationAction } from './actions';
 import { ChannelResponse, MessageResponse, UserResponse, UserState } from './types';
 
 const initialState: UserState = {
@@ -34,6 +34,9 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setUserIsLoading: (state: UserState, { payload }: PayloadAction<boolean>) => {
+      state.isLoading = payload;
+    },
     setAuthorization: (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
       state.id = payload.user.id;
       state.email = payload.user.email;
@@ -99,19 +102,19 @@ export const userSlice = createSlice({
       state.isAuthorizated = false;
       localStorage.removeItem('token');
     });
-    builder.addCase(serverLoadingAction.pending, (state: UserState) => {
-      state.isLoading = true;
-    });
-    builder.addCase(serverLoadingAction.fulfilled, (state: UserState) => {
-      state.isLoading = false;
-    });
     builder.addCase(getUsersAction.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
       state.users = payload;
     });
   },
 });
 
-export const { setAuthorization, setIsCall, setIsIncomingCall, setIsCallAccepted, setIsCallCanceled } =
-  userSlice.actions;
+export const {
+  setUserIsLoading,
+  setAuthorization,
+  setIsCall,
+  setIsIncomingCall,
+  setIsCallAccepted,
+  setIsCallCanceled,
+} = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

@@ -5,7 +5,7 @@ import { getUsers } from 'core/services/get-users';
 import { getInvites } from 'core/services/get-invites';
 import { getApprovals } from 'core/services/get-approvals';
 import { App } from 'core/components/app';
-import { getAuthorizationRefreshAction, serverLoadingAction } from 'modules/user/store/actions';
+import { getAuthorizationRefreshAction, getServerStatusAction } from 'modules/user/store/actions';
 import { getFriendsAction } from 'modules/friends/store/actions';
 import { socket } from 'core/utils/socket';
 import { Loader } from 'core/components/loader';
@@ -23,10 +23,14 @@ const AppContainer = () => {
     }
   }, []);
 
+  useEffect(() => {
+    dispatch(getServerStatusAction());
+  }, []);
+
   // useEffect(() => {
   //   // TODO: Запрашивать при изменении конкретных данных точечно
 
-  //   dispatch(serverLoadingAction());
+  // dispatch(serverLoadingAction());
 
   //   if (userId) {
   //     socket.emit('on-connect', userId);

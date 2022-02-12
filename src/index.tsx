@@ -6,6 +6,8 @@ import { injectGlobal } from '@emotion/css';
 import { store } from 'core/store';
 import { AppContainer } from 'core/containers/app-container';
 import { theme } from 'core/theme';
+import { ToastContainer } from 'react-toastify';
+import { injectStyle } from 'react-toastify/dist/inject-style';
 
 const Root = () => {
   injectGlobal`
@@ -39,11 +41,14 @@ const Root = () => {
     }
   `;
 
+  injectStyle();
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <HashRouter>
           <AppContainer />
+          <ToastContainer theme="light" />
         </HashRouter>
       </ThemeProvider>
     </Provider>
