@@ -1,6 +1,5 @@
 import { memo, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Button } from 'core/components/button';
+import { useDispatch, useSelector } from 'react-redux';
 import { TextField } from 'core/components/text-field';
 import { Box, InputAdornment, IconButton, Typography, Link } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -10,10 +9,14 @@ import { postAuthorizationAction } from 'modules/user/store/actions';
 import authorizationImage from 'core/assets/images/authorization-image.jpg';
 import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { css } from '@emotion/css';
+import { LoadingButton } from '@mui/lab';
+import { userIsLoadingSelector } from 'modules/user/store/selectors';
 
 const Authorization = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const isLoading = useSelector(userIsLoadingSelector);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -81,16 +84,17 @@ const Authorization = () => {
                   />
                 </Box>
               </Box>
-              <Button
+              <LoadingButton
                 variant="contained"
                 color="primary"
                 size="large"
+                loading={isLoading}
                 onClick={() => {
                   dispatch(postAuthorizationAction({ email, password }));
                 }}
               >
                 Войти
-              </Button>
+              </LoadingButton>
             </Box>
             <Typography variant="subtitle2">
               У Вас ещё нет профиля?{' '}

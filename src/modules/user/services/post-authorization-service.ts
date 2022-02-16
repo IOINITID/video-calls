@@ -1,7 +1,7 @@
 import { axiosInstance } from 'core/utils/axios-instance';
-import { AuthorizationResponse } from 'core/types';
 import { postAuthorizationAction } from 'modules/user/store/actions';
 import { ApiUrl } from 'modules/user/services/constants';
+import { AuthorizationResponse } from 'modules/user/services/types';
 
 /**
  * Service for user authorization.
@@ -9,8 +9,8 @@ import { ApiUrl } from 'modules/user/services/constants';
 const postAuthorizationService = (params: ReturnType<typeof postAuthorizationAction>['payload']) => {
   return axiosInstance.request<AuthorizationResponse>({
     method: 'POST',
-    data: params,
     url: ApiUrl.Authorization,
+    data: params,
   });
 };
 

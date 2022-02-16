@@ -1,48 +1,31 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
-import { getAuthorizationRefreshAction, getServerStatusAction, postAuthorizationAction } from './actions';
-import { setAuthorization, setUserIsLoading } from './user';
-import {
-  getAuthorizationRefreshService,
-  postAuthorizationService,
-  getServerStatusService,
-} from 'modules/user/services';
+import { getAuthorizationRefreshAction, postAuthorizationAction } from './actions';
+import { setAuthorization, setIsLoading } from './user';
+import { getAuthorizationRefreshService, postAuthorizationService } from 'modules/user/services';
 import { toast } from 'react-toastify';
-
-/**
- * Saga for getting server status.
- */
-const getServerStatusSaga = function* (): SagaIterator {
-  try {
-    yield put(setUserIsLoading(true));
-    const response: Awaited<ReturnType<typeof getServerStatusService>> = yield call(getServerStatusService);
-    if (response.data.status === 'online') {
-      yield put(setUserIsLoading(false));
-    }
-  } catch (error) {
-    console.error(error);
-    yield put(setUserIsLoading(false));
-    toast.error('Сервер недоступен в данный момент. Повторите позже.');
-  }
-};
 
 /**
  * Saga for user authorization.
  */
 const postAuthorizationSaga = function* ({ payload }: ReturnType<typeof postAuthorizationAction>): SagaIterator {
   try {
+    yield put(setIsLoading(true));
     const response: Awaited<ReturnType<typeof postAuthorizationService>> = yield call(
       postAuthorizationService,
       payload
     );
+    yield put(setIsLoading(false));
     yield put(setAuthorization(response.data));
   } catch (error) {
     console.error(error);
+    yield put(setIsLoading(false));
+    toast.error('Ошибка авторизации. Проверьте логин и пароль.');
   }
 };
 
 /**
- * Saga for user authorization.
+ * Saga for user authorization refresh.
  */
 const getAuthorizationRefreshSaga = function* (): SagaIterator {
   try {
@@ -60,7 +43,6 @@ const getAuthorizationRefreshSaga = function* (): SagaIterator {
  */
 const userSaga = function* (): SagaIterator {
   yield all([
-    takeEvery(getServerStatusAction.type, getServerStatusSaga),
     takeEvery(postAuthorizationAction.type, postAuthorizationSaga),
     takeEvery(getAuthorizationRefreshAction.type, getAuthorizationRefreshSaga),
   ]);

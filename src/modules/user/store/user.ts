@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { addMessageToChannel } from '../../../core/services/add-message-to-channel';
-import { getApprovals } from '../../../core/services/get-approvals';
-import { getChannelMessages } from '../../../core/services/get-channel-messages';
-import { getChannels } from '../../../core/services/get-channels';
-import { getInvites } from '../../../core/services/get-invites';
-import { getUsers } from '../../../core/services/get-users';
-import { AuthorizationResponse } from '../../../core/types';
-import { getFriendsAction } from '../../friends/store/actions';
+import { addMessageToChannel } from 'core/services/add-message-to-channel';
+import { getApprovals } from 'core/services/get-approvals';
+import { getChannelMessages } from 'core/services/get-channel-messages';
+import { getChannels } from 'core/services/get-channels';
+import { getInvites } from 'core/services/get-invites';
+import { getUsers } from 'core/services/get-users';
+import { AuthorizationResponse } from 'core/types';
+import { getFriendsAction } from 'modules/friends/store/actions';
 import { getUsersAction, logoutAction, registrationAction } from './actions';
 import { ChannelResponse, MessageResponse, UserResponse, UserState } from './types';
 
@@ -34,7 +34,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUserIsLoading: (state: UserState, { payload }: PayloadAction<boolean>) => {
+    setIsLoading: (state: UserState, { payload }: PayloadAction<boolean>) => {
       state.isLoading = payload;
     },
     setAuthorization: (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
@@ -108,13 +108,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const {
-  setUserIsLoading,
-  setAuthorization,
-  setIsCall,
-  setIsIncomingCall,
-  setIsCallAccepted,
-  setIsCallCanceled,
-} = userSlice.actions;
+export const { setIsLoading, setAuthorization, setIsCall, setIsIncomingCall, setIsCallAccepted, setIsCallCanceled } =
+  userSlice.actions;
 
 export const userReducer = userSlice.reducer;

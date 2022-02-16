@@ -73,9 +73,9 @@ const AppContainer = () => {
   //   }
   // }, [userId]);
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
 
   return <App isAuthorizated={isAuthorizated} />;
 };
