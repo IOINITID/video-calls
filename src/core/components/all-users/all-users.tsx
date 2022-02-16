@@ -2,7 +2,7 @@ import { Box, Typography, Link } from '@mui/material';
 import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logoutAction } from '../../../modules/user/store/actions';
+import { postLogoutAction } from 'modules/user/store/actions';
 import {
   userApprovalsSelector,
   userEmailSelector,
@@ -221,7 +221,7 @@ const AllUsers = () => {
           variant="contained"
           color="primary"
           onClick={() => {
-            dispatch(logoutAction());
+            dispatch(postLogoutAction());
 
             socket.emit('on-disconnect', userId);
           }}

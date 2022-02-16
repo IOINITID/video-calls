@@ -1,12 +1,12 @@
 import { memo } from 'react';
 import { Box, Typography, Link } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { userEmailSelector, userIdSelector, userNameSelector } from '../../../user/store/selectors';
+import { userEmailSelector, userIdSelector, userNameSelector } from 'modules/user/store/selectors';
 import { useNavigate } from 'react-router-dom';
-import { Navigation } from '../../../../core/components/navigation';
-import { Button } from '../../../../core/components/button';
-import { logoutAction } from '../../../user/store/actions';
-import { socket } from '../../../../core/utils/socket';
+import { Navigation } from 'core/components/navigation';
+import { Button } from 'core/components/button';
+import { postLogoutAction } from 'modules/user/store/actions';
+import { socket } from 'core/utils/socket';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ const Profile = () => {
             variant="contained"
             color="primary"
             onClick={() => {
-              dispatch(logoutAction());
+              dispatch(postLogoutAction());
 
               socket.emit('on-disconnect', userId);
             }}

@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { getAuthorizationRefreshService } from 'modules/user/services';
+import { getAuthorizationRefreshService, postLogoutService } from 'modules/user/services';
 import { API_URL } from '../constants';
-import { logoutService } from '../services/logout-service';
 
 const axiosInstance = axios.create({
   withCredentials: true,
@@ -33,7 +32,7 @@ axiosInstance.interceptors.response.use(
       } catch (error) {
         console.log(error);
 
-        await logoutService();
+        await postLogoutService();
 
         localStorage.removeItem('token');
 

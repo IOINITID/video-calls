@@ -5,18 +5,18 @@ import { getChannelMessages } from 'core/services/get-channel-messages';
 import { getChannels } from 'core/services/get-channels';
 import { getInvites } from 'core/services/get-invites';
 import { getUsers } from 'core/services/get-users';
-import { AuthorizationResponse } from 'core/types';
 import { getFriendsAction } from 'modules/friends/store/actions';
-import { getUsersAction, logoutAction, registrationAction } from './actions';
+import { getUsersAction } from './actions';
 import { ChannelResponse, MessageResponse, UserResponse, UserState } from './types';
 
 const initialState: UserState = {
+  isAuthorizated: false,
+  isLoading: false,
   id: '',
   email: '',
   name: '',
   status: '',
   token: localStorage.getItem('token') || '',
-  isAuthorizated: false,
   users: [],
   friends: [],
   invites: [],
@@ -27,24 +27,17 @@ const initialState: UserState = {
   isCallCanceled: false,
   channels: [],
   channelMessages: [],
-  isLoading: false,
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setAuthorization: (state: UserState, { payload }: PayloadAction<boolean>) => {
+      state.isAuthorizated = payload;
+    },
     setIsLoading: (state: UserState, { payload }: PayloadAction<boolean>) => {
       state.isLoading = payload;
-    },
-    setAuthorization: (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
-      state.id = payload.user.id;
-      state.email = payload.user.email;
-      state.name = payload.user.name;
-      state.status = payload.user.status;
-      state.token = payload.accessToken;
-      state.isAuthorizated = true;
-      localStorage.setItem('token', payload.accessToken);
     },
     setIsCall: (state: UserState, { payload }: PayloadAction<boolean>) => {
       state.isCall = payload;
@@ -80,27 +73,6 @@ export const userSlice = createSlice({
     });
     builder.addCase(addMessageToChannel.fulfilled, (state: UserState, { payload }: PayloadAction<MessageResponse>) => {
       state.channelMessages = [...state.channelMessages, payload];
-    });
-    builder.addCase(
-      registrationAction.fulfilled,
-      (state: UserState, { payload }: PayloadAction<AuthorizationResponse>) => {
-        state.id = payload.user.id;
-        state.email = payload.user.email;
-        state.name = payload.user.name;
-        state.status = payload.user.status;
-        state.token = payload.accessToken;
-        state.isAuthorizated = true;
-        localStorage.setItem('token', payload.accessToken);
-      }
-    );
-    builder.addCase(logoutAction.fulfilled, (state: UserState) => {
-      state.id = '';
-      state.email = '';
-      state.name = '';
-      state.token = '';
-      state.status = '';
-      state.isAuthorizated = false;
-      localStorage.removeItem('token');
     });
     builder.addCase(getUsersAction.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
       state.users = payload;

@@ -1,10 +1,6 @@
-export type AuthorizationResponse = {
+/**
+ * Type of response for user authorization.
+ */
+export type Authorization = {
   accessToken: string;
-  refreshToken: string;
-  user: {
-    id: string;
-    email: string;
-    name: string;
-    status: string;
-  };
 };

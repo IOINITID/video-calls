@@ -1,10 +1,11 @@
 export type UserState = {
+  isLoading: boolean;
+  isAuthorizated: boolean;
   id: string;
   email: string;
   name: string;
   status: string;
   token: string;
-  isAuthorizated: boolean;
   users: UserResponse[];
   friends: UserResponse[];
   invites: UserResponse[];
@@ -15,7 +16,6 @@ export type UserState = {
   isCallCanceled: boolean;
   channels: ChannelResponse[];
   channelMessages: MessageResponse[];
-  isLoading: boolean;
 };
 
 export type UserResponse = {
