@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Box, Typography, Link } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { userEmailSelector, userIdSelector, userNameSelector } from 'modules/user/store/selectors';
+import { userUserSelector } from 'modules/user/store/selectors';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from 'core/components/navigation';
 import { Button } from 'core/components/button';
@@ -12,9 +12,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const userEmail = useSelector(userEmailSelector);
-  const userName = useSelector(userNameSelector);
-  const userId = useSelector(userIdSelector);
+  const user = useSelector(userUserSelector);
 
   return (
     <Box
@@ -31,8 +29,8 @@ const Profile = () => {
     >
       <Navigation />
       <Box>
-        <Typography variant="h5">Ваш email: {userEmail}</Typography>
-        <Typography variant="h5">Ваше имя: {userName}</Typography>
+        <Typography variant="h5">Ваш email: {user?.email}</Typography>
+        <Typography variant="h5">Ваше имя: {user?.name}</Typography>
         {/* TODO: Нужен пароль (скрытый или последние символы) */}
         <Typography variant="h5">Ваш пароль:</Typography>
         {/* TODO: Нужен статус */}
@@ -51,7 +49,7 @@ const Profile = () => {
             onClick={() => {
               dispatch(postLogoutAction());
 
-              socket.emit('on-disconnect', userId);
+              socket.emit('on-disconnect', user?.id);
             }}
           >
             Выйти из аккаунта

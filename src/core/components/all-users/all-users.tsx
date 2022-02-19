@@ -5,11 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { postLogoutAction } from 'modules/user/store/actions';
 import {
   userApprovalsSelector,
-  userEmailSelector,
   userFriendsSelector,
-  userIdSelector,
   userInvitesSelector,
   userIsAuthorizatedSelector,
+  userUserSelector,
   userUsersSelector,
 } from '../../../modules/user/store/selectors';
 import { axiosInstance } from '../../utils/axios-instance';
@@ -27,8 +26,7 @@ const AllUsers = () => {
   const invites = useSelector(userInvitesSelector);
   const approvals = useSelector(userApprovalsSelector);
   const isAuthorizated = useSelector(userIsAuthorizatedSelector);
-  const userEmail = useSelector(userEmailSelector);
-  const userId = useSelector(userIdSelector);
+  const user = useSelector(userUserSelector);
 
   return (
     <Box sx={{ display: 'grid', rowGap: '16px', position: 'absolute', top: '0', left: '0', padding: '16px' }}>
@@ -37,7 +35,7 @@ const AllUsers = () => {
       {users?.map((user) => {
         return (
           <Box
-            key={user._id}
+            key={user.id}
             sx={{
               display: 'inline-grid',
               gridAutoFlow: 'column',
@@ -49,14 +47,14 @@ const AllUsers = () => {
               padding: '8px 16px',
             }}
           >
-            <User id={user._id} name={user.name} status={user.status} email={user.email} />
+            <User id={user.id} name={user.name} status={user.status} email={user.email} />
             <Box sx={{ display: 'grid', gridAutoFlow: 'column', columnGap: '16px' }}>
               <Button
                 variant="contained"
                 onClick={async () => {
-                  const response = await axiosInstance.post('/add-invite-to-friends', { friendId: user._id });
+                  const response = await axiosInstance.post('/add-invite-to-friends', { friendId: user.id });
 
-                  socket.emit('on-add-invite-to-friends', user._id);
+                  socket.emit('on-add-invite-to-friends', user.id);
 
                   return response.data;
                 }}
@@ -205,7 +203,7 @@ const AllUsers = () => {
       {/* Выйти из аккаунта */}
       <Box sx={{ display: 'grid', rowGap: '8px' }}>
         <Typography variant="h5">
-          {isAuthorizated ? `Пользователь авторизован: ${userEmail}.` : 'Пользователь не авторизован.'}
+          {isAuthorizated ? `Пользователь авторизован: ${user?.email}.` : 'Пользователь не авторизован.'}
         </Typography>
         <Typography variant="h5">
           <Link sx={{ cursor: 'pointer' }} underline="hover" onClick={() => navigate('/profile')}>
@@ -223,7 +221,7 @@ const AllUsers = () => {
           onClick={() => {
             dispatch(postLogoutAction());
 
-            socket.emit('on-disconnect', userId);
+            socket.emit('on-disconnect', user?.id);
           }}
         >
           Выйти из аккаунта

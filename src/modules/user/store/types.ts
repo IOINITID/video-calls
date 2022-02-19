@@ -1,12 +1,11 @@
+import { User } from '../services/types';
+
 export type UserState = {
-  isLoading: boolean;
   isAuthorizated: boolean;
-  id: string;
-  email: string;
-  name: string;
-  status: string;
-  token: string;
-  users: UserResponse[];
+  isLoading: boolean;
+  user: User | undefined;
+  users: User[] | undefined;
+
   friends: UserResponse[];
   invites: UserResponse[];
   approvals: UserResponse[];

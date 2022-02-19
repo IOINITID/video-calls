@@ -1,27 +1,37 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { userIdSelector, userIsAuthorizatedSelector, userIsLoadingSelector } from 'modules/user/store/selectors';
-import { getUsers } from 'core/services/get-users';
-import { getInvites } from 'core/services/get-invites';
-import { getApprovals } from 'core/services/get-approvals';
+import { userIsAuthorizatedSelector, userUserSelector } from 'modules/user/store/selectors';
 import { App } from 'core/components/app';
-import { getAuthorizationRefreshAction } from 'modules/user/store/actions';
-import { getFriendsAction } from 'modules/friends/store/actions';
+import { getAuthorizationRefreshAction, getUserAction } from 'modules/user/store/actions';
 import { socket } from 'core/utils/socket';
-import { Loader } from 'core/components/loader';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
 
   const isAuthorizated = useSelector(userIsAuthorizatedSelector);
-  const userId = useSelector(userIdSelector);
-  const isLoading = useSelector(userIsLoadingSelector);
+  const user = useSelector(userUserSelector);
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
       dispatch(getAuthorizationRefreshAction());
     }
   }, []);
+
+  useEffect(() => {
+    if (isAuthorizated) {
+      dispatch(getUserAction());
+
+      socket.on('on-connect', () => {
+        dispatch(getUserAction());
+      });
+    }
+  }, [isAuthorizated]);
+
+  useEffect(() => {
+    if (user?.id) {
+      socket.emit('on-connect', user.id);
+    }
+  }, [user?.id]);
 
   // useEffect(() => {
   //   // TODO: Запрашивать при изменении конкретных данных точечно

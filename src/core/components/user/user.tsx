@@ -4,7 +4,7 @@ import { theme } from '../../theme';
 import { DeleteOutline } from '@mui/icons-material';
 import { socket } from '../../utils/socket';
 import { useSelector } from 'react-redux';
-import { userIdSelector } from '../../../modules/user/store/selectors';
+import { userUserSelector } from '../../../modules/user/store/selectors';
 import { useNavigate } from 'react-router-dom';
 
 const User = ({
@@ -18,7 +18,7 @@ const User = ({
   email: string;
   channelId?: string;
 }) => {
-  const userId = useSelector(userIdSelector);
+  const user = useSelector(userUserSelector);
   const navigate = useNavigate();
 
   return (
@@ -48,7 +48,7 @@ const User = ({
         },
       }}
       onClick={() => {
-        socket.emit('on-channel-join', channelId, userId);
+        socket.emit('on-channel-join', channelId, user?.id);
         navigate('/messages');
       }}
     >

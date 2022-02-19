@@ -4,20 +4,16 @@ import { getApprovals } from 'core/services/get-approvals';
 import { getChannelMessages } from 'core/services/get-channel-messages';
 import { getChannels } from 'core/services/get-channels';
 import { getInvites } from 'core/services/get-invites';
-import { getUsers } from 'core/services/get-users';
 import { getFriendsAction } from 'modules/friends/store/actions';
-import { getUsersAction } from './actions';
+import { User } from '../services/types';
 import { ChannelResponse, MessageResponse, UserResponse, UserState } from './types';
 
 const initialState: UserState = {
   isAuthorizated: false,
   isLoading: false,
-  id: '',
-  email: '',
-  name: '',
-  status: '',
-  token: localStorage.getItem('token') || '',
-  users: [],
+  user: undefined,
+  users: undefined,
+  // TODO: Обновление store
   friends: [],
   invites: [],
   approvals: [],
@@ -39,6 +35,12 @@ export const userSlice = createSlice({
     setIsLoading: (state: UserState, { payload }: PayloadAction<boolean>) => {
       state.isLoading = payload;
     },
+    setUser: (state: UserState, { payload }: PayloadAction<User>) => {
+      state.user = payload;
+    },
+    setUsers: (state: UserState, { payload }: PayloadAction<User[]>) => {
+      state.users = payload;
+    },
     setIsCall: (state: UserState, { payload }: PayloadAction<boolean>) => {
       state.isCall = payload;
     },
@@ -53,9 +55,6 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getUsers.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
-      state.users = payload;
-    });
     builder.addCase(getFriendsAction.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
       state.friends = payload;
     });
@@ -74,13 +73,18 @@ export const userSlice = createSlice({
     builder.addCase(addMessageToChannel.fulfilled, (state: UserState, { payload }: PayloadAction<MessageResponse>) => {
       state.channelMessages = [...state.channelMessages, payload];
     });
-    builder.addCase(getUsersAction.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
-      state.users = payload;
-    });
   },
 });
 
-export const { setIsLoading, setAuthorization, setIsCall, setIsIncomingCall, setIsCallAccepted, setIsCallCanceled } =
-  userSlice.actions;
+export const {
+  setAuthorization,
+  setIsLoading,
+  setUser,
+  setUsers,
+  setIsCall,
+  setIsIncomingCall,
+  setIsCallAccepted,
+  setIsCallCanceled,
+} = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

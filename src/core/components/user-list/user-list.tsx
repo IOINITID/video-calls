@@ -15,7 +15,7 @@ const UserList = () => {
       {users?.map((user) => {
         return (
           <Box
-            key={user._id}
+            key={user.id}
             sx={{
               display: 'inline-grid',
               gridAutoFlow: 'column',
@@ -34,9 +34,9 @@ const UserList = () => {
               <Button
                 variant="contained"
                 onClick={async () => {
-                  const response = await axiosInstance.post('/add-invite-to-friends', { friendId: user._id });
+                  const response = await axiosInstance.post('/add-invite-to-friends', { friendId: user.id });
 
-                  socket.emit('on-add-invite-to-friends', user._id);
+                  socket.emit('on-add-invite-to-friends', user.id);
 
                   return response.data;
                 }}
@@ -46,7 +46,7 @@ const UserList = () => {
               <Button
                 variant="contained"
                 onClick={async () => {
-                  const response = await axiosInstance.post('/add-to-friends', { friendId: user._id });
+                  const response = await axiosInstance.post('/add-to-friends', { friendId: user.id });
 
                   return response.data;
                 }}

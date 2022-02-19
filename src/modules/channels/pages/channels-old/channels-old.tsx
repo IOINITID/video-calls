@@ -8,7 +8,7 @@ import {
   userChannelMessagesSelector,
   userChannelsSelector,
   userFriendsSelector,
-  userIdSelector,
+  userUserSelector,
   userIsCallAcceptedSelector,
   userIsCallCanceledSelector,
   userIsCallSelector,
@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { Navigation } from 'core/components/navigation';
 import notificationCallAudio from 'core/assets/audios/notication-call-audio.mp3';
 import { Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-material';
-import { setIsCall, setIsCallAccepted, setIsCallCanceled, setIsIncomingCall } from '../../../user/store/user';
+import { setIsCall, setIsCallAccepted, setIsCallCanceled, setIsIncomingCall } from 'modules/user/store/user';
 import { getChannels } from 'core/services/get-channels';
 import { TextField } from 'core/components/text-field';
 import { getChannelMessages } from 'core/services/get-channel-messages';
@@ -31,7 +31,7 @@ const ChannelsOld = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const userId = useSelector(userIdSelector);
+  const user = useSelector(userUserSelector);
   const friends = useSelector(userFriendsSelector);
   const channels = useSelector(userChannelsSelector);
   const channelMessages = useSelector(userChannelMessagesSelector);
@@ -118,7 +118,7 @@ const ChannelsOld = () => {
       // dispatch(addMessageToChannel({ channel, message }));
 
       // ON-MESSAGE - событие отправки сообщения в канал
-      socket.emit('on-message', channel, message, userId);
+      socket.emit('on-message', channel, message, user?.id);
 
       setMessage('');
     }
@@ -225,7 +225,7 @@ const ChannelsOld = () => {
     // Обработка события сигнала
     // TODO: При клике передавать id пользователя которому звоним вместо (user-id-to-call)
     peer.on('signal', (data) => {
-      socket.emit('on-call', userId, userIdToCall, data);
+      socket.emit('on-call', user?.id, userIdToCall, data);
     });
 
     // Обработка события стрим
@@ -356,7 +356,7 @@ const ChannelsOld = () => {
                     color="primary"
                     onClick={() => {
                       // TODO: Добавить модель комнаты и сообщений
-                      socket.emit('on-channel-join', channel._id, userId);
+                      socket.emit('on-channel-join', channel._id, user?.id);
 
                       // Установка id канала
                       setChannel(channel._id);
@@ -381,7 +381,7 @@ const ChannelsOld = () => {
                     color="primary"
                     onClick={() => {
                       // TODO: Добавить модель комнаты и сообщений
-                      socket.emit('on-channel-join', channel._id, userId);
+                      socket.emit('on-channel-join', channel._id, user?.id);
 
                       // Установка типа канала
                       setChannelType(channel.type);

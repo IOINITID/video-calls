@@ -4,17 +4,20 @@ import { theme } from '../../theme';
 import { memo, useState, useEffect } from 'react';
 import { userUsersSelector } from '../../../modules/user/store/selectors';
 import { TextField } from '../text-field';
-import { getUsersAction } from '../../../modules/user/store/actions';
+import { postUsersAction } from '../../../modules/user/store/actions';
 import { UserAddInviteToFriends } from '../user-add-invite-to-friends';
 
 const AddToFriends = () => {
   const dispatch = useDispatch();
+
   const users = useSelector(userUsersSelector);
 
   const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
-    dispatch(getUsersAction({ searchValue }));
+    if (searchValue) {
+      dispatch(postUsersAction({ searchValue }));
+    }
   }, [searchValue]);
 
   return (
@@ -47,11 +50,11 @@ const AddToFriends = () => {
           },
         }}
       >
-        {users.map((user) => {
+        {users?.map((user) => {
           return (
             <UserAddInviteToFriends
-              key={user._id}
-              id={user._id}
+              key={user.id}
+              id={user.id}
               name={user.name}
               status={user.status}
               setSearchValue={setSearchValue}

@@ -20,12 +20,8 @@ const FriendsLayout = () => {
       setUsersMessages(response.data);
     };
 
-    getPersonalMessage();
+    // getPersonalMessage();
   }, []);
-
-  useEffect(() => {
-    console.log('usersMessages', usersMessages);
-  }, [usersMessages]);
 
   return (
     <Box

@@ -1,5 +1,4 @@
-import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { getUsersService } from 'modules/user/services/get-users-service';
+import { createAction } from '@reduxjs/toolkit';
 
 /**
  * Action for user authorization.
@@ -23,4 +22,12 @@ export const postRegistrationAction =
  */
 export const postLogoutAction = createAction('user/postLogoutAction');
 
-export const getUsersAction = createAsyncThunk('user/getUsersAction', getUsersService);
+/**
+ * Action for getting user data.
+ */
+export const getUserAction = createAction('user/getUserAction');
+
+/**
+ * Action for getting user by name.
+ */
+export const postUsersAction = createAction<{ searchValue: string }>('user/getUsersAction');

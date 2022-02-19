@@ -2,16 +2,20 @@ import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import {
   getAuthorizationRefreshAction,
+  getUserAction,
   postAuthorizationAction,
   postLogoutAction,
   postRegistrationAction,
+  postUsersAction,
 } from './actions';
-import { setAuthorization, setIsLoading } from './user';
+import { setAuthorization, setIsLoading, setUser, setUsers } from './user';
 import {
   getAuthorizationRefreshService,
+  getUserService,
   postAuthorizationService,
   postLogoutService,
   postRegistrationService,
+  postUsersService,
 } from 'modules/user/services';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -81,6 +85,30 @@ const postLogoutSaga = function* (): SagaIterator {
 };
 
 /**
+ * Saga for getting user data.
+ */
+const getUserSaga = function* (): SagaIterator {
+  try {
+    const response: Awaited<ReturnType<typeof getUserService>> = yield call(getUserService);
+    yield put(setUser(response.data));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
+ * Saga for getting user by name.
+ */
+const postUsersSaga = function* ({ payload }: ReturnType<typeof postUsersAction>): SagaIterator {
+  try {
+    const response: Awaited<ReturnType<typeof postUsersService>> = yield call(postUsersService, payload);
+    yield put(setUsers(response.data));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/**
  * Saga for user module sagas.
  */
 const userSaga = function* (): SagaIterator {
@@ -89,6 +117,8 @@ const userSaga = function* (): SagaIterator {
     takeEvery(getAuthorizationRefreshAction.type, getAuthorizationRefreshSaga),
     takeEvery(postRegistrationAction.type, postRegistrationSaga),
     takeEvery(postLogoutAction.type, postLogoutSaga),
+    takeEvery(getUserAction.type, getUserSaga),
+    takeEvery(postUsersAction.type, postUsersSaga),
   ]);
 };
 

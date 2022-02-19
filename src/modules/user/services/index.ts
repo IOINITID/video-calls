@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { axiosInstance } from 'core/utils/axios-instance';
-import { postAuthorizationAction, postRegistrationAction } from '../store/actions';
+import { postAuthorizationAction, postRegistrationAction, postUsersAction } from '../store/actions';
 import { ApiUrl } from './constants';
-import { Authorization } from './types';
+import { Authorization, User } from './types';
 
 /**
  * Service for user authorization.
@@ -44,5 +44,26 @@ export const postLogoutService = () => {
   return axiosInstance.request<never>({
     method: 'GET',
     url: ApiUrl.Logout,
+  });
+};
+
+/**
+ * Service for getting user data.
+ */
+export const getUserService = () => {
+  return axiosInstance.request<User>({
+    method: 'GET',
+    url: ApiUrl.User,
+  });
+};
+
+/**
+ * Service for getting user by name.
+ */
+export const postUsersService = (params: ReturnType<typeof postUsersAction>['payload']) => {
+  return axiosInstance.request<User[]>({
+    method: 'POST',
+    url: '/user/users',
+    data: params,
   });
 };

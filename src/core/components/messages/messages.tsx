@@ -1,22 +1,22 @@
 import { memo, useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import { theme } from '../../theme';
-import { Navigation } from '../../components/navigation';
-import { UserControl } from '../../components/user-control';
-import { User } from '../../components/user';
-import { Button } from '../../components/button';
+import { theme } from 'core/theme';
+import { Navigation } from 'core/components/navigation';
+import { UserControl } from 'core/components/user-control';
+import { User } from 'core/components/user';
+import { Button } from 'core/components/button';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { axiosInstance } from '../../utils/axios-instance';
-import { TextField } from '../text-field';
-import { socket } from '../../utils/socket';
+import { axiosInstance } from 'core/utils/axios-instance';
+import { TextField } from 'core/components/text-field';
+import { socket } from 'core/utils/socket';
 import { useDispatch, useSelector } from 'react-redux';
-import { userChannelMessagesSelector, userIdSelector } from '../../../modules/user/store/selectors';
-import { getChannelMessages } from '../../services/get-channel-messages';
+import { userChannelMessagesSelector, userUserSelector } from 'modules/user/store/selectors';
+import { getChannelMessages } from 'core/services/get-channel-messages';
 
 const Messages = () => {
   const navigate = useNavigate();
 
-  const userId = useSelector(userIdSelector);
+  const user = useSelector(userUserSelector);
   const dispatch = useDispatch();
 
   const channelMessages = useSelector(userChannelMessagesSelector);
@@ -31,7 +31,7 @@ const Messages = () => {
       // dispatch(addMessageToChannel({ channel, message }));
 
       // ON-MESSAGE - событие отправки сообщения в канал
-      socket.emit('on-message', channel, message, userId);
+      socket.emit('on-message', channel, message, user?.id);
 
       setMessage('');
     }
@@ -44,7 +44,7 @@ const Messages = () => {
       setUsersMessages(response.data);
     };
 
-    getPersonalMessage();
+    // getPersonalMessage();
 
     // ON-CHANNEL-JOIN - событие подключения пользователей к комнате
     socket.on('on-channel-join', (message: string, channel: string) => {
@@ -66,14 +66,6 @@ const Messages = () => {
       }
     });
   }, []);
-
-  useEffect(() => {
-    console.log('channelMessages', channelMessages);
-  }, [channelMessages]);
-
-  useEffect(() => {
-    console.log('usersMessages', usersMessages);
-  }, [usersMessages]);
 
   return (
     <Box
