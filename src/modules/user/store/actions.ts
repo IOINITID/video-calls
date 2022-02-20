@@ -9,7 +9,7 @@ export const postAuthorizationAction =
 /**
  * Action for user authorization refresh.
  */
-export const getAuthorizationRefreshAction = createAction('user/getAuthorizationRefreshAction');
+export const getRefreshAction = createAction('user/getRefreshAction');
 
 /**
  * Action for user registration.

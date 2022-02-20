@@ -18,10 +18,10 @@ export const postAuthorizationService = (params: ReturnType<typeof postAuthoriza
 /**
  * Service for user authorization refresh.
  */
-export const getAuthorizationRefreshService = () => {
+export const getRefreshService = () => {
   return axios.request<Authorization>({
     method: 'GET',
-    url: ApiUrl.AuthorizationRefresh,
+    url: ApiUrl.Refresh,
     withCredentials: true,
   });
 };

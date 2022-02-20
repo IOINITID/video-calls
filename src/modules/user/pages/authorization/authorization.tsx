@@ -55,7 +55,7 @@ const Authorization = () => {
                     type="email"
                     id="email"
                     name="email"
-                    label="Логин"
+                    label="Адрес электронной почты"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                     placeholder="Введите ваш email"

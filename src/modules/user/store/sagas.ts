@@ -1,7 +1,7 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import {
-  getAuthorizationRefreshAction,
+  getRefreshAction,
   getUserAction,
   postAuthorizationAction,
   postLogoutAction,
@@ -10,7 +10,7 @@ import {
 } from './actions';
 import { setAuthorization, setIsLoading, setUser, setUsers } from './user';
 import {
-  getAuthorizationRefreshService,
+  getRefreshService,
   getUserService,
   postAuthorizationService,
   postLogoutService,
@@ -46,11 +46,9 @@ const postAuthorizationSaga = function* ({ payload }: ReturnType<typeof postAuth
 /**
  * Saga for user authorization refresh.
  */
-const getAuthorizationRefreshSaga = function* (): SagaIterator {
+const getRefreshSaga = function* (): SagaIterator {
   try {
-    const response: Awaited<ReturnType<typeof getAuthorizationRefreshService>> = yield call(
-      getAuthorizationRefreshService
-    );
+    const response: Awaited<ReturnType<typeof getRefreshService>> = yield call(getRefreshService);
     yield put(setAuthorization(true));
     localStorage.setItem('token', response.data.accessToken);
   } catch (error) {
@@ -114,7 +112,7 @@ const postUsersSaga = function* ({ payload }: ReturnType<typeof postUsersAction>
 const userSaga = function* (): SagaIterator {
   yield all([
     takeEvery(postAuthorizationAction.type, postAuthorizationSaga),
-    takeEvery(getAuthorizationRefreshAction.type, getAuthorizationRefreshSaga),
+    takeEvery(getRefreshAction.type, getRefreshSaga),
     takeEvery(postRegistrationAction.type, postRegistrationSaga),
     takeEvery(postLogoutAction.type, postLogoutSaga),
     takeEvery(getUserAction.type, getUserSaga),

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userIsAuthorizatedSelector, userUserSelector } from 'modules/user/store/selectors';
 import { App } from 'core/components/app';
-import { getAuthorizationRefreshAction, getUserAction } from 'modules/user/store/actions';
+import { getRefreshAction, getUserAction } from 'modules/user/store/actions';
 import { socket } from 'core/utils/socket';
 
 const AppContainer = () => {
@@ -13,7 +13,7 @@ const AppContainer = () => {
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
-      dispatch(getAuthorizationRefreshAction());
+      dispatch(getRefreshAction());
     }
   }, []);
 
@@ -34,20 +34,12 @@ const AppContainer = () => {
   }, [user?.id]);
 
   // useEffect(() => {
-  //   // TODO: Запрашивать при изменении конкретных данных точечно
-
-  // dispatch(serverLoadingAction());
-
   //   if (userId) {
-  //     socket.emit('on-connect', userId);
-
   //     socket.on('on-connect', () => {
   //       dispatch(getUsers());
   //       dispatch(getFriendsAction());
   //       dispatch(getInvites());
   //       dispatch(getApprovals());
-
-  //       dispatch(checkAuthorizationAction()); // Для повторного получения статуса пользователя при подключении
   //     });
 
   //     socket.on('on-disconnect', () => {
