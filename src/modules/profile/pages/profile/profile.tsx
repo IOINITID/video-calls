@@ -234,7 +234,15 @@ const Profile = () => {
             variant="contained"
             color="primary"
             onClick={() => {
-              dispatch(patchUserAction({ email, name, color, image, password }));
+              dispatch(
+                patchUserAction({
+                  email: email ? email : undefined,
+                  name: name ? name : undefined,
+                  color: color ? color : undefined,
+                  image: image ? image : undefined,
+                  password,
+                })
+              );
             }}
           >
             Сохранить
