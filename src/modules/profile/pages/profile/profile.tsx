@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, useState } from 'react';
+import { ChangeEvent, memo, useEffect, useState } from 'react';
 import { Box, Typography, Link, Snackbar, Slide } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { userUserSelector } from 'modules/user/store/selectors';
@@ -24,6 +24,13 @@ const Profile = () => {
   const [password, setPassword] = useState('');
   const [color, setColor] = useState(user?.color);
   const [image, setImage] = useState('');
+  const [timer, setTimer] = useState(0);
+
+  useEffect(() => {
+    setInterval(() => {
+      setTimer((prevValue) => prevValue + 1);
+    }, 1000);
+  }, []);
 
   return (
     <Box sx={{ display: 'grid', gridTemplateColumns: 'max-content 1fr', height: '100%' }}>
@@ -136,7 +143,16 @@ const Profile = () => {
                 <Typography variant="subtitle1" color="lightgray">
                   Профиль пользователя
                 </Typography>
-                <Typography color="lightgray">Прошло 10:01</Typography>
+                <Typography color="lightgray">
+                  Прошло{' '}
+                  {Math.floor(timer / 60)
+                    .toString()
+                    .padStart(2, '0')}
+                  :
+                  {Number(timer - Math.floor(timer / 60) * 60)
+                    .toString()
+                    .padStart(2, '0')}
+                </Typography>
               </Box>
             </Box>
           </Box>
