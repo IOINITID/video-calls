@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { Avatar, Badge, Box, colors, IconButton, Typography } from '@mui/material';
+import { Avatar, Badge, Box, IconButton, Typography } from '@mui/material';
 import { theme } from '../../theme';
 import { Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
@@ -34,7 +34,7 @@ const UserControl = () => {
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             color={user?.status === 'online' ? 'success' : 'error'}
           >
-            <Avatar sx={{ backgroundColor: colors.deepPurple[500] }}></Avatar>
+            <Avatar sx={{ backgroundColor: user?.color }} src={user?.image} />
           </Badge>
         </Box>
         {/* Имя пользователя */}

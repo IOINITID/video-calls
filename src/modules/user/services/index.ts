@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { axiosInstance } from 'core/utils/axios-instance';
-import { postAuthorizationAction, postRegistrationAction, postUsersAction } from '../store/actions';
+import { patchUserAction, postAuthorizationAction, postRegistrationAction, postUsersAction } from '../store/actions';
 import { ApiUrl } from './constants';
 import { Authorization, User } from './types';
 
@@ -54,6 +54,17 @@ export const getUserService = () => {
   return axiosInstance.request<User>({
     method: 'GET',
     url: ApiUrl.User,
+  });
+};
+
+/**
+ * Service for updating user data.
+ */
+export const patchUserService = (params: ReturnType<typeof patchUserAction>['payload']) => {
+  return axiosInstance.request<User>({
+    method: 'PATCH',
+    url: ApiUrl.User,
+    data: params,
   });
 };
 
