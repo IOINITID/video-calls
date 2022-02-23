@@ -21,7 +21,10 @@ const PrivateRoutes = () => {
         <Route path="add-to-friends" element={<AddToFriends />} />
       </Route>
       <Route path="messages" element={<Messages />} />
-      <Route path="profile" element={<Profile />} />
+      <Route path="profile">
+        <Route index element={<Profile />} />
+        <Route path="*" element={<Profile />} />
+      </Route>
       <Route path="channels" element={<Channels />} />
       <Route path="*" element={<Navigate to="friends/all-friends" />} />
     </Routes>
