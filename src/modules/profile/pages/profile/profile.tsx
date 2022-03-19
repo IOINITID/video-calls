@@ -10,7 +10,7 @@ import { theme } from 'core/theme';
 import { TextField } from 'core/components/text-field';
 import { toast } from 'react-toastify';
 import { LoadingButton } from '@mui/lab';
-import { AddPhotoAlternateOutlined, CancelOutlined, Check, Colorize } from '@mui/icons-material';
+import { AddPhotoAlternateOutlined, CancelOutlined, Check, Colorize, Edit } from '@mui/icons-material';
 import { SettingNavigation } from 'modules/profile/pages/profile/components/navigation';
 import { useTimer } from 'modules/profile/hooks';
 import { css } from '@emotion/css';
@@ -77,7 +77,17 @@ const Profile = () => {
           >
             Профиль пользователя
           </Typography>
-          <Box sx={{ position: 'absolute', top: '16px', right: '0' }} onClick={() => navigate('/friends')}>
+          <Box
+            sx={{
+              display: 'grid',
+              rowGap: '8px',
+              position: 'absolute',
+              top: '60px',
+              right: '-40px',
+              textAlign: 'center',
+            }}
+            onClick={() => navigate('/friends')}
+          >
             <CancelOutlined sx={{ width: '36px', height: '36px' }} />
             <Typography sx={{ fontSize: '13px' }}>ESC</Typography>
           </Box>
@@ -370,17 +380,37 @@ const Profile = () => {
                   </Typography>
                   {/* NOTE: Обо мне */}
                   <Typography
-                    sx={{ borderTop: `1px solid ${theme.palette.grey[800]}` }}
+                    className={css`
+                      margin-bottom: 8px !important;
+                      padding: 20px 0 0 0 !important;
+                      font-weight: 600 !important;
+                      font-size: 12px !important;
+                      line-height: 16px !important;
+                      color: #b9bbbe;
+                      text-transform: uppercase !important;
+                      border-top: 1px solid ${theme.palette.grey[800]};
+                    `}
                     variant="subtitle1"
-                    color="lightgray"
                   >
                     Обо мне
                   </Typography>
-                  <Typography sx={{ maxHeight: '108px' }} color="lightgray">
+                  <Typography sx={{ maxHeight: '108px', paddingBottom: '20px' }} color="lightgray">
                     Информация о пользователе.
                   </Typography>
-                  {/* Profile settings */}
-                  <Typography variant="subtitle1" color="lightgray">
+                  {/* NOTE: Настройка профиля */}
+                  <Typography
+                    className={css`
+                      margin-bottom: 8px !important;
+                      padding: 20px 0 0 0 !important;
+                      font-weight: 600 !important;
+                      font-size: 12px !important;
+                      line-height: 16px !important;
+                      color: #b9bbbe;
+                      text-transform: uppercase !important;
+                      border-top: 1px solid ${theme.palette.grey[800]};
+                    `}
+                    variant="subtitle1"
+                  >
                     Настройка профиля
                   </Typography>
                   <Box
@@ -393,8 +423,13 @@ const Profile = () => {
                         height: '64px',
                         backgroundColor: theme.palette.primary.light,
                         borderRadius: '8px',
+                        display: 'grid',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                       }}
-                    />
+                    >
+                      <Edit sx={{ fill: '#ffffff' }} width={24} height={24} />
+                    </Box>
                     {/* Edit info */}
                     <Box>
                       <Typography variant="subtitle1" color="lightgray">
