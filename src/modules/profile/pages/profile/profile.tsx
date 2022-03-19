@@ -1,9 +1,8 @@
 import { ChangeEvent, memo, useEffect, useRef, useState } from 'react';
-import { Box, Typography, Link, Snackbar, Slide } from '@mui/material';
+import { Box, Typography, Link } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { userUserSelector } from 'modules/user/store/selectors';
 import { useNavigate } from 'react-router-dom';
-import { Navigation } from 'core/components/navigation';
 import { Button } from 'core/components/button';
 import { patchUserAction, postLogoutAction } from 'modules/user/store/actions';
 import { socket } from 'core/utils/socket';
@@ -11,8 +10,9 @@ import { theme } from 'core/theme';
 import { TextField } from 'core/components/text-field';
 import { toast } from 'react-toastify';
 import { LoadingButton } from '@mui/lab';
-import { AddPhotoAlternateOutlined, CancelOutlined, Close } from '@mui/icons-material';
-import { SettingNavigation } from './components/navigation';
+import { AddPhotoAlternateOutlined, CancelOutlined } from '@mui/icons-material';
+import { SettingNavigation } from 'modules/profile/pages/profile/components/navigation';
+import { useTimer } from 'modules/profile/hooks';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -25,15 +25,10 @@ const Profile = () => {
   const [password, setPassword] = useState('');
   const [color, setColor] = useState(user?.color);
   const [image, setImage] = useState('');
-  const [timer, setTimer] = useState(0);
+
+  const { minutes, seconds } = useTimer();
 
   const imageInput = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    setInterval(() => {
-      setTimer((prevValue) => prevValue + 1);
-    }, 1000);
-  }, []);
 
   useEffect(() => {
     const handleEscapeKeyDown = (event: KeyboardEvent) => {
@@ -261,14 +256,7 @@ const Profile = () => {
                         Профиль пользователя
                       </Typography>
                       <Typography color="lightgray">
-                        Прошло{' '}
-                        {Math.floor(timer / 60)
-                          .toString()
-                          .padStart(2, '0')}
-                        :
-                        {Number(timer - Math.floor(timer / 60) * 60)
-                          .toString()
-                          .padStart(2, '0')}
+                        Прошло {minutes}:{seconds}
                       </Typography>
                     </Box>
                   </Box>
