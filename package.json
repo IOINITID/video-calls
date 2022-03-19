@@ -15,7 +15,7 @@
     "lint:prettier": "prettier --check ./src/**/*.{ts,tsx}",
     "lint:fix": "yarn run lint:typescript && yarn run lint:eslint --fix && yarn run lint:stylelint --fix && yarn run lint:prettier --write",
     "lint": "yarn run lint:typescript && yarn run lint:eslint && yarn run lint:stylelint && yarn run lint:prettier",
-    "deploy": "yarn run build && npx gh-pages -d dist"
+    "deploy": "yarn run build && gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -78,6 +78,7 @@
     "eslint-plugin-react": "7.24.0",
     "file-loader": "6.2.0",
     "fork-ts-checker-webpack-plugin": "7.0.0",
+    "gh-pages": "^3.2.3",
     "html-webpack-plugin": "5.5.0",
     "husky": "4.3.7",
     "lint-staged": "11.0.1",
