@@ -10,9 +10,10 @@ import { theme } from 'core/theme';
 import { TextField } from 'core/components/text-field';
 import { toast } from 'react-toastify';
 import { LoadingButton } from '@mui/lab';
-import { AddPhotoAlternateOutlined, CancelOutlined } from '@mui/icons-material';
+import { AddPhotoAlternateOutlined, CancelOutlined, Check, Colorize } from '@mui/icons-material';
 import { SettingNavigation } from 'modules/profile/pages/profile/components/navigation';
 import { useTimer } from 'modules/profile/hooks';
+import { css } from '@emotion/css';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -23,8 +24,9 @@ const Profile = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [color, setColor] = useState(user?.color);
+  const [color, setColor] = useState('');
   const [image, setImage] = useState('');
+  const [isDefaultColor, setIsDefaultColor] = useState(true);
 
   const { minutes, seconds } = useTimer();
 
@@ -47,7 +49,7 @@ const Profile = () => {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: '224px 800px',
+          gridTemplateColumns: '224px 740px',
           height: '100%',
           justifyContent: 'center',
           backgroundImage: 'linear-gradient(to right, #eeeeee 50%, #9e9e9e 50%)',
@@ -59,29 +61,49 @@ const Profile = () => {
           sx={{
             position: 'relative',
             display: 'grid',
-            padding: '32px',
+            padding: '60px 40px 80px 40px',
             alignContent: 'start',
             backgroundColor: '#9e9e9e',
           }}
         >
-          <Typography>Профиль пользователя</Typography>
+          <Typography
+            className={css`
+              padding-bottom: 20px !important;
+              font-weight: 600 !important;
+              font-size: 20px !important;
+              line-height: 24px !important;
+              border-bottom: 1px solid #000000;
+            `}
+          >
+            Профиль пользователя
+          </Typography>
           <Box sx={{ position: 'absolute', top: '16px', right: '0' }} onClick={() => navigate('/friends')}>
             <CancelOutlined sx={{ width: '36px', height: '36px' }} />
             <Typography sx={{ fontSize: '13px' }}>ESC</Typography>
           </Box>
-
+          {/* NOTE: Аватар, цвет профиля и обо мне */}
           <Box
             sx={{
               display: 'grid',
               gridTemplateColumns: '340px 300px',
-              columnGap: '32px',
+              columnGap: '20px',
               justifyContent: 'space-between',
             }}
           >
-            {/* User details */}
+            {/* NOTE: Аватар */}
             <Box>
-              <Box>
-                <Typography>Аватар</Typography>
+              <Box sx={{ padding: '20px 0', borderBottom: '1px solid #000000' }}>
+                <Typography
+                  className={css`
+                    margin-bottom: 8px !important;
+                    font-weight: 600 !important;
+                    font-size: 12px !important;
+                    line-height: 16px !important;
+                    text-transform: uppercase !important;
+                  `}
+                >
+                  Аватар
+                </Typography>
                 <Button
                   variant="contained"
                   onClick={() => {
@@ -93,33 +115,141 @@ const Profile = () => {
                   Смена аватара
                 </Button>
               </Box>
-
-              <hr />
-
-              <Box>
-                <Typography>Цвет профиля</Typography>
-                <Box sx={{ display: 'grid', gridTemplateColumns: '70px 70px', columnGap: '16px' }}>
+              {/* NOTE: Цвет профиля */}
+              <Box sx={{ padding: '20px 0', borderBottom: '1px solid #000000' }}>
+                <Typography
+                  className={css`
+                    margin-bottom: 8px !important;
+                    font-weight: 600 !important;
+                    font-size: 12px !important;
+                    line-height: 16px !important;
+                    text-transform: uppercase !important;
+                  `}
+                >
+                  Цвет профиля
+                </Typography>
+                <Box sx={{ display: 'grid', gridTemplateColumns: 'max-content max-content', columnGap: '16px' }}>
+                  {/* NOTE: По умолчанию */}
                   <Box>
-                    <input type="color" />
+                    <Box
+                      sx={{
+                        display: 'grid',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: user?.color,
+                        width: '70px',
+                        height: '50px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        setIsDefaultColor(true);
+                      }}
+                    >
+                      {isDefaultColor && <Check sx={{ fill: '#ffffff' }} width={24} height={24} />}
+                    </Box>
+                    <Typography
+                      className={css`
+                        font-size: 12px !important;
+                        line-height: 16px !important;
+                      `}
+                    >
+                      По умолчанию
+                    </Typography>
                   </Box>
-                  <Box>
-                    <input type="color" />
+                  {/* NOTE: Пользовательские */}
+                  <Box sx={{ position: 'relative' }}>
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        display: 'grid',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: color,
+                        width: '70px',
+                        height: '50px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        border: color ? 'none' : '1px solid #000000',
+                      }}
+                      onClick={() => {
+                        setColor('#000000');
+                        setIsDefaultColor(false);
+                      }}
+                    >
+                      {!isDefaultColor && <Check sx={{ fill: '#ffffff' }} width={24} height={24} />}
+                      <input
+                        className={css`
+                          position: absolute;
+                          top: 0;
+                          left: 0;
+                          width: 100%;
+                          height: 100%;
+                          cursor: pointer;
+                          opacity: 0;
+                        `}
+                        type="color"
+                        value={color}
+                        onChange={(event) => {
+                          setColor(event.target.value);
+                          setIsDefaultColor(false);
+                        }}
+                      />
+                    </Box>
+                    <Colorize sx={{ position: 'absolute', top: '0', right: '8px' }} width={14} height={14} />
+                    <Typography
+                      className={css`
+                        font-size: 12px !important;
+                        line-height: 16px !important;
+                      `}
+                    >
+                      Пользовательские
+                    </Typography>
                   </Box>
                 </Box>
               </Box>
-
-              <hr />
-
-              <Box>
-                <Typography>Обо мне</Typography>
-                <TextField multiline />
+              {/* NOTE: Обо мне */}
+              <Box sx={{ padding: '20px 0' }}>
+                <Typography
+                  className={css`
+                    margin-bottom: 8px !important;
+                    font-weight: 600 !important;
+                    font-size: 12px !important;
+                    line-height: 16px !important;
+                    text-transform: uppercase !important;
+                  `}
+                >
+                  Обо мне
+                </Typography>
+                <Typography
+                  className={css`
+                    margin-bottom: 8px !important;
+                    font-size: 14px !important;
+                    line-height: 20px !important;
+                  `}
+                >
+                  Можно использовать разметку теста и ссылки.
+                </Typography>
+                {/* TODO: Максимальное число символов 190 и иконка открытия emoji. */}
+                <TextField multiline rows={4} fullWidth />
               </Box>
             </Box>
-
-            {/* User profile */}
+            {/* NOTE: Предпросмотр */}
             <Box>
-              <Typography>Предпросмотр</Typography>
-              {/* Card */}
+              <Box sx={{ padding: '20px 0 0 0' }}>
+                <Typography
+                  className={css`
+                    margin-bottom: 8px !important;
+                    font-weight: 600 !important;
+                    font-size: 12px !important;
+                    line-height: 16px !important;
+                    text-transform: uppercase !important;
+                  `}
+                >
+                  Предпросмотр
+                </Typography>
+              </Box>
+              {/* NOTE: Карточка */}
               <Box
                 sx={{
                   display: 'grid',
@@ -153,6 +283,7 @@ const Profile = () => {
                       backgroundPosition: '50% 50%',
                       border: `6px solid ${theme.palette.grey[900]}`,
                       borderRadius: '50%',
+                      cursor: 'pointer',
 
                       '&:hover, &:focus': {
                         '&::before': {
@@ -212,18 +343,32 @@ const Profile = () => {
                 {/* Card user info */}
                 <Box
                   sx={{
-                    padding: '64px 16px 16px 16px',
+                    padding: '48px 16px 16px 16px',
                     backgroundColor: theme.palette.grey['900'],
                   }}
                 >
-                  {/* Username */}
-                  <Typography color="lightgray">
+                  {/* NOTE: Имя пользователя */}
+                  <Typography
+                    className={css`
+                      padding: 16px 0;
+                      color: #ffffff;
+                    `}
+                  >
                     {user?.name}
-                    <Typography component="span" color="lightgray">
+                    {/* NOTE: Тег пользователя */}
+                    <Typography
+                      className={css`
+                        font-size: 20px;
+                        line-height: 24px;
+                        color: #b9bbbe;
+                        text-transform: uppercase;
+                      `}
+                      component="span"
+                    >
                       #{user?.id.slice(-4)}
                     </Typography>
                   </Typography>
-                  {/* About me */}
+                  {/* NOTE: Обо мне */}
                   <Typography
                     sx={{ borderTop: `1px solid ${theme.palette.grey[800]}` }}
                     variant="subtitle1"
