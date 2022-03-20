@@ -8,7 +8,8 @@ const Profile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate('user-profile');
+    // NOTE: Переадресация на страницу учетной записи
+    navigate('user-account');
   }, []);
 
   return (

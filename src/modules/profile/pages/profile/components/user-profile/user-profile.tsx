@@ -34,7 +34,7 @@ const UserProfile = () => {
   useEffect(() => {
     const handleEscapeKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        navigate('/friends');
+        navigate('friends');
       }
     };
 
@@ -258,7 +258,7 @@ const UserProfile = () => {
               overflow: 'hidden',
             }}
           >
-            {/* Card header */}
+            {/* NOTE: Карточка профиля пользователя */}
             <Box
               sx={{
                 position: 'relative',
@@ -266,7 +266,7 @@ const UserProfile = () => {
                 backgroundColor: user?.color,
               }}
             >
-              {/* Card user image */}
+              {/* NOTE: Аватар пользователя */}
               <Box
                 sx={{
                   position: 'absolute',
