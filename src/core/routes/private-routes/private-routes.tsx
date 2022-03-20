@@ -9,10 +9,13 @@ import { FriendsOnline } from 'core/components/friends-online';
 import { FriendsInvites } from 'core/components/friends-invites';
 import { FriendsApprovals } from 'core/components/friends-approvals';
 import { AddToFriends } from 'core/components/add-to-friends';
+import { UserProfile } from 'modules/profile/pages/profile/components/user-profile';
+import { UserAccount } from 'modules/profile/pages/profile/components/user-account';
 
 const PrivateRoutes = () => {
   return (
     <Routes>
+      {/* NOTE: Друзья */}
       <Route path="friends" element={<Friends />}>
         <Route path="all-friends" element={<AllFriends />} />
         <Route path="friends-online" element={<FriendsOnline />} />
@@ -20,11 +23,14 @@ const PrivateRoutes = () => {
         <Route path="friends-approvals" element={<FriendsApprovals />} />
         <Route path="add-to-friends" element={<AddToFriends />} />
       </Route>
+      {/* NOTE: Сообщения */}
       <Route path="messages" element={<Messages />} />
-      <Route path="profile">
-        <Route index element={<Profile />} />
-        <Route path="*" element={<Profile />} />
+      {/* NOTE: Настройка профиля */}
+      <Route path="profile" element={<Profile />}>
+        <Route path="user-account" element={<UserAccount />} />
+        <Route path="user-profile" element={<UserProfile />} />
       </Route>
+      {/* NOTE: Каналы */}
       <Route path="channels" element={<Channels />} />
       <Route path="*" element={<Navigate to="friends/all-friends" />} />
     </Routes>

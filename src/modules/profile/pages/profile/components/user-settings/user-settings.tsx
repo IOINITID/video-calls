@@ -1,9 +1,10 @@
 import { css } from '@emotion/css';
 import { Box, Link, Typography } from '@mui/material';
 import { theme } from 'core/theme';
+import { memo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-export const SettingNavigation = () => {
+const UserSettings = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -22,9 +23,11 @@ export const SettingNavigation = () => {
       </Typography>
       <ul
         className={css`
+          display: grid;
           margin: 0;
           padding: 0;
           list-style: none;
+          row-gap: 2px;
         `}
       >
         <li
@@ -33,9 +36,8 @@ export const SettingNavigation = () => {
             font-weight: 500 !important;
             font-size: 16px !important;
             line-height: 20px !important;
-            background-color: ${location.pathname.includes('/profile/account')
-              ? `${theme.palette.grey[400]}80`
-              : 'none'};
+            background-color: ${location.pathname.includes('user-account') ? `${theme.palette.grey[400]}80` : 'none'};
+            border-radius: 4px;
             cursor: pointer;
 
             &:hover,
@@ -44,8 +46,14 @@ export const SettingNavigation = () => {
             }
           `}
         >
-          <Link underline="none" onClick={() => navigate('/profile/account')}>
-            <Typography>Моя учётная запись</Typography>
+          <Link underline="none" onClick={() => navigate('user-account')}>
+            <Typography
+              className={css`
+                color: ${theme.palette.grey[700]};
+              `}
+            >
+              Моя учётная запись
+            </Typography>
           </Link>
         </li>
         <li
@@ -54,9 +62,8 @@ export const SettingNavigation = () => {
             font-weight: 500 !important;
             font-size: 16px !important;
             line-height: 20px !important;
-            background-color: ${location.pathname.includes('/profile/profile')
-              ? `${theme.palette.grey[400]}80`
-              : 'none'};
+            background-color: ${location.pathname.includes('user-profile') ? `${theme.palette.grey[400]}80` : 'none'};
+            border-radius: 4px;
             cursor: pointer;
 
             &:hover,
@@ -65,11 +72,19 @@ export const SettingNavigation = () => {
             }
           `}
         >
-          <Link underline="none" onClick={() => navigate('/profile/profile')}>
-            <Typography>Профиль пользователя</Typography>
+          <Link underline="none" onClick={() => navigate('user-profile')}>
+            <Typography
+              className={css`
+                color: ${theme.palette.grey[700]};
+              `}
+            >
+              Профиль пользователя
+            </Typography>
           </Link>
         </li>
       </ul>
     </Box>
   );
 };
+
+export const UserSettingsMemoized = memo(UserSettings);
