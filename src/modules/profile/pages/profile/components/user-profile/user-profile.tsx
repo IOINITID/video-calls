@@ -21,8 +21,6 @@ const UserProfile = () => {
   const user = useSelector(userUserSelector);
 
   const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
   const [color, setColor] = useState('');
   const [image, setImage] = useState('');
   const [isDefaultColor, setIsDefaultColor] = useState(true);
@@ -32,6 +30,39 @@ const UserProfile = () => {
   const { minutes, seconds } = useTimer();
 
   const imageInput = useRef<HTMLInputElement | null>(null);
+
+  // NOTE: Кнопка для выхода из аккаунта
+  //   <Button
+  //   variant="contained"
+  //   color="primary"
+  //   onClick={() => {
+  //     dispatch(postLogoutAction());
+
+  //     socket.emit('on-disconnect', user?.id);
+  //   }}
+  // >
+  //   Выйти из аккаунта
+  // </Button>
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const image = event.target.files ? event.target.files[0] : null;
+    const fileReader = new FileReader();
+
+    if (image) {
+      fileReader.readAsDataURL(image);
+      fileReader.onload = () => {
+        const IMAGE_MAX_SIZE = 5 * 1024 * 1024;
+
+        if (image.size > IMAGE_MAX_SIZE) {
+          toast.error('Изображение должно быть не более 5MB.');
+        }
+
+        setImage(String(fileReader.result));
+      };
+    }
+
+    setImage(event.target.value);
+  };
 
   useEffect(() => {
     const handleEscapeKeyDown = (event: KeyboardEvent) => {
@@ -60,9 +91,23 @@ const UserProfile = () => {
         display: 'grid',
         padding: '60px 40px 80px 40px',
         alignContent: 'start',
-        backgroundColor: '#9e9e9e',
+        backgroundColor: '#5e6065',
       }}
     >
+      {/* NOTE: Input для загрузки изображения */}
+      <TextField
+        sx={{ display: 'none' }}
+        type="file"
+        id="image"
+        name="image"
+        label="Изображение профиля"
+        inputProps={{ ref: (input: any) => (imageInput.current = input) }}
+        onChange={handleImageChange}
+        placeholder="Выберите изображение профиля"
+        autoComplete="off"
+        fullWidth
+        focused
+      />
       {/* NOTE: Сохранение изменений профиля пользователя */}
       <Snackbar
         key={Slide.name}
@@ -133,6 +178,7 @@ const UserProfile = () => {
           font-weight: 600 !important;
           font-size: 20px !important;
           line-height: 24px !important;
+          color: #ffffff !important;
           border-bottom: 1px solid #000000;
         `}
       >
@@ -146,11 +192,16 @@ const UserProfile = () => {
           top: '60px',
           right: '-40px',
           textAlign: 'center',
+          cursor: 'pointer',
+
+          '&:hover svg, &:focus svg': {
+            fill: '#ffffff',
+          },
         }}
         onClick={() => navigate('/friends')}
       >
-        <CancelOutlined sx={{ width: '36px', height: '36px' }} />
-        <Typography sx={{ fontSize: '13px' }}>ESC</Typography>
+        <CancelOutlined sx={{ width: '36px', height: '36px', fill: '#b9bbbe' }} />
+        <Typography sx={{ fontSize: '13px', color: '#b9bbbe' }}>ESC</Typography>
       </Box>
       {/* NOTE: Аватар, цвет профиля и обо мне */}
       <Box
@@ -504,51 +555,8 @@ const UserProfile = () => {
         </Box>
       </Box>
 
-      {/* Additional */}
+      {/* NOTE: Email пользователя */}
       <Box sx={{ display: 'none' }}>
-        <Typography variant="h5">Цвет профиля: {user?.color}</Typography>
-        <TextField
-          type="color"
-          id="color"
-          name="color"
-          label="Цвет профиля"
-          value={color}
-          onChange={(event) => setColor(event.target.value)}
-          placeholder="Выберите цвет профиля"
-          autoComplete="off"
-          fullWidth
-        />
-        <Typography variant="h5">Изображение профиля</Typography>
-        <TextField
-          type="file"
-          id="image"
-          name="image"
-          label="Изображение профиля"
-          inputProps={{ ref: (input: any) => (imageInput.current = input) }}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            const image = event.target.files ? event.target.files[0] : null;
-            const fileReader = new FileReader();
-
-            if (image) {
-              fileReader.readAsDataURL(image);
-              fileReader.onload = () => {
-                const IMAGE_MAX_SIZE = 5 * 1024 * 1024;
-
-                if (image.size > IMAGE_MAX_SIZE) {
-                  toast.error('Изображение должно быть не более 5MB.');
-                }
-
-                setImage(String(fileReader.result));
-              };
-            }
-
-            setImage(event.target.value);
-          }}
-          placeholder="Выберите изображение профиля"
-          autoComplete="off"
-          fullWidth
-          focused
-        />
         <Typography variant="h5">Ваш email: {user?.email}</Typography>
         <TextField
           type="email"
@@ -561,45 +569,6 @@ const UserProfile = () => {
           autoComplete="off"
           fullWidth
         />
-        {/* TODO: Нужен статус */}
-        <Typography variant="h5">Статус:</Typography>
-        {/* TODO: Нужна дата рождения */}
-        <Typography variant="h5">Дата рождения:</Typography>
-        {/* TODO: Нужен аватар */}
-        <Typography variant="h5">Ваш аватар:</Typography>
-        <Typography variant="h5">
-          <Link sx={{ cursor: 'pointer' }} underline="hover" onClick={() => navigate(-1)}>
-            Назад
-          </Link>
-          <LoadingButton
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              dispatch(
-                patchUserAction({
-                  email: email ? email : undefined,
-                  name: name ? name : undefined,
-                  color: color ? color : undefined,
-                  image: image ? image : undefined,
-                  password,
-                })
-              );
-            }}
-          >
-            Сохранить
-          </LoadingButton>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              dispatch(postLogoutAction());
-
-              socket.emit('on-disconnect', user?.id);
-            }}
-          >
-            Выйти из аккаунта
-          </Button>
-        </Typography>
       </Box>
     </Box>
   );

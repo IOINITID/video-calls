@@ -9,13 +9,14 @@ const UserSettings = () => {
   const location = useLocation();
 
   return (
-    <Box sx={{ padding: '60px 8px', backgroundColor: theme.palette.grey[200] }}>
+    <Box sx={{ padding: '60px 8px', backgroundColor: '#43454a' }}>
       <Typography
         className={css`
           padding: 6px 10px !important;
           font-weight: 700 !important;
           font-size: 12px !important;
           line-height: 16px !important;
+          color: #a0a2a6;
           text-transform: uppercase;
         `}
       >
@@ -36,20 +37,25 @@ const UserSettings = () => {
             font-weight: 500 !important;
             font-size: 16px !important;
             line-height: 20px !important;
-            background-color: ${location.pathname.includes('user-account') ? `${theme.palette.grey[400]}80` : 'none'};
+            background-color: ${location.pathname.includes('user-account') ? `#60656c` : 'none'};
             border-radius: 4px;
             cursor: pointer;
 
             &:hover,
             &:focus {
-              background-color: ${theme.palette.grey[400]}80;
+              background-color: ${location.pathname.includes('user-account') ? '#565a61' : '#87888d'};
             }
           `}
         >
           <Link underline="none" onClick={() => navigate('user-account')}>
             <Typography
               className={css`
-                color: ${theme.palette.grey[700]};
+                color: ${location.pathname.includes('user-account') ? '#ffffff' : '#a0a2a6'};
+
+                &:hover,
+                &:focus {
+                  color: #dfe0e1;
+                }
               `}
             >
               Моя учётная запись
@@ -62,20 +68,25 @@ const UserSettings = () => {
             font-weight: 500 !important;
             font-size: 16px !important;
             line-height: 20px !important;
-            background-color: ${location.pathname.includes('user-profile') ? `${theme.palette.grey[400]}80` : 'none'};
+            background-color: ${location.pathname.includes('user-profile') ? `#60656c` : 'none'};
             border-radius: 4px;
             cursor: pointer;
 
             &:hover,
             &:focus {
-              background-color: ${theme.palette.grey[400]}80;
+              background-color: ${location.pathname.includes('user-profile') ? '#565a61' : '#87888d'};
             }
           `}
         >
           <Link underline="none" onClick={() => navigate('user-profile')}>
             <Typography
               className={css`
-                color: ${theme.palette.grey[700]};
+                color: ${location.pathname.includes('user-profile') ? '#ffffff' : '#a0a2a6'};
+
+                &:hover,
+                &:focus {
+                  color: #dfe0e1;
+                }
               `}
             >
               Профиль пользователя

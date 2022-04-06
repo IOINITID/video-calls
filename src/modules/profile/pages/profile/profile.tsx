@@ -20,7 +20,7 @@ const Profile = () => {
           gridTemplateColumns: '224px 740px',
           height: '100%',
           justifyContent: 'center',
-          backgroundImage: 'linear-gradient(to right, #eeeeee 50%, #9e9e9e 50%)',
+          backgroundImage: 'linear-gradient(to right, #43454a 50%, #5e6065 50%)',
         }}
       >
         <UserSettings />

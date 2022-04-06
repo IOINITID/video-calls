@@ -16,7 +16,7 @@ const ModalChangeUserName = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
   const [password, setPassword] = useState('');
 
   return (
-    <Modal open={isOpen} onBackdropClick={onClose}>
+    <Modal open={isOpen} onBackdropClick={onClose} disableEnforceFocus>
       <Box
         sx={{
           width: '440px',
@@ -30,12 +30,29 @@ const ModalChangeUserName = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
         }}
       >
         <Box sx={{ position: 'relative', display: 'grid', rowGap: '8px', padding: '24px 16px' }}>
-          <Typography sx={{ fontSize: '24px', color: '#ffffff' }}>Изменить имя пользователя</Typography>
-          <Typography sx={{ fontSize: '16px', color: '#c0c1c4' }}>
+          <Typography sx={{ fontSize: '24px', color: '#ffffff', textAlign: 'center' }}>
+            Изменить имя пользователя
+          </Typography>
+          <Typography sx={{ fontSize: '16px', color: '#c0c1c4', textAlign: 'center' }}>
             Введите новое имя пользователя и текущий пароль.
           </Typography>
-          <Box sx={{ position: 'absolute', top: '16px', right: '16px', cursor: 'pointer' }} onClick={onClose}>
-            <Close sx={{ fill: '#ffffff' }} />
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '16px',
+              right: '16px',
+              cursor: 'pointer',
+
+              '& svg': {
+                fill: '#c0c1c4',
+              },
+              '& svg:hover, & svg:focus': {
+                fill: '#ffffff',
+              },
+            }}
+            onClick={onClose}
+          >
+            <Close sx={{}} />
           </Box>
         </Box>
         <Box sx={{ display: 'grid', rowGap: '16px', padding: '0 16px 24px 16px' }}>
@@ -47,7 +64,7 @@ const ModalChangeUserName = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               sx={{
                 backgroundColor: '#36383a',
 
-                '&': {
+                '.MuiOutlinedInput-input': {
                   color: '#dfe0e1',
                 },
 
@@ -82,7 +99,7 @@ const ModalChangeUserName = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               sx={{
                 backgroundColor: '#36383a',
 
-                '.MuiOutlinedInput-root': {
+                '.MuiOutlinedInput-input': {
                   color: '#dfe0e1',
                 },
 
@@ -121,7 +138,7 @@ const ModalChangeUserName = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
           }}
         >
           <Link
-            sx={{ display: 'grid', alignItems: 'center', color: '#ffffff', cursor: 'pointer' }}
+            sx={{ display: 'grid', alignItems: 'center', color: '#ffffff', cursor: 'pointer', padding: '2px 16px' }}
             underline="hover"
             onClick={() => {
               setName(user?.name);
