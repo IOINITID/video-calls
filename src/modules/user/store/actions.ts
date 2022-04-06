@@ -31,7 +31,7 @@ export const getUserAction = createAction('user/getUserAction');
 /**
  * Action for updating user data.
  */
-export const patchUserAction = createAction<Partial<User> & { password: string }>('user/patchUserAction');
+export const patchUserAction = createAction<Partial<User & { password: string }>>('user/patchUserAction');
 
 /**
  * Action for getting user by name.

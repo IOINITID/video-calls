@@ -1,7 +1,7 @@
 import { css } from '@emotion/css';
 import { AddPhotoAlternateOutlined, CancelOutlined, Check, Colorize, Edit } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { Box, Link, Typography } from '@mui/material';
+import { Box, Link, Slide, Snackbar, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
 import { TextField } from 'core/components/text-field';
 import { theme } from 'core/theme';
@@ -27,6 +27,8 @@ const UserProfile = () => {
   const [image, setImage] = useState('');
   const [isDefaultColor, setIsDefaultColor] = useState(true);
 
+  const [isFieldsChanged, setIsFieldsChanged] = useState(false);
+
   const { minutes, seconds } = useTimer();
 
   const imageInput = useRef<HTMLInputElement | null>(null);
@@ -43,6 +45,14 @@ const UserProfile = () => {
     return () => document.removeEventListener('keydown', handleEscapeKeyDown);
   }, []);
 
+  useEffect(() => {
+    if (color !== '' || image !== '') {
+      setIsFieldsChanged(true);
+    } else {
+      setIsFieldsChanged(false);
+    }
+  }, [color, image]);
+
   return (
     <Box
       sx={{
@@ -53,6 +63,70 @@ const UserProfile = () => {
         backgroundColor: '#9e9e9e',
       }}
     >
+      {/* NOTE: Сохранение изменений профиля пользователя */}
+      <Snackbar
+        key={Slide.name}
+        message="Аккуратнее, вы не сохранили изменения!"
+        TransitionComponent={Slide}
+        open={isFieldsChanged}
+        sx={{
+          '&': {
+            position: 'absolute',
+            left: '40px',
+            transform: 'none',
+            width: '100%',
+
+            '.MuiSnackbarContent-root': {
+              width: '100%',
+            },
+          },
+        }}
+        onClose={(event, reason) => {
+          if (reason === 'clickaway') {
+            return;
+          }
+
+          setIsFieldsChanged(false);
+        }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        action={
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'max-content max-content',
+              columnGap: '16px',
+              alignItems: 'center',
+            }}
+          >
+            <Link
+              sx={{ cursor: 'pointer' }}
+              underline="hover"
+              onClick={() => {
+                setColor('');
+                setImage('');
+              }}
+            >
+              <Typography>Сброс</Typography>
+            </Link>
+            <LoadingButton
+              variant="contained"
+              color="success"
+              onClick={() => {
+                dispatch(
+                  patchUserAction({
+                    color: color ? color : undefined,
+                    image: image ? image : undefined,
+                  })
+                );
+                setColor('');
+                setImage('');
+              }}
+            >
+              Сохранить изменения
+            </LoadingButton>
+          </Box>
+        }
+      />
       <Typography
         className={css`
           padding-bottom: 20px !important;
@@ -167,7 +241,7 @@ const UserProfile = () => {
                     height: '50px',
                     borderRadius: '4px',
                     cursor: 'pointer',
-                    border: color ? 'none' : '1px solid #000000',
+                    border: color ? '' : '1px solid #000000',
                   }}
                   onClick={() => {
                     setColor('#000000');
@@ -550,77 +624,6 @@ const UserProfile = () => {
           >
             Выйти из аккаунта
           </Button>
-          {/* <Snackbar
-    key={Slide.name}
-    message="Аккуратнее, вы не сохранили изменения!"
-    TransitionComponent={Slide}
-    open={isFieldsChange}
-    onClose={() => setIsFieldsChange(false)}
-    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-    action={
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: 'max-content max-content',
-          columnGap: '16px',
-          alignItems: 'center',
-        }}
-      >
-        <Link
-          underline="hover"
-          onClick={() => {
-            setEmail('');
-            setName('');
-            setPassword('');
-            setColor(user?.color);
-            setImage('');
-          }}
-        >
-          <Typography>Сброс</Typography>
-        </Link>
-        <LoadingButton
-          variant="contained"
-          color="success"
-          onClick={() => {
-            dispatch(
-              patchUserAction({
-                email: email ? email : undefined,
-                name: name ? name : undefined,
-                color: color ? color : undefined,
-                image: image ? image : undefined,
-                password,
-              })
-            );
-          }}
-        >
-          Сохранить изменения
-        </LoadingButton>
-      </Box>
-    }
-  /> */}
-          {/* <Box
-    sx={{
-      display: 'grid',
-      gridTemplateColumns: '1fr max-content max-content',
-      columnGap: '16px',
-      alignItems: 'center',
-      backgroundColor: theme.palette.grey[400],
-      padding: '16px',
-      borderRadius: '8px',
-      // position: fixed;
-      // width: calc(100% - 136px);
-      // bottom: -70px;
-      // bottom: 32px;
-    }}
-  >
-    <Typography>Аккуратнее, вы не сохранили изменения!</Typography>
-    <Link underline="hover">
-      <Typography>Сброс</Typography>
-    </Link>
-    <Button variant="contained" color="success">
-      Сохранить изменения
-    </Button>
-  </Box> */}
         </Typography>
       </Box>
     </Box>
