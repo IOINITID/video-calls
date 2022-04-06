@@ -561,31 +561,6 @@ const UserProfile = () => {
           autoComplete="off"
           fullWidth
         />
-        <Typography variant="h5">Ваше имя: {user?.name}</Typography>
-        <TextField
-          type="text"
-          id="name"
-          name="name"
-          label="Имя пользователя"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          placeholder="Введите ваше имя"
-          autoComplete="off"
-          fullWidth
-        />
-        {/* TODO: Нужен пароль (скрытый или последние символы) */}
-        <Typography variant="h5">Ваш пароль:</Typography>
-        <TextField
-          type="text"
-          id="password"
-          name="password"
-          label="Пароль"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          placeholder="Введите ваш пароль"
-          autoComplete="off"
-          fullWidth
-        />
         {/* TODO: Нужен статус */}
         <Typography variant="h5">Статус:</Typography>
         {/* TODO: Нужна дата рождения */}
