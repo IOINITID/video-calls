@@ -7,6 +7,7 @@ import { userUserSelector } from 'modules/user/store/selectors';
 import { memo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { ModalChangeUserEmailMemoized } from '../../modals/modal-change-user-email';
 import { ModalChangeUserNameMemoized } from '../../modals/modal-change-user-name';
 
 const UserAccount = () => {
@@ -15,8 +16,8 @@ const UserAccount = () => {
   const user = useSelector(userUserSelector);
 
   const [isEmailShow, setIsEmailShow] = useState(false);
-
   const [isModalChangeUserName, setIsModalChangeUserName] = useState(false);
+  const [isModalChangeUserEmail, setIsModalChangeUserEmail] = useState(false);
 
   const getHiddenUserEmail = (email: string) => {
     const firstPartEndIndex = email.search('@');
@@ -39,6 +40,12 @@ const UserAccount = () => {
         isOpen={isModalChangeUserName}
         onClose={() => {
           setIsModalChangeUserName(false);
+        }}
+      />
+      <ModalChangeUserEmailMemoized
+        isOpen={isModalChangeUserEmail}
+        onClose={() => {
+          setIsModalChangeUserEmail(false);
         }}
       />
       <Typography
@@ -167,7 +174,11 @@ const UserAccount = () => {
                 #{user?.id.slice(-4)}
               </Typography>
             </Typography>
-            <Button sx={{ textTransform: 'none' }} variant="contained">
+            <Button
+              sx={{ textTransform: 'none' }}
+              variant="contained"
+              onClick={() => navigate('/profile/user-profile')}
+            >
               Настр. профиль пользователя
             </Button>
           </Box>
@@ -271,6 +282,7 @@ const UserAccount = () => {
                   },
                 }}
                 variant="contained"
+                onClick={() => setIsModalChangeUserEmail(true)}
               >
                 Изменить
               </Button>
@@ -307,6 +319,7 @@ const UserAccount = () => {
                   },
                 }}
                 variant="contained"
+                disabled
               >
                 Изменить
               </Button>

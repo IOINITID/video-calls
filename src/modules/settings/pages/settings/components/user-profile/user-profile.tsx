@@ -6,7 +6,7 @@ import { Button } from 'core/components/button';
 import { TextField } from 'core/components/text-field';
 import { theme } from 'core/theme';
 import { socket } from 'core/utils/socket';
-import { useTimer } from 'modules/profile/hooks';
+import { useTimer } from 'modules/settings/hooks';
 import { patchUserAction, postLogoutAction } from 'modules/user/store/actions';
 import { userUserSelector } from 'modules/user/store/selectors';
 import { ChangeEvent, memo, useEffect, useRef, useState } from 'react';
@@ -395,13 +395,7 @@ const UserProfile = () => {
             }}
           >
             {/* NOTE: Карточка профиля пользователя */}
-            <Box
-              sx={{
-                position: 'relative',
-                height: '60px',
-                backgroundColor: user?.default_color,
-              }}
-            >
+            <Box sx={{ position: 'relative', height: '60px', backgroundColor: user?.default_color }}>
               {/* NOTE: Аватар пользователя */}
               <Box
                 sx={{

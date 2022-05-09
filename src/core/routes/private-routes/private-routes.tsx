@@ -2,15 +2,15 @@ import { memo } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Friends } from 'modules/friends/pages/friends';
 import { Messages } from 'core/components/messages';
-import { Profile } from 'modules/profile/pages/profile';
+import { Settings } from 'modules/settings/pages/settings';
 import { Channels } from 'modules/channels/pages/channels';
 import { AllFriends } from 'core/components/all-friends';
 import { FriendsOnline } from 'core/components/friends-online';
 import { FriendsInvites } from 'core/components/friends-invites';
 import { FriendsApprovals } from 'core/components/friends-approvals';
 import { AddToFriends } from 'core/components/add-to-friends';
-import { UserProfile } from 'modules/profile/pages/profile/components/user-profile';
-import { UserAccount } from 'modules/profile/pages/profile/components/user-account';
+import { UserProfile } from 'modules/settings/pages/settings/components/user-profile';
+import { UserAccount } from 'modules/settings/pages/settings/components/user-account';
 
 const PrivateRoutes = () => {
   return (
@@ -25,8 +25,8 @@ const PrivateRoutes = () => {
       </Route>
       {/* NOTE: Сообщения */}
       <Route path="messages" element={<Messages />} />
-      {/* NOTE: Настройка профиля */}
-      <Route path="profile" element={<Profile />}>
+      {/* NOTE: Настройка */}
+      <Route path="settings" element={<Settings />}>
         <Route path="user-account" element={<UserAccount />} />
         <Route path="user-profile" element={<UserProfile />} />
       </Route>
