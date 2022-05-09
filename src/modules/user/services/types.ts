@@ -15,7 +15,8 @@ export type User = {
   name: string;
   socketId: string;
   status: 'offline' | 'online';
-  default_color: string | undefined;
-  color: string | undefined;
-  image: string | undefined;
+  default_color: string;
+  description: string;
+  color: string;
+  image: string;
 };

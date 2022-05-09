@@ -22,6 +22,7 @@ const UserProfile = () => {
   const [email, setEmail] = useState('');
   const [color, setColor] = useState('');
   const [image, setImage] = useState('');
+  const [description, setDescription] = useState(user?.description);
   const [isDefaultColor, setIsDefaultColor] = useState(true);
   const [isFieldsChanged, setIsFieldsChanged] = useState(false);
 
@@ -50,6 +51,12 @@ const UserProfile = () => {
   };
 
   useEffect(() => {
+    if (user?.description) {
+      setDescription(user.description);
+    }
+  }, [user?.description]);
+
+  useEffect(() => {
     const handleEscapeKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         navigate('friends');
@@ -62,12 +69,12 @@ const UserProfile = () => {
   }, []);
 
   useEffect(() => {
-    if (color !== '' || image !== '') {
+    if (color !== '' || image !== '' || description !== user?.description) {
       setIsFieldsChanged(true);
     } else {
       setIsFieldsChanged(false);
     }
-  }, [color, image]);
+  }, [color, image, description]);
 
   return (
     <Box
@@ -134,6 +141,7 @@ const UserProfile = () => {
               onClick={() => {
                 setColor('');
                 setImage('');
+                setDescription(user?.description);
               }}
             >
               <Typography>Сброс</Typography>
@@ -142,9 +150,16 @@ const UserProfile = () => {
               variant="contained"
               color="success"
               onClick={() => {
-                dispatch(patchUserAction({ color: color ? color : undefined, image: image ? image : undefined }));
+                dispatch(
+                  patchUserAction({
+                    color: color ? color : undefined,
+                    image: image ? image : undefined,
+                    description: description ? description : undefined,
+                  })
+                );
                 setColor('');
                 setImage('');
+                setDescription(user?.description);
               }}
             >
               Сохранить изменения
@@ -385,7 +400,13 @@ const UserProfile = () => {
               Можно использовать разметку теста и ссылки.
             </Typography>
             {/* TODO: Максимальное число символов 190 и иконка открытия emoji. */}
-            <TextField multiline rows={4} fullWidth />
+            <TextField
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              multiline
+              rows={4}
+              fullWidth
+            />
           </Box>
         </Box>
         {/* NOTE: Предпросмотр */}
@@ -540,7 +561,7 @@ const UserProfile = () => {
                 Обо мне
               </Typography>
               <Typography sx={{ maxHeight: '108px', paddingBottom: '20px' }} color="lightgray">
-                Информация о пользователе.
+                {description}
               </Typography>
               {/* NOTE: Настройка профиля */}
               <Typography

@@ -34,7 +34,7 @@ const UserControl = () => {
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             color={user?.status === 'online' ? 'success' : 'error'}
           >
-            <Avatar sx={{ backgroundColor: user?.default_color }} src={user?.image} />
+            <Avatar sx={{ backgroundColor: user?.color ? user.color : user?.default_color }} src={user?.image} />
           </Badge>
         </Box>
         {/* Имя пользователя */}
