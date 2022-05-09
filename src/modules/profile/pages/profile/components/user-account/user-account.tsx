@@ -119,7 +119,7 @@ const UserAccount = () => {
         </Box>
         {/* NOTE: Профиль пользователя */}
         <Box sx={{ margin: '20px 0', backgroundColor: '#36383a', borderRadius: '4px', overflow: 'hidden' }}>
-          <Box sx={{ position: 'relative', backgroundColor: user?.color, height: '100px' }}>
+          <Box sx={{ position: 'relative', backgroundColor: user?.default_color, height: '100px' }}>
             {/* NOTE: Аватар пользователя */}
             <Box
               sx={{
@@ -129,7 +129,7 @@ const UserAccount = () => {
                 width: '94px',
                 height: '94px',
                 backgroundImage: user?.image ? `url(${user?.image})` : 'none',
-                backgroundColor: user?.color ? user.color : 'none',
+                backgroundColor: user?.default_color ? user.default_color : 'none',
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: '50% 50%',

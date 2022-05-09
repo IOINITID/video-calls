@@ -258,7 +258,7 @@ const UserProfile = () => {
                     display: 'grid',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: user?.color,
+                    backgroundColor: user?.default_color,
                     width: '70px',
                     height: '50px',
                     borderRadius: '4px',
@@ -355,6 +355,17 @@ const UserProfile = () => {
             {/* TODO: Максимальное число символов 190 и иконка открытия emoji. */}
             <TextField multiline rows={4} fullWidth />
           </Box>
+          {/* NOTE: Выйти из аккаунта */}
+          <Box>
+            <LoadingButton
+              disableRipple
+              disableElevation
+              variant="contained"
+              onClick={() => dispatch(postLogoutAction())}
+            >
+              Выйти из аккаунта
+            </LoadingButton>
+          </Box>
         </Box>
         {/* NOTE: Предпросмотр */}
         <Box>
@@ -388,7 +399,7 @@ const UserProfile = () => {
               sx={{
                 position: 'relative',
                 height: '60px',
-                backgroundColor: user?.color,
+                backgroundColor: user?.default_color,
               }}
             >
               {/* NOTE: Аватар пользователя */}
@@ -400,6 +411,7 @@ const UserProfile = () => {
                   width: '92px',
                   height: '92px',
                   backgroundImage: image ? `url(${image})` : `url(${user?.image})`,
+                  background: user?.default_color,
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: '50% 50%',
