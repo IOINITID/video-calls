@@ -5,9 +5,8 @@ import { Box, Link, Slide, Snackbar, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
 import { TextField } from 'core/components/text-field';
 import { theme } from 'core/theme';
-import { socket } from 'core/utils/socket';
 import { useTimer } from 'modules/settings/hooks';
-import { patchUserAction, postLogoutAction } from 'modules/user/store/actions';
+import { patchUserAction } from 'modules/user/store/actions';
 import { userUserSelector } from 'modules/user/store/selectors';
 import { ChangeEvent, memo, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -207,16 +206,38 @@ const UserProfile = () => {
             >
               Аватар
             </Typography>
-            <Button
-              variant="contained"
-              onClick={() => {
-                if (imageInput.current) {
-                  imageInput.current.click();
-                }
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, max-content)',
+                alignItems: 'center',
+                columnGap: '16px',
               }}
             >
-              Смена аватара
-            </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  if (imageInput.current) {
+                    imageInput.current.click();
+                  }
+                }}
+              >
+                Смена аватара
+              </Button>
+              {user?.image && (
+                <Link
+                  sx={{ cursor: 'pointer', color: '#ffffff', fontFamily: 'sans-serif' }}
+                  underline="hover"
+                  onClick={() => {
+                    // TODO: Убрать необходимость пароля
+                    dispatch(patchUserAction({ image: '', password: '12345678' }));
+                    setImage('');
+                  }}
+                >
+                  Удалить аватар
+                </Link>
+              )}
+            </Box>
           </Box>
           {/* NOTE: Цвет профиля */}
           <Box sx={{ padding: '20px 0', borderBottom: '1px solid #000000' }}>
@@ -308,6 +329,36 @@ const UserProfile = () => {
                 >
                   Пользовательские
                 </Typography>
+              </Box>
+            </Box>
+            {/* NOTE: Настройка баннера */}
+            <Box sx={{ paddingTop: '20px' }}>
+              <Typography
+                className={css`
+                  margin-bottom: 8px !important;
+                  font-weight: 600 !important;
+                  font-size: 12px !important;
+                  line-height: 16px !important;
+                  text-transform: uppercase !important;
+                `}
+              >
+                Баннер профиля
+              </Typography>
+              <Box sx={{ display: 'grid', rowGap: '16px', justifyItems: 'start' }}>
+                <Typography>
+                  Мы рекомендуем использовать изображение как минимум 600x240. Доступные форматы PNG, JPG или
+                  анимированные GIF размером не более 5МБ.
+                </Typography>
+                <Button
+                  sx={{ textTransform: 'initial' }}
+                  disableRipple
+                  disableElevation
+                  variant="contained"
+                  color="success"
+                  onClick={() => null}
+                >
+                  Загрузить баннер
+                </Button>
               </Box>
             </Box>
           </Box>

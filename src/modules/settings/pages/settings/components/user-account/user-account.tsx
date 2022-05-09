@@ -285,7 +285,9 @@ const UserAccount = () => {
                   Номер телефона
                 </Typography>
                 <Typography sx={{ fontSize: '16px', color: '#ffffff' }}>
-                  {(user as any)?.phone ? '+79000000000' : 'Вы еще не указали номер телефона.'}
+                  {/* TODO: Добавить поле телефона в модель пользователя */}
+                  {/* {user?.phone ? user.phone : 'Вы еще не указали номер телефона.'} */}
+                  Вы еще не указали номер телефона.
                 </Typography>
               </Box>
               <Button
