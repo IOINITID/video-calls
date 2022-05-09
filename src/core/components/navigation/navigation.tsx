@@ -54,7 +54,7 @@ const Navigation = () => {
         </Tooltip>
       </Box>
       <Divider />
-      <Tooltip title="Профиль" arrow placement="right">
+      <Tooltip title="Настройки" arrow placement="right">
         <Box
           sx={{
             display: 'grid',
@@ -65,7 +65,7 @@ const Navigation = () => {
             justifyContent: 'center',
             width: '40px',
           }}
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate('/settings')}
         >
           <Settings />
         </Box>

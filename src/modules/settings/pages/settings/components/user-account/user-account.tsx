@@ -1,10 +1,9 @@
-import { css } from '@emotion/css';
 import { CancelOutlined } from '@mui/icons-material';
 import { Box, Typography, Link } from '@mui/material';
 import { Button } from 'core/components/button';
-import { theme } from 'core/theme';
+import { getHiddenUserEmail } from 'modules/settings/utils';
 import { userUserSelector } from 'modules/user/store/selectors';
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ModalChangeUserEmailMemoized } from '../../modals/modal-change-user-email';
@@ -19,12 +18,17 @@ const UserAccount = () => {
   const [isModalChangeUserName, setIsModalChangeUserName] = useState(false);
   const [isModalChangeUserEmail, setIsModalChangeUserEmail] = useState(false);
 
-  const getHiddenUserEmail = (email: string) => {
-    const firstPartEndIndex = email.search('@');
-    const hiddenValues = Array(firstPartEndIndex).fill('*').join('');
+  useEffect(() => {
+    const handleEscapeKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        navigate('friends');
+      }
+    };
 
-    return hiddenValues + email.slice(firstPartEndIndex);
-  };
+    document.addEventListener('keydown', handleEscapeKeyDown);
+
+    return () => document.removeEventListener('keydown', handleEscapeKeyDown);
+  }, []);
 
   return (
     <Box
@@ -49,13 +53,7 @@ const UserAccount = () => {
         }}
       />
       <Typography
-        className={css`
-          padding-bottom: 20px !important;
-          font-weight: 600 !important;
-          font-size: 20px !important;
-          line-height: 24px !important;
-          color: #ffffff !important;
-        `}
+        sx={{ paddingBottom: '20px', fontWeight: 600, fontSize: '20px', lineHeight: '24px', color: '#ffffff' }}
       >
         Моя учетная запись
       </Typography>
@@ -81,22 +79,9 @@ const UserAccount = () => {
       {/* NOTE: Содержимое страницы */}
       <Box sx={{ display: 'grid' }}>
         {/* NOTE: Предупреждение для подтверждения почты */}
-        <Box
-          sx={{
-            backgroundColor: '#36383a',
-            border: '1px solid#1c1e21',
-            borderRadius: '4px',
-            padding: '20px',
-          }}
-        >
+        <Box sx={{ backgroundColor: '#36383a', border: '1px solid#1c1e21', borderRadius: '4px', padding: '20px' }}>
           <Box>{/* NOTE: Иконка предупреждения */}</Box>
-          <Box
-            sx={{
-              display: 'grid',
-              rowGap: '8px',
-              justifyItems: 'start',
-            }}
-          >
+          <Box sx={{ display: 'grid', rowGap: '8px', justifyItems: 'start' }}>
             <Typography sx={{ fontSize: '12px', color: '#c0c1c4', textTransform: 'uppercase' }}>
               Неподтвержденный адрес эл.почты
             </Typography>
@@ -126,7 +111,13 @@ const UserAccount = () => {
         </Box>
         {/* NOTE: Профиль пользователя */}
         <Box sx={{ margin: '20px 0', backgroundColor: '#36383a', borderRadius: '4px', overflow: 'hidden' }}>
-          <Box sx={{ position: 'relative', backgroundColor: user?.default_color, height: '100px' }}>
+          <Box
+            sx={{
+              position: 'relative',
+              backgroundColor: user?.color ? user.color : user?.default_color,
+              height: '100px',
+            }}
+          >
             {/* NOTE: Аватар пользователя */}
             <Box
               sx={{
@@ -136,7 +127,7 @@ const UserAccount = () => {
                 width: '94px',
                 height: '94px',
                 backgroundImage: user?.image ? `url(${user?.image})` : 'none',
-                backgroundColor: user?.default_color ? user.default_color : 'none',
+                backgroundColor: user?.color ? user.color : user?.default_color,
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: '50% 50%',
@@ -162,7 +153,7 @@ const UserAccount = () => {
           <Box
             sx={{
               display: 'grid',
-              gridTemplateColumns: 'max-content max-content',
+              gridTemplateColumns: 'repeat(2, max-content)',
               justifyContent: 'space-between',
               alignItems: 'center',
               padding: '16px 16px 16px 120px',
@@ -177,25 +168,19 @@ const UserAccount = () => {
             <Button
               sx={{ textTransform: 'none' }}
               variant="contained"
-              onClick={() => navigate('/profile/user-profile')}
+              onClick={() => navigate('/settings/user-profile')}
             >
               Настр. профиль пользователя
             </Button>
           </Box>
           <Box
-            sx={{
-              display: 'grid',
-              margin: '16px',
-              padding: '16px',
-              backgroundColor: '#43454a',
-              borderRadius: '4px',
-            }}
+            sx={{ display: 'grid', margin: '16px', padding: '16px', backgroundColor: '#43454a', borderRadius: '4px' }}
           >
             {/* NOTE: Имя пользователя */}
             <Box
               sx={{
                 display: 'grid',
-                gridTemplateColumns: 'max-content max-content',
+                gridTemplateColumns: 'repeat(2, max-content)',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 padding: '8px 0',
@@ -237,7 +222,7 @@ const UserAccount = () => {
             <Box
               sx={{
                 display: 'grid',
-                gridTemplateColumns: 'max-content max-content',
+                gridTemplateColumns: 'repeat(2, max-content)',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 padding: '8px 0',
@@ -260,9 +245,7 @@ const UserAccount = () => {
                   <Link
                     sx={{ cursor: 'pointer', color: '#19b7f5' }}
                     underline="hover"
-                    onClick={() => {
-                      setIsEmailShow(!isEmailShow);
-                    }}
+                    onClick={() => setIsEmailShow(!isEmailShow)}
                   >
                     <Typography>{isEmailShow ? 'Скрыть' : 'Показать'}</Typography>
                   </Link>
@@ -291,7 +274,7 @@ const UserAccount = () => {
             <Box
               sx={{
                 display: 'grid',
-                gridTemplateColumns: 'max-content max-content',
+                gridTemplateColumns: 'repeat(2, max-content)',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 padding: '8px 0',

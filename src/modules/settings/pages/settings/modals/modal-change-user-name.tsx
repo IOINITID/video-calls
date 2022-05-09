@@ -150,14 +150,10 @@ const ModalChangeUserName = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             <Typography sx={{ fontSize: '14px' }}>Отмена</Typography>
           </Link>
           <Button
+            sx={{ textTransform: 'initial' }}
             variant="contained"
             onClick={() => {
-              dispatch(
-                patchUserAction({
-                  name,
-                  password,
-                })
-              );
+              dispatch(patchUserAction({ name, password }));
 
               onClose();
             }}

@@ -1,12 +1,15 @@
 import { css } from '@emotion/css';
-import { Box, Link, Typography } from '@mui/material';
-import { theme } from 'core/theme';
+import { Box, Divider, Link, Typography } from '@mui/material';
+import { postLogoutAction } from 'modules/user/store/actions';
+// import { theme } from 'core/theme';
 import { memo } from 'react';
+import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const UserSettings = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   return (
     <Box sx={{ padding: '60px 8px', backgroundColor: '#43454a' }}>
@@ -90,6 +93,38 @@ const UserSettings = () => {
               `}
             >
               Профиль пользователя
+            </Typography>
+          </Link>
+        </li>
+        <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.25)', margin: '8px 10px' }} />
+        <li
+          className={css`
+            padding: 6px 10px !important;
+            font-weight: 500 !important;
+            font-size: 16px !important;
+            line-height: 20px !important;
+            background-color: ${location.pathname.includes('logout') ? `#60656c` : 'none'};
+            border-radius: 4px;
+            cursor: pointer;
+
+            &:hover,
+            &:focus {
+              background-color: ${location.pathname.includes('logout') ? '#565a61' : '#87888d'};
+            }
+          `}
+        >
+          <Link underline="none" onClick={() => dispatch(postLogoutAction())}>
+            <Typography
+              className={css`
+                color: ${location.pathname.includes('logout') ? '#ffffff' : '#a0a2a6'};
+
+                &:hover,
+                &:focus {
+                  color: #dfe0e1;
+                }
+              `}
+            >
+              Выйти
             </Typography>
           </Link>
         </li>

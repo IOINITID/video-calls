@@ -24,25 +24,11 @@ const UserProfile = () => {
   const [color, setColor] = useState('');
   const [image, setImage] = useState('');
   const [isDefaultColor, setIsDefaultColor] = useState(true);
-
   const [isFieldsChanged, setIsFieldsChanged] = useState(false);
 
   const { minutes, seconds } = useTimer();
 
   const imageInput = useRef<HTMLInputElement | null>(null);
-
-  // NOTE: Кнопка для выхода из аккаунта
-  //   <Button
-  //   variant="contained"
-  //   color="primary"
-  //   onClick={() => {
-  //     dispatch(postLogoutAction());
-
-  //     socket.emit('on-disconnect', user?.id);
-  //   }}
-  // >
-  //   Выйти из аккаунта
-  // </Button>
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const image = event.target.files ? event.target.files[0] : null;
@@ -138,7 +124,7 @@ const UserProfile = () => {
           <Box
             sx={{
               display: 'grid',
-              gridTemplateColumns: 'max-content max-content',
+              gridTemplateColumns: 'repeat(2, max-content)',
               columnGap: '16px',
               alignItems: 'center',
             }}
@@ -157,12 +143,7 @@ const UserProfile = () => {
               variant="contained"
               color="success"
               onClick={() => {
-                dispatch(
-                  patchUserAction({
-                    color: color ? color : undefined,
-                    image: image ? image : undefined,
-                  })
-                );
+                dispatch(patchUserAction({ color: color ? color : undefined, image: image ? image : undefined }));
                 setColor('');
                 setImage('');
               }}
@@ -258,7 +239,7 @@ const UserProfile = () => {
                     display: 'grid',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: user?.default_color,
+                    backgroundColor: user?.color ? user.color : user?.default_color,
                     width: '70px',
                     height: '50px',
                     borderRadius: '4px',
@@ -355,17 +336,6 @@ const UserProfile = () => {
             {/* TODO: Максимальное число символов 190 и иконка открытия emoji. */}
             <TextField multiline rows={4} fullWidth />
           </Box>
-          {/* NOTE: Выйти из аккаунта */}
-          <Box>
-            <LoadingButton
-              disableRipple
-              disableElevation
-              variant="contained"
-              onClick={() => dispatch(postLogoutAction())}
-            >
-              Выйти из аккаунта
-            </LoadingButton>
-          </Box>
         </Box>
         {/* NOTE: Предпросмотр */}
         <Box>
@@ -395,7 +365,13 @@ const UserProfile = () => {
             }}
           >
             {/* NOTE: Карточка профиля пользователя */}
-            <Box sx={{ position: 'relative', height: '60px', backgroundColor: user?.default_color }}>
+            <Box
+              sx={{
+                position: 'relative',
+                height: '60px',
+                backgroundColor: user?.color ? user.color : user?.default_color,
+              }}
+            >
               {/* NOTE: Аватар пользователя */}
               <Box
                 sx={{
@@ -405,7 +381,7 @@ const UserProfile = () => {
                   width: '92px',
                   height: '92px',
                   backgroundImage: image ? `url(${image})` : `url(${user?.image})`,
-                  background: user?.default_color,
+                  backgroundColor: user?.color ? user.color : user?.default_color,
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: '50% 50%',

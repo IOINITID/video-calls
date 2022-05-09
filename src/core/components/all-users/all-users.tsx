@@ -206,7 +206,7 @@ const AllUsers = () => {
           {isAuthorizated ? `Пользователь авторизован: ${user?.email}.` : 'Пользователь не авторизован.'}
         </Typography>
         <Typography variant="h5">
-          <Link sx={{ cursor: 'pointer' }} underline="hover" onClick={() => navigate('/profile')}>
+          <Link sx={{ cursor: 'pointer' }} underline="hover" onClick={() => navigate('/settings')}>
             Посмотреть профиль
           </Link>
         </Typography>
