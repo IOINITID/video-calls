@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Action, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { addMessageToChannel } from 'core/services/add-message-to-channel';
 import { getApprovals } from 'core/services/get-approvals';
 import { getChannelMessages } from 'core/services/get-channel-messages';
@@ -13,6 +13,9 @@ const initialState: UserState = {
   isLoading: false,
   user: undefined,
   users: undefined,
+  loading: {
+    user: false,
+  },
   // TODO: Обновление store
   friends: [],
   invites: [],
@@ -29,6 +32,21 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    // NOTE: Получение пользователя
+    getUsetRequest: (state: UserState) => {
+      state.loading.user = true;
+    },
+    getUserSuccess: (state: UserState, { payload }: PayloadAction<User>) => {
+      state.user = payload;
+      state.loading.user = false;
+    },
+    getUserFailure: (state: UserState) => {
+      state.loading.user = false;
+    },
+    // NOTE: Обновление пользователя
+    updateUserRequest: (state: UserState, { payload }: PayloadAction<User>) => {
+      state.user = payload;
+    },
     setAuthorization: (state: UserState, { payload }: PayloadAction<boolean>) => {
       state.isAuthorizated = payload;
     },

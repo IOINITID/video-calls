@@ -5,6 +5,9 @@ export type UserState = {
   isLoading: boolean;
   user: User | undefined;
   users: User[] | undefined;
+  loading: {
+    user: boolean;
+  };
 
   friends: UserResponse[];
   invites: UserResponse[];
