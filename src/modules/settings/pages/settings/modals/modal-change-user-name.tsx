@@ -143,7 +143,6 @@ const ModalChangeUserName = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             onClick={() => {
               setName(user?.name);
               setPassword('');
-
               onClose();
             }}
           >
@@ -153,9 +152,10 @@ const ModalChangeUserName = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             sx={{ textTransform: 'initial' }}
             variant="contained"
             onClick={() => {
-              dispatch(patchUserAction({ name, password }));
-
-              onClose();
+              if (name?.trim() && password.trim()) {
+                dispatch(patchUserAction({ name, password }));
+                onClose();
+              }
             }}
           >
             Готово

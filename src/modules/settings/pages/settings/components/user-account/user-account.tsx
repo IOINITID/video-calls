@@ -40,18 +40,8 @@ const UserAccount = () => {
         backgroundColor: '#5e6065',
       }}
     >
-      <ModalChangeUserNameMemoized
-        isOpen={isModalChangeUserName}
-        onClose={() => {
-          setIsModalChangeUserName(false);
-        }}
-      />
-      <ModalChangeUserEmailMemoized
-        isOpen={isModalChangeUserEmail}
-        onClose={() => {
-          setIsModalChangeUserEmail(false);
-        }}
-      />
+      <ModalChangeUserNameMemoized isOpen={isModalChangeUserName} onClose={() => setIsModalChangeUserName(false)} />
+      <ModalChangeUserEmailMemoized isOpen={isModalChangeUserEmail} onClose={() => setIsModalChangeUserEmail(false)} />
       <Typography
         sx={{ paddingBottom: '20px', fontWeight: 600, fontSize: '20px', lineHeight: '24px', color: '#ffffff' }}
       >
@@ -211,9 +201,7 @@ const UserAccount = () => {
                   },
                 }}
                 variant="contained"
-                onClick={() => {
-                  setIsModalChangeUserName(true);
-                }}
+                onClick={() => setIsModalChangeUserName(true)}
               >
                 Изменить
               </Button>

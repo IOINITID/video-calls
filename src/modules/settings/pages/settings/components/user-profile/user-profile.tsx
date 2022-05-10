@@ -19,9 +19,8 @@ const UserProfile = () => {
 
   const user = useSelector(userUserSelector);
 
-  const [email, setEmail] = useState('');
   const [color, setColor] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(user?.image);
   const [description, setDescription] = useState(user?.description);
   const [isDefaultColor, setIsDefaultColor] = useState(true);
   const [isFieldsChanged, setIsFieldsChanged] = useState(false);
@@ -54,7 +53,11 @@ const UserProfile = () => {
     if (user?.description) {
       setDescription(user.description);
     }
-  }, [user?.description]);
+
+    if (user?.image) {
+      setImage(user.image);
+    }
+  }, [user?.description, user?.image]);
 
   useEffect(() => {
     const handleEscapeKeyDown = (event: KeyboardEvent) => {
@@ -69,7 +72,7 @@ const UserProfile = () => {
   }, []);
 
   useEffect(() => {
-    if (color !== '' || image !== '' || description !== user?.description) {
+    if (color !== '' || image !== user?.image || description !== user?.description) {
       setIsFieldsChanged(true);
     } else {
       setIsFieldsChanged(false);
@@ -140,26 +143,26 @@ const UserProfile = () => {
               underline="hover"
               onClick={() => {
                 setColor('');
-                setImage('');
+                setImage(user?.image);
                 setDescription(user?.description);
               }}
             >
               <Typography>Сброс</Typography>
             </Link>
             <LoadingButton
+              sx={{ textTransform: 'initial' }}
               variant="contained"
               color="success"
               onClick={() => {
                 dispatch(
                   patchUserAction({
                     color: color ? color : undefined,
-                    image: image ? image : undefined,
-                    description: description ? description : undefined,
+                    image: image !== user?.image ? image : undefined,
+                    description: description !== user?.description ? description : undefined,
                   })
                 );
+
                 setColor('');
-                setImage('');
-                setDescription(user?.description);
               }}
             >
               Сохранить изменения
@@ -200,12 +203,7 @@ const UserProfile = () => {
       </Box>
       {/* NOTE: Аватар, цвет профиля и обо мне */}
       <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: '340px 300px',
-          columnGap: '20px',
-          justifyContent: 'space-between',
-        }}
+        sx={{ display: 'grid', gridTemplateColumns: '340px 300px', columnGap: '20px', justifyContent: 'space-between' }}
       >
         {/* NOTE: Аватар */}
         <Box>
@@ -230,6 +228,7 @@ const UserProfile = () => {
               }}
             >
               <Button
+                sx={{ textTransform: 'initial' }}
                 variant="contained"
                 onClick={() => {
                   if (imageInput.current) {
@@ -243,11 +242,7 @@ const UserProfile = () => {
                 <Link
                   sx={{ cursor: 'pointer', color: '#ffffff', fontFamily: 'sans-serif' }}
                   underline="hover"
-                  onClick={() => {
-                    // TODO: Убрать необходимость пароля
-                    dispatch(patchUserAction({ image: '', password: '12345678' }));
-                    setImage('');
-                  }}
+                  onClick={() => setImage('')}
                 >
                   Удалить аватар
                 </Link>
@@ -281,9 +276,7 @@ const UserProfile = () => {
                     borderRadius: '4px',
                     cursor: 'pointer',
                   }}
-                  onClick={() => {
-                    setIsDefaultColor(true);
-                  }}
+                  onClick={() => setIsDefaultColor(true)}
                 >
                   {isDefaultColor && <Check sx={{ fill: '#ffffff' }} width={24} height={24} />}
                 </Box>
@@ -607,22 +600,6 @@ const UserProfile = () => {
             </Box>
           </Box>
         </Box>
-      </Box>
-
-      {/* NOTE: Email пользователя */}
-      <Box sx={{ display: 'none' }}>
-        <Typography variant="h5">Ваш email: {user?.email}</Typography>
-        <TextField
-          type="email"
-          id="email"
-          name="email"
-          label="Адрес электронной почты"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="Введите ваш email"
-          autoComplete="off"
-          fullWidth
-        />
       </Box>
     </Box>
   );

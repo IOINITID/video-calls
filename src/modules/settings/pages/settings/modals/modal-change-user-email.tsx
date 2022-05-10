@@ -3,14 +3,11 @@ import { Box, Link, Modal, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
 import { TextField } from 'core/components/text-field';
 import { patchUserAction } from 'modules/user/store/actions';
-import { userUserSelector } from 'modules/user/store/selectors';
 import { memo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const ModalChangeUserEmail = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const dispatch = useDispatch();
-
-  const user = useSelector(userUserSelector);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -143,7 +140,6 @@ const ModalChangeUserEmail = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
             onClick={() => {
               setEmail('');
               setPassword('');
-
               onClose();
             }}
           >
@@ -154,9 +150,8 @@ const ModalChangeUserEmail = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
             variant="contained"
             onClick={() => {
               // TODO: Добавить валидацию на email и длину пароля
-              if (email !== '' && password !== '') {
+              if (email.trim() && password.trim()) {
                 dispatch(patchUserAction({ email, password }));
-
                 onClose();
               }
             }}
