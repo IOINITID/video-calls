@@ -2,7 +2,7 @@ import { Close } from '@mui/icons-material';
 import { Box, Link, Modal, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
 import { TextField } from 'core/components/text-field';
-import { patchUserAction } from 'modules/user/store/actions';
+import { patchUserAction } from 'modules/user/actions';
 import { userUserSelector } from 'modules/user/store/selectors';
 import { memo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

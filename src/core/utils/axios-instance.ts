@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getRefreshService, postLogoutService } from 'modules/user/services';
+import { refreshService, logoutService } from 'modules/authorization/services';
 import { API_URL } from '../constants';
 
 const axiosInstance = axios.create({
@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   if (config.headers) {
-    config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+    config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`;
   }
 
   return config;
@@ -24,17 +24,17 @@ axiosInstance.interceptors.response.use(
 
     if (error.response.status === 401) {
       try {
-        const response = await getRefreshService();
+        const response = await refreshService();
 
-        localStorage.setItem('token', response.data.accessToken);
+        localStorage.setItem('access_token', response.data.access_token);
 
         return axiosInstance.request(originalRequest);
       } catch (error) {
         console.log(error);
 
-        await postLogoutService();
+        await logoutService();
 
-        localStorage.removeItem('token');
+        localStorage.removeItem('access_token');
       }
     }
 

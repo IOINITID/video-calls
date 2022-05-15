@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
 import { Box, Divider, Link, Typography } from '@mui/material';
-import { postLogoutAction } from 'modules/user/store/actions';
+import { requestLogoutAction } from 'modules/authorization/actions';
 import { memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -34,7 +34,7 @@ const UserSettings = () => {
       title: 'Выйти',
       path: 'logout',
       onClick: () => {
-        dispatch(postLogoutAction());
+        dispatch(requestLogoutAction());
       },
       divider: true,
     },

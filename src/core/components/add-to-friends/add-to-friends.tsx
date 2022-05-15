@@ -2,9 +2,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 import { theme } from '../../theme';
 import { memo, useState, useEffect } from 'react';
-import { userUsersSelector } from '../../../modules/user/store/selectors';
+import { userUsersSelector } from 'modules/user/store/selectors';
 import { TextField } from '../text-field';
-import { postUsersAction } from '../../../modules/user/store/actions';
+import { postUsersAction } from 'modules/user/actions';
 import { UserAddInviteToFriends } from '../user-add-invite-to-friends';
 
 const AddToFriends = () => {

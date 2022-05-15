@@ -2,7 +2,7 @@ import { Box, Typography, Link } from '@mui/material';
 import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { postLogoutAction } from 'modules/user/store/actions';
+import { requestLogoutAction } from 'modules/authorization/actions';
 import {
   userApprovalsSelector,
   userFriendsSelector,
@@ -10,7 +10,7 @@ import {
   userIsAuthorizatedSelector,
   userUserSelector,
   userUsersSelector,
-} from '../../../modules/user/store/selectors';
+} from 'modules/user/store/selectors';
 import { axiosInstance } from '../../utils/axios-instance';
 import { theme } from '../../theme';
 import { Button } from '../button';
@@ -219,7 +219,7 @@ const AllUsers = () => {
           variant="contained"
           color="primary"
           onClick={() => {
-            dispatch(postLogoutAction());
+            dispatch(requestLogoutAction());
 
             socket.emit('on-disconnect', user?.id);
           }}

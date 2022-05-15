@@ -1,7 +1,7 @@
 import { CancelOutlined } from '@mui/icons-material';
 import { Box, Typography, Link } from '@mui/material';
 import { Button } from 'core/components/button';
-import { getHiddenUserEmail } from 'modules/settings/utils';
+import { getHiddenUserEmail } from 'modules/user/pages/settings/utils';
 import { userUserSelector } from 'modules/user/store/selectors';
 import { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';

@@ -1,31 +1,33 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { userIsAuthorizatedSelector, userUserSelector } from 'modules/user/store/selectors';
+import { userUserSelector } from 'modules/user/store/selectors';
 import { App } from 'core/components/app';
-import { getRefreshAction, getUserAction } from 'modules/user/store/actions';
+import { requestRefreshAction } from 'modules/authorization/actions';
 import { socket } from 'core/utils/socket';
+import { getUserAction } from 'modules/user/actions';
+import { RootState } from 'core/store/types';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
 
-  const isAuthorizated = useSelector(userIsAuthorizatedSelector);
+  const { authorizated } = useSelector((state: RootState) => state.authorization);
   const user = useSelector(userUserSelector);
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
-      dispatch(getRefreshAction());
+    if (localStorage.getItem('access_token')) {
+      dispatch(requestRefreshAction());
     }
   }, []);
 
   useEffect(() => {
-    if (isAuthorizated) {
+    if (authorizated) {
       dispatch(getUserAction());
 
       socket.on('on-connect', () => {
         dispatch(getUserAction());
       });
     }
-  }, [isAuthorizated]);
+  }, [authorizated]);
 
   useEffect(() => {
     if (user?.id) {
@@ -75,7 +77,7 @@ const AppContainer = () => {
   //   return <Loader />;
   // }
 
-  return <App isAuthorizated={isAuthorizated} />;
+  return <App isAuthorizated={authorizated} />;
 };
 
 export { AppContainer };

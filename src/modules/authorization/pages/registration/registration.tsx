@@ -4,7 +4,7 @@ import { Box, Typography, TextField, InputAdornment, IconButton, Link } from '@m
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { theme } from 'core/theme';
 import { useNavigate } from 'react-router-dom';
-import { postRegistrationAction } from 'modules/user/store/actions';
+import { requestRegistrationAction } from 'modules/authorization/actions';
 import authorizationImage from 'core/assets/images/authorization-image.jpg';
 import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { css } from '@emotion/css';
@@ -108,7 +108,7 @@ const Registration = () => {
                   size="large"
                   loading={isLoading}
                   onClick={() => {
-                    dispatch(postRegistrationAction({ email, name, password }));
+                    dispatch(requestRegistrationAction({ email, name, password }));
                   }}
                 >
                   Зарегистрироваться

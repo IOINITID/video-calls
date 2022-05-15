@@ -1,7 +1,7 @@
 import { memo, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { theme } from 'core/theme';
-import { UserSettings } from 'modules/settings/pages/settings/components/user-settings';
+import { UserSettings } from 'modules/user/pages/settings/pages/settings/components/user-settings';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 const Settings = () => {

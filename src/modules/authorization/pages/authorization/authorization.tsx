@@ -5,18 +5,18 @@ import { Box, InputAdornment, IconButton, Typography, Link } from '@mui/material
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { theme } from 'core/theme';
 import { useNavigate } from 'react-router-dom';
-import { postAuthorizationAction } from 'modules/user/store/actions';
 import authorizationImage from 'core/assets/images/authorization-image.jpg';
 import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { css } from '@emotion/css';
 import { LoadingButton } from '@mui/lab';
-import { userIsLoadingSelector } from 'modules/user/store/selectors';
+import { RootState } from 'core/store/types';
+import { requestAuthorizationAction } from 'modules/authorization/store';
 
 const Authorization = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isLoading = useSelector(userIsLoadingSelector);
+  const { loading } = useSelector((state: RootState) => state.authorization);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -88,9 +88,9 @@ const Authorization = () => {
                 variant="contained"
                 color="primary"
                 size="large"
-                loading={isLoading}
+                loading={loading.access_token}
                 onClick={() => {
-                  dispatch(postAuthorizationAction({ email, password }));
+                  dispatch(requestAuthorizationAction({ email, password }));
                 }}
               >
                 Войти
