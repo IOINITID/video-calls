@@ -4,7 +4,7 @@ import { theme } from '../../theme';
 import { memo, useState, useEffect } from 'react';
 import { userUsersSelector } from 'modules/user/store/selectors';
 import { TextField } from '../text-field';
-import { postUsersAction } from 'modules/user/actions';
+// import { requestUpdateUsersAction } from 'modules/user/store';
 import { UserAddInviteToFriends } from '../user-add-invite-to-friends';
 
 const AddToFriends = () => {
@@ -16,7 +16,7 @@ const AddToFriends = () => {
 
   useEffect(() => {
     if (searchValue) {
-      dispatch(postUsersAction({ searchValue }));
+      // dispatch(postUsersAction({ searchValue }));
     }
   }, [searchValue]);
 

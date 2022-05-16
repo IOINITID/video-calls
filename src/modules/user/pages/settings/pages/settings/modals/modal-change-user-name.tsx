@@ -2,15 +2,15 @@ import { Close } from '@mui/icons-material';
 import { Box, Link, Modal, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
 import { TextField } from 'core/components/text-field';
-import { patchUserAction } from 'modules/user/actions';
-import { userUserSelector } from 'modules/user/store/selectors';
+import { RootState } from 'core/store/types';
+import { requestUpdateUserAction } from 'modules/user/store';
 import { memo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const ModalChangeUserName = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const dispatch = useDispatch();
 
-  const user = useSelector(userUserSelector);
+  const { user } = useSelector((state: RootState) => state.user);
 
   const [name, setName] = useState(user?.name);
   const [password, setPassword] = useState('');
@@ -153,7 +153,7 @@ const ModalChangeUserName = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             variant="contained"
             onClick={() => {
               if (name?.trim() && password.trim()) {
-                dispatch(patchUserAction({ name, password }));
+                dispatch(requestUpdateUserAction({ name, password }));
                 onClose();
               }
             }}

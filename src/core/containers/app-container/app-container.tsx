@@ -1,17 +1,16 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { userUserSelector } from 'modules/user/store/selectors';
 import { App } from 'core/components/app';
 import { requestRefreshAction } from 'modules/authorization/actions';
 import { socket } from 'core/utils/socket';
-import { getUserAction } from 'modules/user/actions';
+import { requestGetUserAction } from 'modules/user/store';
 import { RootState } from 'core/store/types';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
 
   const { authorizated } = useSelector((state: RootState) => state.authorization);
-  const user = useSelector(userUserSelector);
+  const { user } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
@@ -21,10 +20,10 @@ const AppContainer = () => {
 
   useEffect(() => {
     if (authorizated) {
-      dispatch(getUserAction());
+      dispatch(requestGetUserAction());
 
       socket.on('on-connect', () => {
-        dispatch(getUserAction());
+        dispatch(requestGetUserAction());
       });
     }
   }, [authorizated]);

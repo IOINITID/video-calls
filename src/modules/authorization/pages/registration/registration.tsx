@@ -9,13 +9,13 @@ import authorizationImage from 'core/assets/images/authorization-image.jpg';
 import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { css } from '@emotion/css';
 import { LoadingButton } from '@mui/lab';
-import { userIsLoadingSelector } from 'modules/user/store/selectors';
+import { RootState } from 'core/store/types';
 
 const Registration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isLoading = useSelector(userIsLoadingSelector);
+  const { loading } = useSelector((state: RootState) => state.authorization);
 
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -106,10 +106,8 @@ const Registration = () => {
                   variant="contained"
                   color="primary"
                   size="large"
-                  loading={isLoading}
-                  onClick={() => {
-                    dispatch(requestRegistrationAction({ email, name, password }));
-                  }}
+                  loading={loading.access_token}
+                  onClick={() => dispatch(requestRegistrationAction({ email, name, password }))}
                 >
                   Зарегистрироваться
                 </LoadingButton>

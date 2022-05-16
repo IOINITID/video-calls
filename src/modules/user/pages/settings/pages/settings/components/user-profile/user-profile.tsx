@@ -6,7 +6,7 @@ import { Button } from 'core/components/button';
 import { TextField } from 'core/components/text-field';
 import { theme } from 'core/theme';
 import { useTimer } from 'modules/user/pages/settings/hooks';
-import { patchUserAction } from 'modules/user/actions';
+import { requestUpdateUserAction } from 'modules/user/store';
 import { userUserSelector } from 'modules/user/store/selectors';
 import { ChangeEvent, memo, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -155,7 +155,7 @@ const UserProfile = () => {
               color="success"
               onClick={() => {
                 dispatch(
-                  patchUserAction({
+                  requestUpdateUserAction({
                     color: color ? color : undefined,
                     image: image !== user?.image ? image : undefined,
                     description: description !== user?.description ? description : undefined,

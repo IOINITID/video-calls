@@ -1,53 +1,63 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
-import { getUserAction, patchUserAction, postUsersAction } from '../actions';
-import { setUser, setUsers } from '../store/user';
-import { getUserService, patchUserService, postUsersService } from 'modules/user/services';
+import {
+  failureGetUserAction,
+  failureUpdateUserAction,
+  requestGetUserAction,
+  requestUpdateUserAction,
+  successGetUserAction,
+  successUpdateUserAction,
+} from '../store';
+import { getUserService, updateUserService } from 'modules/user/services';
+
+// TODO: Разделить user на profile и users
 
 /**
- * Saga for getting user data.
+ * Saga для получения данных пользователя.
  */
 const getUserSaga = function* (): SagaIterator {
   try {
     const response: Awaited<ReturnType<typeof getUserService>> = yield call(getUserService);
-    yield put(setUser(response.data));
+    yield put(successGetUserAction(response.data));
   } catch (error) {
     console.error(error);
+    yield put(failureGetUserAction(error));
   }
 };
 
 /**
- * Saga for updating user data.
+ * Saga для обновления данных пользователя.
  */
-const patchUserSaga = function* ({ payload }: ReturnType<typeof patchUserAction>): SagaIterator {
+const updateUserSaga = function* ({ payload }: ReturnType<typeof requestUpdateUserAction>): SagaIterator {
   try {
-    const response: Awaited<ReturnType<typeof patchUserService>> = yield call(patchUserService, payload);
-    yield put(setUser(response.data));
+    const response: Awaited<ReturnType<typeof updateUserService>> = yield call(updateUserService, payload);
+    yield put(successUpdateUserAction(response.data));
   } catch (error) {
     console.error(error);
+    yield put(failureUpdateUserAction(error));
   }
 };
 
 /**
- * Saga for getting user by name.
+ * Saga для получения пользователей.
  */
-const postUsersSaga = function* ({ payload }: ReturnType<typeof postUsersAction>): SagaIterator {
-  try {
-    const response: Awaited<ReturnType<typeof postUsersService>> = yield call(postUsersService, payload);
-    yield put(setUsers(response.data));
-  } catch (error) {
-    console.error(error);
-  }
-};
+// const postUsersSaga = function* ({ payload }: ReturnType<typeof postUsersAction>): SagaIterator {
+//   try {
+//     const response: Awaited<ReturnType<typeof getUsersService>> = yield call(getUsersService, payload);
+//     yield put(setUsers(response.data));
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 
 /**
- * Saga for user module sagas.
+ * Saga для модуля пользователь.
  */
 const userSaga = function* (): SagaIterator {
   yield all([
-    takeEvery(getUserAction.type, getUserSaga),
-    takeEvery(patchUserAction.type, patchUserSaga),
-    takeEvery(postUsersAction.type, postUsersSaga),
+    takeEvery(requestGetUserAction.type, getUserSaga),
+    takeEvery(requestUpdateUserAction.type, updateUserSaga),
+    // takeEvery(postUsersAction.type, postUsersSaga),
     // debounce(500, postUsersAction.type, postUsersSaga), // TODO: Подумать про debounce в 500мс для получения пользователей по имени
   ]);
 };

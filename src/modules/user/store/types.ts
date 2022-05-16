@@ -1,14 +1,15 @@
 import { User } from '../services/types';
 
 export type UserState = {
-  isAuthorizated: boolean;
-  isLoading: boolean;
   user: User | undefined;
   users: User[] | undefined;
   loading: {
     user: boolean;
   };
-
+  error: {
+    user: any | null;
+  };
+  // NOTE: Нужно доделать остальные данные
   friends: UserResponse[];
   invites: UserResponse[];
   approvals: UserResponse[];

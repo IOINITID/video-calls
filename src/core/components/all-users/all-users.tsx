@@ -7,7 +7,6 @@ import {
   userApprovalsSelector,
   userFriendsSelector,
   userInvitesSelector,
-  userIsAuthorizatedSelector,
   userUserSelector,
   userUsersSelector,
 } from 'modules/user/store/selectors';
@@ -16,6 +15,7 @@ import { theme } from '../../theme';
 import { Button } from '../button';
 import { User } from '../user';
 import { socket } from '../../utils/socket';
+import { RootState } from 'core/store/types';
 
 const AllUsers = () => {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const AllUsers = () => {
   const friends = useSelector(userFriendsSelector);
   const invites = useSelector(userInvitesSelector);
   const approvals = useSelector(userApprovalsSelector);
-  const isAuthorizated = useSelector(userIsAuthorizatedSelector);
+  const { authorizated } = useSelector((state: RootState) => state.authorization);
   const user = useSelector(userUserSelector);
 
   return (
@@ -203,7 +203,7 @@ const AllUsers = () => {
       {/* Выйти из аккаунта */}
       <Box sx={{ display: 'grid', rowGap: '8px' }}>
         <Typography variant="h5">
-          {isAuthorizated ? `Пользователь авторизован: ${user?.email}.` : 'Пользователь не авторизован.'}
+          {authorizated ? `Пользователь авторизован: ${user?.email}.` : 'Пользователь не авторизован.'}
         </Typography>
         <Typography variant="h5">
           <Link sx={{ cursor: 'pointer' }} underline="hover" onClick={() => navigate('/settings')}>

@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { Navigation } from 'core/components/navigation';
 import notificationCallAudio from 'core/assets/audios/notication-call-audio.mp3';
 import { Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-material';
-import { setIsCall, setIsCallAccepted, setIsCallCanceled, setIsIncomingCall } from 'modules/user/store/user';
+import { setIsCall, setIsCallAccepted, setIsCallCanceled, setIsIncomingCall } from 'modules/user/store';
 import { getChannels } from 'core/services/get-channels';
 import { TextField } from 'core/components/text-field';
 import { getChannelMessages } from 'core/services/get-channel-messages';

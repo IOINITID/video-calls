@@ -2,7 +2,7 @@ import { Close } from '@mui/icons-material';
 import { Box, Link, Modal, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
 import { TextField } from 'core/components/text-field';
-import { patchUserAction } from 'modules/user/actions';
+import { requestUpdateUserAction } from 'modules/user/store';
 import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -151,7 +151,7 @@ const ModalChangeUserEmail = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
             onClick={() => {
               // TODO: Добавить валидацию на email и длину пароля
               if (email.trim() && password.trim()) {
-                dispatch(patchUserAction({ email, password }));
+                dispatch(requestUpdateUserAction({ email, password }));
                 onClose();
               }
             }}
