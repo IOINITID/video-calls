@@ -31,6 +31,15 @@ const UserSettings = () => {
     },
     {
       id: 3,
+      title: 'Голос и видео',
+      path: 'voice-and-video',
+      onClick: () => {
+        navigate('voice-and-video');
+      },
+      divider: false,
+    },
+    {
+      id: 4,
       title: 'Выйти',
       path: 'logout',
       onClick: () => {
@@ -101,6 +110,18 @@ const UserSettings = () => {
           );
         })}
       </Box>
+      <Typography
+        className={css`
+          padding: 6px 10px !important;
+          font-weight: 700 !important;
+          font-size: 12px !important;
+          line-height: 16px !important;
+          color: #a0a2a6;
+          text-transform: uppercase;
+        `}
+      >
+        Настройки приложения
+      </Typography>
     </Box>
   );
 };

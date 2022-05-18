@@ -5,7 +5,7 @@ import { Box, Link, Slide, Snackbar, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
 import { TextField } from 'core/components/text-field';
 import { theme } from 'core/theme';
-import { useTimer } from 'modules/user/pages/settings/hooks';
+import { useTimer } from 'modules/user/hooks';
 import { requestUpdateUserAction } from 'modules/user/store';
 import { userUserSelector } from 'modules/user/store/selectors';
 import { ChangeEvent, memo, useEffect, useRef, useState } from 'react';
