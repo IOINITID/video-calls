@@ -6,7 +6,7 @@ import { getChannels } from 'core/services/get-channels';
 import { getInvites } from 'core/services/get-invites';
 import { getFriendsAction } from 'modules/friends/store/actions';
 import { User } from '../services/types';
-import { ChannelResponse, MessageResponse, UserResponse, UserState } from './types';
+import { ChannelResponse, MessageResponse, UserState } from './types';
 
 const initialState: UserState = {
   user: undefined,
@@ -71,13 +71,13 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getFriendsAction.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
+    builder.addCase(getFriendsAction.fulfilled, (state: UserState, { payload }: PayloadAction<User[]>) => {
       state.friends = payload;
     });
-    builder.addCase(getInvites.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
+    builder.addCase(getInvites.fulfilled, (state: UserState, { payload }: PayloadAction<User[]>) => {
       state.invites = payload;
     });
-    builder.addCase(getApprovals.fulfilled, (state: UserState, { payload }: PayloadAction<UserResponse[]>) => {
+    builder.addCase(getApprovals.fulfilled, (state: UserState, { payload }: PayloadAction<User[]>) => {
       state.approvals = payload;
     });
     builder.addCase(getChannels.fulfilled, (state: UserState, { payload }: PayloadAction<ChannelResponse[]>) => {

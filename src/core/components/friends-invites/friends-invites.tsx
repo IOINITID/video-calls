@@ -31,7 +31,7 @@ const FriendsInvites = () => {
       }}
     >
       {invites.map((invite) => {
-        return <UserAddToFriends key={invite._id} id={invite._id} name={invite.name} status={invite.status} />;
+        return <UserAddToFriends key={invite.id} id={invite.id} name={invite.name} status={invite.status} />;
       })}
     </Box>
   );

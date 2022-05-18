@@ -31,7 +31,7 @@ const FriendsApprovals = () => {
       }}
     >
       {approvals.map((approval) => {
-        return <UserApprovals key={approval._id} id={approval._id} name={approval.name} status={approval.status} />;
+        return <UserApprovals key={approval.id} id={approval.id} name={approval.name} status={approval.status} />;
       })}
     </Box>
   );

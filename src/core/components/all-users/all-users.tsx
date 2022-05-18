@@ -83,7 +83,7 @@ const AllUsers = () => {
       {friends?.map((friend) => {
         return (
           <Box
-            key={friend._id}
+            key={friend.id}
             sx={{
               display: 'inline-grid',
               gridAutoFlow: 'column',
@@ -95,14 +95,14 @@ const AllUsers = () => {
               padding: '8px 16px',
             }}
           >
-            <User id={friend._id} name={friend.name} status={friend.status} email={friend.email} />
+            <User id={friend.id} name={friend.name} status={friend.status} email={friend.email} />
             <Box sx={{ display: 'grid', gridAutoFlow: 'column', columnGap: '16px' }}>
               <Button
                 variant="contained"
                 onClick={async () => {
-                  const response = await axiosInstance.post('/remove-from-friends', { friendId: friend._id });
+                  const response = await axiosInstance.post('/remove-from-friends', { friendId: friend.id });
 
-                  socket.emit('on-remove-from-friends', friend._id); // Отправка события пользователю, которого удаляют из друзей
+                  socket.emit('on-remove-from-friends', friend.id); // Отправка события пользователю, которого удаляют из друзей
 
                   return response.data;
                 }}
@@ -118,7 +118,7 @@ const AllUsers = () => {
       {invites?.map((invite) => {
         return (
           <Box
-            key={invite._id}
+            key={invite.id}
             sx={{
               display: 'inline-grid',
               gridAutoFlow: 'column',
@@ -130,14 +130,14 @@ const AllUsers = () => {
               padding: '8px 16px',
             }}
           >
-            <User id={invite._id} name={invite.name} status={invite.status} email={invite.email} />
+            <User id={invite.id} name={invite.name} status={invite.status} email={invite.email} />
             <Box sx={{ display: 'grid', gridAutoFlow: 'column', columnGap: '16px' }}>
               <Button
                 variant="contained"
                 onClick={async () => {
-                  const response = await axiosInstance.post('/add-to-friends', { friendId: invite._id });
+                  const response = await axiosInstance.post('/add-to-friends', { friendId: invite.id });
 
-                  socket.emit('on-add-to-friends', invite._id); // Отправка события пользователю, который ждет принятие приглашения
+                  socket.emit('on-add-to-friends', invite.id); // Отправка события пользователю, который ждет принятие приглашения
 
                   return response.data;
                 }}
@@ -147,9 +147,9 @@ const AllUsers = () => {
               <Button
                 variant="contained"
                 onClick={async () => {
-                  const response = await axiosInstance.post('/remove-invite-to-friends', { friendId: invite._id });
+                  const response = await axiosInstance.post('/remove-invite-to-friends', { friendId: invite.id });
 
-                  socket.emit('on-remove-invite-to-friends', invite._id); // Отправка события пользователю, который ждет принятия или отклонения приглашения
+                  socket.emit('on-remove-invite-to-friends', invite.id); // Отправка события пользователю, который ждет принятия или отклонения приглашения
 
                   return response.data;
 
@@ -167,7 +167,7 @@ const AllUsers = () => {
       {approvals?.map((approval) => {
         return (
           <Box
-            key={approval._id}
+            key={approval.id}
             sx={{
               display: 'inline-grid',
               gridAutoFlow: 'column',
@@ -179,15 +179,15 @@ const AllUsers = () => {
               padding: '8px 16px',
             }}
           >
-            <User id={approval._id} name={approval.name} status={approval.status} email={approval.email} />
+            <User id={approval.id} name={approval.name} status={approval.status} email={approval.email} />
             <Box sx={{ display: 'grid', gridAutoFlow: 'column', alignItems: 'center', columnGap: '16px' }}>
               <Typography>Ожидает подтверждения</Typography>
               <Button
                 variant="contained"
                 onClick={async () => {
-                  const response = await axiosInstance.post('/remove-invite-to-friends', { friendId: approval._id });
+                  const response = await axiosInstance.post('/remove-invite-to-friends', { friendId: approval.id });
 
-                  socket.emit('on-remove-invite-to-friends', approval._id); // Отправка события пользователю, который ожидает принятия или отклонения приглашения в друзья
+                  socket.emit('on-remove-invite-to-friends', approval.id); // Отправка события пользователю, который ожидает принятия или отклонения приглашения в друзья
 
                   return response.data;
 

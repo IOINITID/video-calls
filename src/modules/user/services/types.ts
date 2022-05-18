@@ -1,12 +1,11 @@
 /**
- * Type of response for getting user data.
+ * Type ответа для получения пользователя.
  */
 export type User = {
-  email: string;
   id: string;
-  isActivated: boolean;
+  email: string;
   name: string;
-  socketId: string;
+  socket_id: string;
   status: 'offline' | 'online';
   default_color: string;
   description: string;

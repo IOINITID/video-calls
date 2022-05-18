@@ -10,22 +10,15 @@ export type UserState = {
     user: any | null;
   };
   // NOTE: Нужно доделать остальные данные
-  friends: UserResponse[];
-  invites: UserResponse[];
-  approvals: UserResponse[];
+  friends: User[];
+  invites: User[];
+  approvals: User[];
   isCall: boolean;
   isIncomingCall: boolean;
   isCallAccepted: boolean;
   isCallCanceled: boolean;
   channels: ChannelResponse[];
   channelMessages: MessageResponse[];
-};
-
-export type UserResponse = {
-  _id: string;
-  email: string;
-  name: string;
-  status: string;
 };
 
 export type ChannelResponse = {
@@ -37,6 +30,6 @@ export type ChannelResponse = {
 export type MessageResponse = {
   _id: string;
   text: string;
-  author: UserResponse;
+  author: User;
   created: Date;
 };

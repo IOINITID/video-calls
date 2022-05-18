@@ -398,7 +398,7 @@ const ChannelsOld = () => {
                 {friends?.map((friend) => {
                   return (
                     <Box
-                      key={friend._id}
+                      key={friend.id}
                       sx={{
                         display: 'inline-grid',
                         gridTemplateColumns: 'repeat(3, max-content)',
@@ -409,7 +409,7 @@ const ChannelsOld = () => {
                         padding: '8px 16px',
                       }}
                     >
-                      <User id={friend._id} email={friend.email} name={friend.name} status={friend.status} />
+                      <User id={friend.id} email={friend.email} name={friend.name} status={friend.status} />
                       {/* Когда пользователь звонит и нет входящего вызова */}
                       {isCall && !isIncomingCall && !isCallAccepted && (
                         <Button
@@ -419,7 +419,7 @@ const ChannelsOld = () => {
                             dispatch(setIsCall(false));
                             setIsCallCanceled(true);
 
-                            socket.emit('on-call-end', friend._id);
+                            socket.emit('on-call-end', friend.id);
                           }}
                         >
                           Отклонить звонок
@@ -431,7 +431,7 @@ const ChannelsOld = () => {
                           variant="contained"
                           color="primary"
                           onClick={() => {
-                            handleCallUser(friend._id);
+                            handleCallUser(friend.id);
                           }}
                         >
                           Позвонить пользователю
@@ -449,7 +449,7 @@ const ChannelsOld = () => {
                           variant="contained"
                           color="primary"
                           onClick={() => {
-                            socket.emit('on-call-end', friend._id);
+                            socket.emit('on-call-end', friend.id);
                           }}
                         >
                           Отклонить вызов
@@ -461,7 +461,7 @@ const ChannelsOld = () => {
                           variant="contained"
                           color="primary"
                           onClick={() => {
-                            socket.emit('on-call-end', friend._id);
+                            socket.emit('on-call-end', friend.id);
                           }}
                         >
                           Закончить вызов
