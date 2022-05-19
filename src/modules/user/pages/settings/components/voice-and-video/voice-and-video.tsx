@@ -1,22 +1,30 @@
+import { memo, useEffect, useState } from 'react';
 import { css } from '@emotion/css';
 import { CancelOutlined } from '@mui/icons-material';
-import { Box, Typography } from '@mui/material';
+import { Box, Divider, MenuItem, Select, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
-import { RootState } from 'core/store/types';
 import { theme } from 'core/theme';
-import { memo, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDeviceInfo, useUserMedia } from 'modules/user/hooks';
 import { useNavigate } from 'react-router-dom';
 
 const VoiceAndVideo = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const { user } = useSelector((state: RootState) => state.user);
+  const { stream, userVideo, startUserMedia } = useUserMedia();
+  const { audioInDevices, audioOutDevices, defaultAudioInDevice, defaultAudioOutDevice } = useDeviceInfo();
 
-  const [stream, setStream] = useState<MediaStream>();
+  const [audioInDevice, setAudioInDevice] = useState('');
+  const [audioOutDevice, setAudioOutDevice] = useState('');
 
-  const userVideo = useRef<HTMLVideoElement | null>();
+  useEffect(() => {
+    if (defaultAudioInDevice) {
+      setAudioInDevice(defaultAudioInDevice);
+    }
+
+    if (defaultAudioOutDevice) {
+      setAudioOutDevice(defaultAudioOutDevice);
+    }
+  }, [defaultAudioInDevice, defaultAudioOutDevice]);
 
   return (
     <Box
@@ -28,19 +36,6 @@ const VoiceAndVideo = () => {
         backgroundColor: '#5e6065',
       }}
     >
-      {/* NOTE: Настройки голоса */}
-      <Typography
-        className={css`
-          padding-bottom: 20px !important;
-          font-weight: 600 !important;
-          font-size: 20px !important;
-          line-height: 24px !important;
-          color: #ffffff !important;
-          border-bottom: 1px solid #000000;
-        `}
-      >
-        Насройки голоса
-      </Typography>
       <Box
         sx={{
           display: 'grid',
@@ -60,7 +55,7 @@ const VoiceAndVideo = () => {
         <CancelOutlined sx={{ width: '36px', height: '36px', fill: '#b9bbbe' }} />
         <Typography sx={{ fontSize: '13px', color: '#b9bbbe' }}>ESC</Typography>
       </Box>
-      {/* NOTE: Настройки видео */}
+      {/* NOTE: Настройки голоса */}
       <Typography
         className={css`
           padding-bottom: 20px !important;
@@ -68,11 +63,60 @@ const VoiceAndVideo = () => {
           font-size: 20px !important;
           line-height: 24px !important;
           color: #ffffff !important;
-          border-bottom: 1px solid #000000;
+        `}
+      >
+        Насройки голоса
+      </Typography>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 320px)',
+          alignItems: 'center',
+          columnGap: '16px',
+          marginBottom: '16px',
+        }}
+      >
+        <Select id="audioInDevice" value={audioInDevice} onChange={(event) => setAudioInDevice(event.target.value)}>
+          {audioInDevices.map((audioInDevice) => {
+            return (
+              <MenuItem
+                key={audioInDevice.deviceId}
+                sx={{ maxWidth: '320px', whiteSpace: 'normal' }}
+                value={audioInDevice.deviceId}
+              >
+                {audioInDevice.label}
+              </MenuItem>
+            );
+          })}
+        </Select>
+        <Select id="audioOutDevice" value={audioOutDevice} onChange={(event) => setAudioOutDevice(event.target.value)}>
+          {audioOutDevices.map((audioOutDevice) => {
+            return (
+              <MenuItem
+                key={audioOutDevice.deviceId}
+                sx={{ maxWidth: '320px', whiteSpace: 'normal' }}
+                value={audioOutDevice.deviceId}
+              >
+                {audioOutDevice.label}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </Box>
+      {/* NOTE: Настройки видео */}
+      <Typography
+        className={css`
+          font-weight: 600 !important;
+          font-size: 20px !important;
+          line-height: 24px !important;
+          color: #ffffff !important;
         `}
       >
         Насройки видео
       </Typography>
+
+      <Divider sx={{ margin: '32px 0', borderColor: theme.palette.grey['800'] }} />
+
       <Box sx={{ display: 'grid', rowGap: '16px' }}>
         <Box
           sx={{
@@ -84,7 +128,7 @@ const VoiceAndVideo = () => {
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: '8px',
-            boxShadow: `inset 0 0 0 1px ${theme.palette.grey['900']}`,
+            boxShadow: `inset 0 0 0 1px ${theme.palette.grey['800']}`,
           }}
         >
           <Box
@@ -94,8 +138,13 @@ const VoiceAndVideo = () => {
             autoPlay
             muted
           />
+          {!stream && (
+            <Button variant="contained" onClick={() => startUserMedia({ audio: true, video: true })}>
+              Проверить видео
+            </Button>
+          )}
         </Box>
-        <Box
+        {/* <Box
           sx={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, max-content)',
@@ -103,32 +152,13 @@ const VoiceAndVideo = () => {
             columnGap: '16px',
           }}
         >
-          <Button
-            variant="contained"
-            onClick={async () => {
-              const stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: true });
-
-              setStream(stream);
-
-              if (stream && userVideo.current) {
-                userVideo.current.srcObject = stream;
-              }
-            }}
-          >
+          <Button variant="contained" onClick={() => startUserMedia({ audio: true, video: true })}>
             Проверить видео
           </Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              if (stream && userVideo.current) {
-                stream.getTracks().forEach((track) => track.stop());
-                userVideo.current.srcObject = null;
-              }
-            }}
-          >
+          <Button variant="contained" onClick={stopUserMedia}>
             Отключить видео
           </Button>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

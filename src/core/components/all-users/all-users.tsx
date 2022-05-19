@@ -2,7 +2,7 @@ import { Box, Typography, Link } from '@mui/material';
 import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { requestLogoutAction } from 'modules/authorization/actions';
+import { requestLogoutAction } from 'modules/authorization/store';
 import {
   userApprovalsSelector,
   userFriendsSelector,

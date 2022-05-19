@@ -4,7 +4,7 @@ import { Box, Typography, TextField, InputAdornment, IconButton, Link } from '@m
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { theme } from 'core/theme';
 import { useNavigate } from 'react-router-dom';
-import { requestRegistrationAction } from 'modules/authorization/actions';
+import { requestRegistrationAction } from 'modules/authorization/store';
 import authorizationImage from 'core/assets/images/authorization-image.jpg';
 import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { css } from '@emotion/css';

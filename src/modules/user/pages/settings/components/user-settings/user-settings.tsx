@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
 import { Box, Divider, Link, Typography } from '@mui/material';
-import { requestLogoutAction } from 'modules/authorization/actions';
+import { requestLogoutAction } from 'modules/authorization/store';
 import { memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';

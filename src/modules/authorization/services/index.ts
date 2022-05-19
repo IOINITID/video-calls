@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { axiosInstance } from 'core/utils/axios-instance';
-import { requestAuthorizationAction, requestRegistrationAction } from '../actions';
+import { requestAuthorizationAction, requestRegistrationAction } from '../store';
 import { ApiUrl } from './constants';
 import { Authorization } from './types';
 

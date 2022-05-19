@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { App } from 'core/components/app';
-import { requestRefreshAction } from 'modules/authorization/actions';
+import { requestRefreshAction } from 'modules/authorization/store';
 import { socket } from 'core/utils/socket';
 import { requestGetUserAction } from 'modules/user/store';
 import { RootState } from 'core/store/types';
