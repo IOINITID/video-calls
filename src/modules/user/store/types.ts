@@ -9,6 +9,8 @@ export type UserState = {
   error: {
     user: any | null;
   };
+  audioInDevice: string;
+  audioOutDevice: string;
   // NOTE: Нужно доделать остальные данные
   friends: User[];
   invites: User[];

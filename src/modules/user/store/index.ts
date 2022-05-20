@@ -17,6 +17,8 @@ const initialState: UserState = {
   error: {
     user: null,
   },
+  audioInDevice: '',
+  audioOutDevice: '',
   // TODO: Обновление store
   friends: [],
   invites: [],
@@ -69,6 +71,12 @@ export const userSlice = createSlice({
     setIsCallCanceled: (state: UserState, { payload }: PayloadAction<boolean>) => {
       state.isCallCanceled = payload;
     },
+    setAudioInDevice: (state: UserState, { payload }: PayloadAction<string>) => {
+      state.audioInDevice = payload;
+    },
+    setAudioOutDevice: (state: UserState, { payload }: PayloadAction<string>) => {
+      state.audioOutDevice = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getFriendsAction.fulfilled, (state: UserState, { payload }: PayloadAction<User[]>) => {
@@ -103,6 +111,8 @@ export const {
   requestUpdateUserAction,
   successUpdateUserAction,
   failureUpdateUserAction,
+  setAudioInDevice,
+  setAudioOutDevice,
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

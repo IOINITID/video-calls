@@ -34,8 +34,12 @@ export const useUserMedia = () => {
   const [error, setError] = useState<unknown | undefined>();
   const userVideo = useRef<HTMLVideoElement | undefined>();
 
+  // TODO: Переименовать на audioStream и videoStream
+  const [audioTracks, setAudioTracks] = useState<MediaStream | undefined>();
+  const [videoTracks, setVideoTracks] = useState<MediaStream | undefined>();
+
   // TODO: Разделить на hook с получением стрима и hook с получением видео элемента
-  const startUserMedia = async (constraints?: MediaStreamConstraints | undefined) => {
+  const getUserMedia = async (constraints?: MediaStreamConstraints | undefined) => {
     try {
       setState('pending');
 
@@ -57,6 +61,36 @@ export const useUserMedia = () => {
     }
   };
 
+  const getUserAudio = async (constraints?: MediaStreamConstraints | undefined) => {
+    try {
+      setState('pending');
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      const audioStream = stream.getAudioTracks();
+
+      setState('fulfilled');
+      setAudioTracks(new MediaStream(audioStream));
+    } catch (error) {
+      setState('rejected');
+      setError(error);
+    }
+  };
+
+  const getUserVideo = async (constraints?: MediaStreamConstraints | undefined) => {
+    try {
+      setState('pending');
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      const videoStream = stream.getVideoTracks();
+
+      setState('fulfilled');
+      setVideoTracks(new MediaStream(videoStream));
+    } catch (error) {
+      setState('rejected');
+      setError(error);
+    }
+  };
+
   const stopUserMedia = () => {
     if (stream) {
       stream.getTracks().forEach((track) => {
@@ -75,7 +109,18 @@ export const useUserMedia = () => {
     };
   }, [stream]);
 
-  return { state, stream, error, userVideo, startUserMedia, stopUserMedia };
+  return {
+    state,
+    stream,
+    error,
+    userVideo,
+    getUserMedia,
+    stopUserMedia,
+    getUserAudio,
+    audioTracks,
+    getUserVideo,
+    videoTracks,
+  };
 };
 
 /**
@@ -89,21 +134,30 @@ export const useDeviceInfo = () => {
   const [defaultAudioOutDevice, setDefaultAudioOutDevice] = useState<string>('');
   const [defaultVideoInDevice, setDefaultVideoInDevice] = useState<string>('');
 
+  const getDeviceInfo = () => {
+    navigator.mediaDevices
+      .enumerateDevices()
+      .then((devices) => {
+        const audioInDevices = devices.filter((device) => device.kind === 'audioinput');
+        const audioOutDevices = devices.filter((device) => device.kind === 'audiooutput');
+        const videoInDevices = devices.filter((device) => device.kind === 'videoinput');
+
+        setAudioInDevices(audioInDevices);
+        setDefaultAudioInDevice(audioInDevices[0].deviceId);
+
+        setAudioOutDevices(audioOutDevices);
+        setDefaultAudioOutDevice(audioOutDevices[0].deviceId);
+
+        setVideoInDevices(videoInDevices);
+        setDefaultVideoInDevice(videoInDevices[0].deviceId);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   useEffect(() => {
-    navigator.mediaDevices.enumerateDevices().then((devices) => {
-      const audioInDevices = devices.filter((device) => device.kind === 'audioinput');
-      const audioOutDevices = devices.filter((device) => device.kind === 'audiooutput');
-      const videoInDevices = devices.filter((device) => device.kind === 'videoinput');
-
-      setAudioInDevices(audioInDevices);
-      setDefaultAudioInDevice(audioInDevices[0].deviceId);
-
-      setAudioOutDevices(audioOutDevices);
-      setDefaultAudioOutDevice(audioOutDevices[0].deviceId);
-
-      setVideoInDevices(videoInDevices);
-      setDefaultVideoInDevice(videoInDevices[0].deviceId);
-    });
+    getDeviceInfo();
   }, []);
 
   return {
@@ -113,5 +167,6 @@ export const useDeviceInfo = () => {
     defaultAudioInDevice,
     defaultAudioOutDevice,
     defaultVideoInDevice,
+    getDeviceInfo,
   };
 };
