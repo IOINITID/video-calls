@@ -23,35 +23,32 @@ import { useNavigate } from 'react-router-dom';
 const VoiceAndVideo = () => {
   const navigate = useNavigate();
 
-  const { state, stream, userVideo, getUserMedia, getUserAudio, audioTracks } = useUserMedia();
-  const {
-    audioInDevices,
-    audioOutDevices,
-    videoInDevices,
-    defaultAudioInDevice,
-    defaultAudioOutDevice,
-    defaultVideoInDevice,
-    getDeviceInfo,
-  } = useDeviceInfo();
+  const { state, stream, getUserMedia } = useUserMedia();
+  const { audioInDevices, audioOutDevices, videoInDevices, getDeviceInfo } = useDeviceInfo();
+
   const [audioInDevice, setAudioInDevice] = useState('');
   const [audioOutDevice, setAudioOutDevice] = useState('');
   const [videoInDevice, setVideoInDevice] = useState('');
-  const [isAudioActive, setIsAudioActive] = useState(false);
-  const audio = useRef<HTMLAudioElement>();
+
+  const [isAudio, setIsAudio] = useState(false);
+  const [isVideo, setIsVideo] = useState(false);
+
+  const userVideo = useRef<HTMLVideoElement>();
+  const userAudio = useRef<HTMLAudioElement>();
 
   useEffect(() => {
-    if (defaultAudioInDevice) {
-      setAudioInDevice(defaultAudioInDevice);
+    if (audioInDevices.length > 0) {
+      setAudioInDevice(audioInDevices[0].deviceId);
     }
 
-    if (defaultAudioOutDevice) {
-      setAudioOutDevice(defaultAudioOutDevice);
+    if (audioOutDevices.length > 0) {
+      setAudioOutDevice(audioOutDevices[0].deviceId);
     }
 
-    if (defaultVideoInDevice) {
-      setVideoInDevice(defaultVideoInDevice);
+    if (videoInDevices.length > 0) {
+      setVideoInDevice(videoInDevices[0].deviceId);
     }
-  }, [defaultAudioInDevice, defaultAudioOutDevice, defaultVideoInDevice]);
+  }, [audioInDevices, audioOutDevices, videoInDevices]);
 
   useEffect(() => {
     if (state === 'fulfilled') {
@@ -60,16 +57,25 @@ const VoiceAndVideo = () => {
   }, [state]);
 
   useEffect(() => {
-    getUserAudio({ audio: true });
+    getDeviceInfo();
+    getUserMedia({ audio: true, video: false });
   }, []);
 
   useEffect(() => {
-    // getUserMedia({ audio: true });
-
-    if (state === 'fulfilled' && audio.current && audioTracks) {
-      audio.current.srcObject = audioTracks;
+    if (state === 'fulfilled' && stream && userAudio.current && userVideo.current) {
+      const audioStream = new MediaStream(stream.getAudioTracks());
+      const videoStream = new MediaStream(stream.getVideoTracks());
+      userAudio.current.srcObject = audioStream;
+      userVideo.current.srcObject = videoStream;
     }
-  }, [state, audioTracks]);
+
+    return () => {
+      if (userAudio.current && userVideo.current) {
+        userAudio.current.srcObject = null;
+        userVideo.current.srcObject = null;
+      }
+    };
+  }, [state, stream]);
 
   return (
     <Box
@@ -195,15 +201,15 @@ const VoiceAndVideo = () => {
           Проблемы с микрофоном? Начните проверку и скажите какую-нибудь ерунду - мы тут же ее воспроизведем.
         </Typography>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'max-content 1fr', alignItems: 'center', columnGap: '8px' }}>
-          <Button variant="contained" onClick={() => setIsAudioActive(!isAudioActive)}>
-            {isAudioActive ? 'Прекратить проверку' : 'Давайте проверим'}
+          <Button variant="contained" onClick={() => setIsAudio(!isAudio)}>
+            {isAudio ? 'Прекратить проверку' : 'Давайте проверим'}
           </Button>
           <Box>
             <LinearProgress variant="determinate" value={0} />
-            {isAudioActive && <Typography variant="caption">Воспроизводим ваш прекрасный голос</Typography>}
+            {isAudio && <Typography variant="caption">Воспроизводим ваш прекрасный голос</Typography>}
           </Box>
           {/* NOTE: Audio компонент */}
-          <Box component="audio" ref={audio} autoPlay muted={!isAudioActive} />
+          <Box component="audio" ref={userAudio} autoPlay muted={!isAudio} />
         </Box>
         <Typography variant="caption">
           Нужна помощь с голосовым или видеочатом? Ознакомьтесь с нашим{' '}
@@ -265,8 +271,14 @@ const VoiceAndVideo = () => {
               autoPlay
               muted
             />
-            {!stream && (
-              <Button variant="contained" onClick={() => getUserMedia({ audio: true, video: true })}>
+            {!isVideo && (
+              <Button
+                variant="contained"
+                onClick={() => {
+                  getUserMedia({ audio: true, video: true });
+                  setIsVideo(true);
+                }}
+              >
                 Проверить видео
               </Button>
             )}
