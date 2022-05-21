@@ -95,6 +95,12 @@ export const authorizationSlice = createSlice({
       } else {
         toast.error(error.message || 'Ошибка авторизации. Проверьте логин и пароль.');
       }
+
+      if (error.response.status === 401) {
+        localStorage.removeItem('access_token');
+
+        location.reload();
+      }
     },
     requestLogoutAction: (state: AuthorizationState) => {
       state.loading.access_token = true;
