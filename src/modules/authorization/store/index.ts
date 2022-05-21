@@ -34,9 +34,15 @@ export const authorizationSlice = createSlice({
       localStorage.setItem('access_token', access_token);
     },
     failureRegistrationAction: (state: AuthorizationState, { payload }: PayloadAction<any | null>) => {
-      const { message } = payload;
+      const getError = (error: unknown) => {
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            return error.response.data;
+          }
+        }
+      };
 
-      state.error.access_token = message;
+      state.error.access_token = getError(payload.error);
       state.loading.access_token = false;
     },
     requestAuthorizationAction: (

@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   if (config.headers) {
-    config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`;
+    config.headers.Authorization = `Bearer ${localStorage.getItem('access_token') || ''}`;
   }
 
   return config;
@@ -35,6 +35,8 @@ axiosInstance.interceptors.response.use(
         await logoutService();
 
         localStorage.removeItem('access_token');
+
+        location.reload();
       }
     }
 
