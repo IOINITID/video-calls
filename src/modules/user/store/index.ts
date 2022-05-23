@@ -13,9 +13,11 @@ const initialState: UserState = {
   users: undefined,
   loading: {
     user: false,
+    users: false,
   },
   error: {
     user: null,
+    users: null,
   },
   audioInDevice: '',
   audioOutDevice: '',
@@ -39,7 +41,7 @@ export const userSlice = createSlice({
     requestGetUserAction: (state: UserState) => {
       state.loading.user = true;
     },
-    successGetUserAction: (state: UserState, { payload }: PayloadAction<User>) => {
+    successGetUserAction: (state: UserState, { payload }: PayloadAction<User | undefined>) => {
       state.user = payload;
       state.loading.user = false;
     },
@@ -58,6 +60,18 @@ export const userSlice = createSlice({
     failureUpdateUserAction: (state: UserState, { payload }: PayloadAction<any | null>) => {
       state.error.user = payload;
       state.loading.user = false;
+    },
+    // NOTE: Получение списка пользователей
+    requestGetUsersAction: (state: UserState) => {
+      state.loading.users = true;
+    },
+    successGetUsersAction: (state: UserState, { payload }: PayloadAction<User[]>) => {
+      state.users = payload;
+      state.loading.users = false;
+    },
+    failureGetUsersAction: (state: UserState, { payload }: PayloadAction<any | null>) => {
+      state.error.users = payload;
+      state.loading.users = false;
     },
     setIsCall: (state: UserState, { payload }: PayloadAction<boolean>) => {
       state.isCall = payload;
@@ -113,6 +127,9 @@ export const {
   failureUpdateUserAction,
   setAudioInDevice,
   setAudioOutDevice,
+  requestGetUsersAction,
+  successGetUsersAction,
+  failureGetUsersAction,
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

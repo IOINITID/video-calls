@@ -118,11 +118,11 @@ const Friends = () => {
             }}
           >
             <Button
-              variant={pathname.includes('all-friends') ? 'contained' : 'outlined'}
+              variant={pathname.includes('all-users') ? 'contained' : 'outlined'}
               color="primary"
-              onClick={() => navigate('all-friends')}
+              onClick={() => navigate('all-users')}
             >
-              Все друзья
+              Все пользователи
             </Button>
             <Button
               variant={pathname.includes('friends-online') ? 'contained' : 'outlined'}

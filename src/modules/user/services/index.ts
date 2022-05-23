@@ -27,10 +27,9 @@ export const updateUserService = (params: ReturnType<typeof requestUpdateUserAct
 /**
  * Service для получения пользователей.
  */
-// export const getUsersService = (params: ReturnType<typeof postUsersAction>['payload']) => {
-//   return axiosInstance.request<User[]>({
-//     method: 'POST', // TODO: Заменить метод на GET
-//     url: '/user/users',
-//     data: params,
-//   });
-// };
+export const getUsersService = () => {
+  return axiosInstance.request<User[]>({
+    method: 'GET',
+    url: ApiUrl.Users,
+  });
+};

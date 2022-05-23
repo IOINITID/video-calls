@@ -1,12 +1,28 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
 import { theme } from '../../theme';
-import { memo } from 'react';
-import { userFriendsSelector } from '../../../modules/user/store/selectors';
+import { memo, useEffect } from 'react';
 import { UserFriends } from '../user-friends';
+import { RootState } from 'core/store/types';
+import { requestGetUsersAction } from 'modules/user/store';
+import { socket } from 'core/utils/socket';
 
 const AllFriends = () => {
-  const friends = useSelector(userFriendsSelector);
+  const dispatch = useDispatch();
+
+  const { users } = useSelector((state: RootState) => state.user);
+
+  useEffect(() => {
+    dispatch(requestGetUsersAction());
+
+    socket.on('on-connect', () => {
+      dispatch(requestGetUsersAction());
+    });
+
+    socket.on('on-disconnect', () => {
+      dispatch(requestGetUsersAction());
+    });
+  }, []);
 
   return (
     <Box
@@ -31,11 +47,11 @@ const AllFriends = () => {
       }}
     >
       <Box sx={{ padding: '8px 12px' }}>
-        <Typography variant="h6">Все друзья: {friends.length > 0 ? friends.length : 0}</Typography>
+        <Typography variant="h6">Все пользователи: {users && users?.length > 0 ? users?.length : 0}</Typography>
       </Box>
       <Box sx={{ display: 'grid', alignContent: 'start', rowGap: '8px' }}>
-        {friends.map((friend) => {
-          return <UserFriends key={friend.id} id={friend.id} name={friend.name} status={friend.status} />;
+        {users?.map((user) => {
+          return <UserFriends key={user.id} id={user.id} name={user.name} status={user.status} image={user.image} />;
         })}
       </Box>
     </Box>

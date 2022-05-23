@@ -4,11 +4,13 @@ import {
   failureGetUserAction,
   failureUpdateUserAction,
   requestGetUserAction,
+  requestGetUsersAction,
   requestUpdateUserAction,
   successGetUserAction,
+  successGetUsersAction,
   successUpdateUserAction,
 } from '../store';
-import { getUserService, updateUserService } from 'modules/user/services';
+import { getUserService, getUsersService, updateUserService } from 'modules/user/services';
 
 // TODO: Разделить user на profile и users
 
@@ -41,14 +43,14 @@ const updateUserSaga = function* ({ payload }: ReturnType<typeof requestUpdateUs
 /**
  * Saga для получения пользователей.
  */
-// const postUsersSaga = function* ({ payload }: ReturnType<typeof postUsersAction>): SagaIterator {
-//   try {
-//     const response: Awaited<ReturnType<typeof getUsersService>> = yield call(getUsersService, payload);
-//     yield put(setUsers(response.data));
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
+const getUsersSaga = function* (): SagaIterator {
+  try {
+    const response: Awaited<ReturnType<typeof getUsersService>> = yield call(getUsersService);
+    yield put(successGetUsersAction(response.data));
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 /**
  * Saga для модуля пользователь.
@@ -57,7 +59,7 @@ const userSaga = function* (): SagaIterator {
   yield all([
     takeEvery(requestGetUserAction.type, getUserSaga),
     takeEvery(requestUpdateUserAction.type, updateUserSaga),
-    // takeEvery(postUsersAction.type, postUsersSaga),
+    takeEvery(requestGetUsersAction.type, getUsersSaga),
     // debounce(500, postUsersAction.type, postUsersSaga), // TODO: Подумать про debounce в 500мс для получения пользователей по имени
   ]);
 };

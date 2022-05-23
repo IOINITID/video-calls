@@ -18,7 +18,7 @@ const PrivateRoutes = () => {
     <Routes>
       {/* NOTE: Друзья */}
       <Route path="friends" element={<Friends />}>
-        <Route path="all-friends" element={<AllFriends />} />
+        <Route path="all-users" element={<AllFriends />} />
         <Route path="friends-online" element={<FriendsOnline />} />
         <Route path="friends-invites" element={<FriendsInvites />} />
         <Route path="friends-approvals" element={<FriendsApprovals />} />
@@ -34,7 +34,7 @@ const PrivateRoutes = () => {
       </Route>
       {/* NOTE: Каналы */}
       <Route path="channels" element={<Channels />} />
-      <Route path="*" element={<Navigate to="friends/all-friends" />} />
+      <Route path="*" element={<Navigate to="friends/all-users" />} />
     </Routes>
   );
 };

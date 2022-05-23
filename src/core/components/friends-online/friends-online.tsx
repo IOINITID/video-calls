@@ -32,7 +32,7 @@ const FriendsOnline = () => {
     >
       {friends.map((friend) => {
         return friend.status === 'online' ? (
-          <UserFriends key={friend.id} id={friend.id} name={friend.name} status={friend.status} />
+          <UserFriends key={friend.id} id={friend.id} name={friend.name} status={friend.status} image={friend.image} />
         ) : null;
       })}
     </Box>

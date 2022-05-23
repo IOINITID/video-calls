@@ -163,6 +163,8 @@ const UserProfile = () => {
                 );
 
                 setColor('');
+                setImage(user?.image);
+                setDescription(user?.description);
               }}
             >
               Сохранить изменения

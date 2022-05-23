@@ -5,9 +5,11 @@ export type UserState = {
   users: User[] | undefined;
   loading: {
     user: boolean;
+    users: boolean;
   };
   error: {
     user: any | null;
+    users: any | null;
   };
   audioInDevice: string;
   audioOutDevice: string;

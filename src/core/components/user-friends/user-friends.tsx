@@ -5,7 +5,7 @@ import { theme } from '../../theme';
 import { socket } from '../../utils/socket';
 import { axiosInstance } from '../../utils/axios-instance';
 
-const UserFriends = ({ id, name, status }: { id: string; name: string; status: string }) => {
+const UserFriends = ({ id, name, status, image }: { id: string; name: string; status: string; image: string }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
   return (
@@ -42,7 +42,7 @@ const UserFriends = ({ id, name, status }: { id: string; name: string; status: s
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           color={status === 'online' ? 'success' : 'error'}
         >
-          <Avatar sx={{ backgroundColor: colors.deepPurple[500] }} />
+          <Avatar sx={{ backgroundColor: colors.deepPurple[500] }} src={image} />
         </Badge>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'max-content' }}>
           <Typography variant="body2">{name ? name : ''}</Typography>

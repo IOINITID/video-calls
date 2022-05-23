@@ -1,5 +1,5 @@
 import { Box, Typography, Link } from '@mui/material';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { requestLogoutAction } from 'modules/authorization/store';
@@ -8,7 +8,6 @@ import {
   userFriendsSelector,
   userInvitesSelector,
   userUserSelector,
-  userUsersSelector,
 } from 'modules/user/store/selectors';
 import { axiosInstance } from '../../utils/axios-instance';
 import { theme } from '../../theme';
@@ -16,17 +15,22 @@ import { Button } from '../button';
 import { User } from '../user';
 import { socket } from '../../utils/socket';
 import { RootState } from 'core/store/types';
+import { requestGetUsersAction } from 'modules/user/store';
 
 const AllUsers = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const users = useSelector(userUsersSelector);
+  const { users } = useSelector((state: RootState) => state.user);
   const friends = useSelector(userFriendsSelector);
   const invites = useSelector(userInvitesSelector);
   const approvals = useSelector(userApprovalsSelector);
   const { authorizated } = useSelector((state: RootState) => state.authorization);
   const user = useSelector(userUserSelector);
+
+  useEffect(() => {
+    dispatch(requestGetUsersAction());
+  }, []);
 
   return (
     <Box sx={{ display: 'grid', rowGap: '16px', position: 'absolute', top: '0', left: '0', padding: '16px' }}>

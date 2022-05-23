@@ -1,14 +1,18 @@
 import { css } from '@emotion/css';
 import { Box, Divider, Link, Typography } from '@mui/material';
+import { RootState } from 'core/store/types';
+import { socket } from 'core/utils/socket';
 import { requestLogoutAction } from 'modules/authorization/store';
 import { memo } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const UserSettings = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+
+  const { user } = useSelector((state: RootState) => state.user);
 
   const userSettingsConfig = [
     {
@@ -44,6 +48,10 @@ const UserSettings = () => {
       path: 'logout',
       onClick: () => {
         dispatch(requestLogoutAction());
+
+        if (user?.id) {
+          socket.emit('on-disconnect', user.id);
+        }
       },
       divider: true,
     },
