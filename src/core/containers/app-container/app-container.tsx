@@ -14,7 +14,6 @@ const AppContainer = () => {
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
-      // TODO: Добавить авторизацию как getAuthorizaton через jsonwebtoken
       dispatch(requestRefreshAction());
     }
   }, []);
@@ -34,48 +33,6 @@ const AppContainer = () => {
       socket.emit('on-connect', user.id);
     }
   }, [user?.id]);
-
-  // useEffect(() => {
-  //   if (userId) {
-  //     socket.on('on-connect', () => {
-  //       dispatch(getUsers());
-  //       dispatch(getFriendsAction());
-  //       dispatch(getInvites());
-  //       dispatch(getApprovals());
-  //     });
-
-  //     socket.on('on-disconnect', () => {
-  //       dispatch(getUsers());
-  //       dispatch(getFriendsAction());
-  //       dispatch(getInvites());
-  //       dispatch(getApprovals());
-  //     });
-
-  //     socket.on('on-add-invite-to-friends', () => {
-  //       dispatch(getInvites());
-  //       dispatch(getApprovals());
-  //     });
-
-  //     socket.on('on-add-to-friends', () => {
-  //       dispatch(getFriendsAction());
-  //       dispatch(getInvites());
-  //       dispatch(getApprovals());
-  //     });
-
-  //     socket.on('on-remove-from-friends', () => {
-  //       dispatch(getFriendsAction());
-  //     });
-
-  //     socket.on('on-remove-invite-to-friends', () => {
-  //       dispatch(getInvites());
-  //       dispatch(getApprovals());
-  //     });
-  //   }
-  // }, [userId]);
-
-  // if (isLoading) {
-  //   return <Loader />;
-  // }
 
   return <App isAuthorizated={authorizated} />;
 };

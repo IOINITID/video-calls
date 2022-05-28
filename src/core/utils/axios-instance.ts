@@ -2,7 +2,7 @@ import axios from 'axios';
 import { refreshService } from 'modules/authorization/services';
 import { API_URL } from '../constants';
 import { store } from 'core/store';
-import { successRefreshAction, failureRefreshAction, requestRefreshAction } from 'modules/authorization/store';
+import { successRefreshAction, failureRefreshAction } from 'modules/authorization/store';
 
 const axiosInstance = axios.create({
   withCredentials: true,
@@ -41,9 +41,13 @@ axiosInstance.interceptors.response.use(
         originalConfig._retry = true;
 
         try {
-          store.dispatch(requestRefreshAction());
+          const response = await refreshService();
+
+          store.dispatch(successRefreshAction({ access_token: response.data.access_token }));
         } catch (error) {
           store.dispatch(failureRefreshAction(error));
+
+          return Promise.reject(error);
         }
 
         return axiosInstance(originalConfig);
@@ -55,33 +59,6 @@ axiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(error);
-
-    // NOTE: Релизация до обновления
-    // const originalConfig = error.config;
-
-    // if (error.response.status === 401 && !isRetry) {
-    //   try {
-    //     const response = await refreshService();
-
-    //     isRetry = true;
-
-    //     store.dispatch(successRefreshAction({ access_token: response.data.access_token }));
-
-    //     localStorage.setItem('access_token', response.data.access_token);
-
-    //     return axiosInstance.request(originalRequest);
-    //   } catch (error) {
-    //     console.log(error);
-
-    //     isRetry = false;
-
-    //     await logoutService();
-
-    //     localStorage.removeItem('access_token');
-    //   }
-    // }
-
-    // throw error;
   }
 );
 

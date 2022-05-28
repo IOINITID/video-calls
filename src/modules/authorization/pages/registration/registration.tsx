@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography, TextField, InputAdornment, IconButton, Link } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -10,25 +10,17 @@ import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { css } from '@emotion/css';
 import { LoadingButton } from '@mui/lab';
 import { RootState } from 'core/store/types';
-import { toast } from 'react-toastify';
 
 const Registration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, error } = useSelector((state: RootState) => state.authorization);
+  const { loading } = useSelector((state: RootState) => state.authorization);
 
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [isShowPassword, setIsShowPassword] = useState(false);
-
-  useEffect(() => {
-    console.log({ error });
-    error?.access_token?.errors?.forEach((error: any) => {
-      toast.error(error.msg);
-    });
-  }, [error]);
 
   return (
     <AuthorizationLayout>
