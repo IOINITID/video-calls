@@ -14,7 +14,11 @@ const AppContainer = () => {
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
-      dispatch(requestRefreshAction());
+      const refreshToken = localStorage.getItem('refresh_token');
+
+      if (refreshToken) {
+        dispatch(requestRefreshAction({ refresh_token: refreshToken }));
+      }
     }
   }, []);
 

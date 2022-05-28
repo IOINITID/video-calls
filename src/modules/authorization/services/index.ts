@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { axiosInstance } from 'core/utils/axios-instance';
-import { requestAuthorizationAction, requestRegistrationAction } from '../store';
+import { requestAuthorizationAction, requestRefreshAction, requestRegistrationAction } from '../store';
 import { ApiUrl } from './constants';
 import { Authorization } from './types';
 
@@ -29,11 +29,12 @@ export const authorizationService = (params: ReturnType<typeof requestAuthorizat
 /**
  * Service для обновления токенов.
  */
-export const refreshService = () => {
+export const refreshService = (params: ReturnType<typeof requestRefreshAction>['payload']) => {
   return axios.request<Authorization>({
-    method: 'GET',
+    method: 'POST',
     url: ApiUrl.Refresh,
-    withCredentials: true,
+    data: params,
+    // withCredentials: true,
   });
 };
 

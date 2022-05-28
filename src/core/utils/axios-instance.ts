@@ -41,9 +41,18 @@ axiosInstance.interceptors.response.use(
         originalConfig._retry = true;
 
         try {
-          const response = await refreshService();
+          const refreshToken = localStorage.getItem('refresh_token');
 
-          store.dispatch(successRefreshAction({ access_token: response.data.access_token }));
+          if (refreshToken) {
+            const response = await refreshService({ refresh_token: refreshToken });
+
+            store.dispatch(
+              successRefreshAction({
+                access_token: response.data.access_token,
+                refresh_token: response.data.refresh_token,
+              })
+            );
+          }
         } catch (error) {
           store.dispatch(failureRefreshAction(error));
 

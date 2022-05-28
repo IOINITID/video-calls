@@ -1,5 +1,6 @@
 export type AuthorizationState = {
   access_token: string;
+  refresh_token: string;
   authorizated: boolean;
   loading: {
     access_token: boolean;

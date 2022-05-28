@@ -20,7 +20,6 @@ import {
   successRefreshAction,
   successRegistrationAction,
 } from '../store';
-import { successGetUserAction } from 'modules/user/store';
 
 /**
  * Saga для регистрации пользователя.
@@ -28,7 +27,12 @@ import { successGetUserAction } from 'modules/user/store';
 const registrationSaga = function* ({ payload }: ReturnType<typeof requestRegistrationAction>): SagaIterator {
   try {
     const response: Awaited<ReturnType<typeof registrationService>> = yield call(registrationService, payload);
-    yield put(successRegistrationAction({ access_token: response.data.access_token }));
+    yield put(
+      successRegistrationAction({
+        access_token: response.data.access_token,
+        refresh_token: response.data.refresh_token,
+      })
+    );
   } catch (error) {
     console.error(error);
     yield put(failureRegistrationAction({ error }));
@@ -41,7 +45,12 @@ const registrationSaga = function* ({ payload }: ReturnType<typeof requestRegist
 const authorizationSaga = function* ({ payload }: ReturnType<typeof requestAuthorizationAction>): SagaIterator {
   try {
     const response: Awaited<ReturnType<typeof authorizationService>> = yield call(authorizationService, payload);
-    yield put(successAuthorizationAction({ access_token: response.data.access_token }));
+    yield put(
+      successAuthorizationAction({
+        access_token: response.data.access_token,
+        refresh_token: response.data.refresh_token,
+      })
+    );
   } catch (error) {
     console.error(error);
     yield put(failureAuthorizationAction({ error }));
@@ -51,10 +60,13 @@ const authorizationSaga = function* ({ payload }: ReturnType<typeof requestAutho
 /**
  * Saga для обновления токенов.
  */
-const refreshSaga = function* (): SagaIterator {
+const refreshSaga = function* ({ payload }: ReturnType<typeof requestRefreshAction>): SagaIterator {
   try {
-    const response: Awaited<ReturnType<typeof refreshService>> = yield call(refreshService);
-    yield put(successRefreshAction({ access_token: response.data.access_token }));
+    const response: Awaited<ReturnType<typeof refreshService>> = yield call(refreshService, payload);
+
+    yield put(
+      successRefreshAction({ access_token: response.data.access_token, refresh_token: response.data.refresh_token })
+    );
   } catch (error) {
     console.error(error);
     yield put(failureRefreshAction({ error }));
