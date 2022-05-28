@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { App } from 'core/components/app';
-import { requestRefreshAction } from 'modules/authorization/store';
 import { socket } from 'core/utils/socket';
 import { requestGetUserAction } from 'modules/user/store';
 import { RootState } from 'core/store/types';
+import { requestRefreshAction } from 'modules/authorization/store';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
@@ -14,6 +14,7 @@ const AppContainer = () => {
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
+      // TODO: Добавить авторизацию как getAuthorizaton через jsonwebtoken
       dispatch(requestRefreshAction());
     }
   }, []);

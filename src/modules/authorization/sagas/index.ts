@@ -68,7 +68,6 @@ const logoutSaga = function* (): SagaIterator {
   try {
     yield call(logoutService);
     yield put(successLogoutAction());
-    yield put(successGetUserAction(undefined));
   } catch (error) {
     console.error(error);
     yield put(failureLogoutAction({ error }));

@@ -52,6 +52,8 @@ const UserSettings = () => {
         if (user?.id) {
           socket.emit('on-disconnect', user.id);
         }
+
+        socket.close();
       },
       divider: true,
     },

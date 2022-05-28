@@ -29,11 +29,14 @@ export const authorizationSlice = createSlice({
       const { access_token } = payload;
 
       state.access_token = access_token;
+      state.authorizated = true;
       state.loading.access_token = false;
 
       localStorage.setItem('access_token', access_token);
     },
     failureRegistrationAction: (state: AuthorizationState, { payload }: PayloadAction<any | null>) => {
+      const { error } = payload;
+
       const getError = (error: unknown) => {
         if (axios.isAxiosError(error)) {
           if (error.response) {
@@ -42,7 +45,7 @@ export const authorizationSlice = createSlice({
         }
       };
 
-      state.error.access_token = getError(payload.error);
+      state.error.access_token = getError(error);
       state.loading.access_token = false;
     },
     requestAuthorizationAction: (
@@ -63,14 +66,22 @@ export const authorizationSlice = createSlice({
     failureAuthorizationAction: (state: AuthorizationState, { payload }: PayloadAction<any | null>) => {
       const { error } = payload;
 
-      state.error.access_token = error;
+      const getError = (error: unknown) => {
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            return error.response.data;
+          }
+        }
+      };
+
+      state.error.access_token = getError(error);
       state.loading.access_token = false;
 
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.message); // TODO: Добавить тип для ошибки
-      } else {
-        toast.error(error.message || 'Ошибка авторизации. Проверьте логин и пароль.');
-      }
+      // if (axios.isAxiosError(error)) {
+      //   toast.error(error.response?.data.message); // TODO: Добавить тип для ошибки
+      // } else {
+      //   toast.error(error.message || 'Ошибка авторизации. Проверьте логин и пароль.');
+      // }
     },
     requestRefreshAction: (state: AuthorizationState) => {
       state.loading.access_token = true;
@@ -89,18 +100,23 @@ export const authorizationSlice = createSlice({
 
       state.error.access_token = error;
       state.loading.access_token = false;
+      state.authorizated = false;
+      state.access_token = '';
 
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.message); // TODO: Добавить тип для ошибки
-      } else {
-        toast.error(error.message || 'Ошибка авторизации. Проверьте логин и пароль.');
-      }
+      localStorage.removeItem('access_token');
 
-      if (error.response.status === 401) {
-        localStorage.removeItem('access_token');
+      location.reload();
 
-        location.reload();
-      }
+      // if (axios.isAxiosError(error)) {
+      //   toast.error(error.response?.data.message); // TODO: Добавить тип для ошибки
+      // } else {
+      //   toast.error(error.message || 'Ошибка авторизации. Проверьте логин и пароль.');
+      // }
+
+      // TODO: Может и не нужна saga, все будет в axios response interceptor
+      // if (error.response.status === 401) {
+      //   localStorage.removeItem('access_token');
+      // }
     },
     requestLogoutAction: (state: AuthorizationState) => {
       state.loading.access_token = true;
@@ -109,6 +125,7 @@ export const authorizationSlice = createSlice({
       state.access_token = '';
       state.authorizated = false;
       state.loading.access_token = false;
+      state.error.access_token = null;
 
       localStorage.removeItem('access_token');
     },
