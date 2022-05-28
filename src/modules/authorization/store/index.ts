@@ -9,9 +9,11 @@ const initialState: AuthorizationState = {
   authorizated: false,
   loading: {
     access_token: false,
+    refresh_token: false,
   },
   error: {
     access_token: null,
+    refresh_token: null,
   },
 };
 
@@ -25,20 +27,25 @@ export const authorizationSlice = createSlice({
       { payload }: PayloadAction<{ email: string; name: string; password: string }>
     ) => {
       state.loading.access_token = true;
+      state.loading.refresh_token = true;
     },
     successRegistrationAction: (state: AuthorizationState, { payload }: PayloadAction<Authorization>) => {
       state.access_token = payload.access_token;
       state.refresh_token = payload.refresh_token;
       state.authorizated = true;
       state.loading.access_token = false;
+      state.loading.refresh_token = false;
       state.error.access_token = null;
+      state.error.refresh_token = null;
 
       localStorage.setItem('access_token', payload.access_token);
       localStorage.setItem('refresh_token', payload.refresh_token);
     },
     failureRegistrationAction: (state: AuthorizationState, { payload }: PayloadAction<any | null>) => {
       state.loading.access_token = false;
+      state.loading.refresh_token = false;
       state.error.access_token = payload.error;
+      state.error.refresh_token = payload.error;
     },
     /** Action для получения данных авторизации. */
     requestAuthorizationAction: (
@@ -46,20 +53,25 @@ export const authorizationSlice = createSlice({
       { payload }: PayloadAction<{ email: string; password: string }>
     ) => {
       state.loading.access_token = true;
+      state.loading.refresh_token = true;
     },
     successAuthorizationAction: (state: AuthorizationState, { payload }: PayloadAction<Authorization>) => {
       state.access_token = payload.access_token;
       state.refresh_token = payload.refresh_token;
       state.authorizated = true;
       state.loading.access_token = false;
+      state.loading.refresh_token = false;
       state.error.access_token = null;
+      state.error.refresh_token = null;
 
       localStorage.setItem('access_token', payload.access_token);
       localStorage.setItem('refresh_token', payload.refresh_token);
     },
     failureAuthorizationAction: (state: AuthorizationState, { payload }: PayloadAction<any | null>) => {
       state.loading.access_token = false;
+      state.loading.refresh_token = false;
       state.error.access_token = payload.error;
+      state.error.refresh_token = payload.error;
     },
     /** Action для обновления данных авторизации. */
     requestRefreshAction: (
@@ -67,13 +79,16 @@ export const authorizationSlice = createSlice({
       { payload }: PayloadAction<Omit<Authorization, 'access_token'>>
     ) => {
       state.loading.access_token = true;
+      state.loading.refresh_token = true;
     },
     successRefreshAction: (state: AuthorizationState, { payload }: PayloadAction<Authorization>) => {
       state.access_token = payload.access_token;
       state.refresh_token = payload.refresh_token;
       state.authorizated = true;
       state.loading.access_token = false;
+      state.loading.refresh_token = false;
       state.error.access_token = null;
+      state.error.refresh_token = null;
 
       localStorage.setItem('access_token', payload.access_token);
       localStorage.setItem('refresh_token', payload.refresh_token);
@@ -83,7 +98,9 @@ export const authorizationSlice = createSlice({
       state.refresh_token = '';
       state.authorizated = false;
       state.loading.access_token = false;
+      state.loading.refresh_token = false;
       state.error.access_token = payload.error;
+      state.error.refresh_token = payload.error;
 
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
@@ -98,14 +115,18 @@ export const authorizationSlice = createSlice({
       state.refresh_token = '';
       state.authorizated = false;
       state.loading.access_token = false;
+      state.loading.refresh_token = false;
       state.error.access_token = null;
+      state.error.refresh_token = null;
 
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
     },
     failureLogoutAction: (state: AuthorizationState, { payload }: PayloadAction<any | null>) => {
       state.loading.access_token = false;
+      state.loading.refresh_token = false;
       state.error.access_token = payload.error;
+      state.error.refresh_token = payload.error;
     },
   },
 });

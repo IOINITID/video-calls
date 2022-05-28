@@ -106,7 +106,7 @@ const Registration = () => {
                   variant="contained"
                   color="primary"
                   size="large"
-                  loading={loading.access_token}
+                  loading={loading.access_token || loading.refresh_token}
                   onClick={() => dispatch(requestRegistrationAction({ email, name, password }))}
                 >
                   Зарегистрироваться
