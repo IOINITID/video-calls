@@ -121,6 +121,7 @@ export const authorizationSlice = createSlice({
 
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
+      socket.close();
     },
     failureLogoutAction: (state: AuthorizationState, { payload }: PayloadAction<any | null>) => {
       state.loading.access_token = false;
