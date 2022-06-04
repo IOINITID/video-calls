@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
-import { theme } from '../../theme';
+import { theme } from '../../../../../../core/theme';
 import { memo, useState, useEffect } from 'react';
 import { userUsersSelector } from 'modules/user/store/selectors';
-import { TextField } from '../text-field';
+import { TextField } from '../../../../../../core/components/text-field';
 // import { requestUpdateUsersAction } from 'modules/user/store';
-import { UserAddInviteToFriends } from '../user-add-invite-to-friends';
+import { UserAddInviteToFriends } from '../../../../../../core/components/user-add-invite-to-friends';
 
-const AddToFriends = () => {
+const FriendsAdd = () => {
   const dispatch = useDispatch();
 
   const users = useSelector(userUsersSelector);
@@ -66,4 +66,4 @@ const AddToFriends = () => {
   );
 };
 
-export const AddToFriendsMemoized = memo(AddToFriends);
+export const FriendsAddMemoized = memo(FriendsAdd);

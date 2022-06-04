@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
 import { Box } from '@mui/material';
-import { theme } from '../../theme';
+import { theme } from '../../../../../../core/theme';
 import { memo } from 'react';
-import { userInvitesSelector } from '../../../modules/user/store/selectors';
-import { UserAddToFriends } from '../user-add-to-friends';
+import { userInvitesSelector } from '../../../../../user/store/selectors';
+import { UserAddToFriends } from '../../../../../../core/components/user-add-to-friends';
 
-const FriendsInvites = () => {
+const FriendsInvitations = () => {
   const invites = useSelector(userInvitesSelector);
 
   return (
@@ -37,4 +37,4 @@ const FriendsInvites = () => {
   );
 };
 
-export const FriendsInvitesMemoized = memo(FriendsInvites);
+export const FriendsInvitationsMemoized = memo(FriendsInvitations);

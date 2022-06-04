@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux';
 import { Box } from '@mui/material';
-import { theme } from '../../theme';
+import { theme } from '../../../../../../core/theme';
 import { memo } from 'react';
-import { userFriendsSelector } from '../../../modules/user/store/selectors';
-import { UserFriends } from '../user-friends';
+import { userApprovalsSelector } from '../../../../../user/store/selectors';
+import { UserApprovals } from '../../../../../../core/components/user-approvals';
 
-const FriendsOnline = () => {
-  const friends = useSelector(userFriendsSelector);
+const FriendsBlocked = () => {
+  const approvals = useSelector(userApprovalsSelector);
 
   return (
     <Box
@@ -30,13 +30,11 @@ const FriendsOnline = () => {
         },
       }}
     >
-      {friends.map((friend) => {
-        return friend.status === 'online' ? (
-          <UserFriends key={friend.id} id={friend.id} name={friend.name} status={friend.status} image={friend.image} />
-        ) : null;
+      {approvals.map((approval) => {
+        return <UserApprovals key={approval.id} id={approval.id} name={approval.name} status={approval.status} />;
       })}
     </Box>
   );
 };
 
-export const FriendsOnlineMemoized = memo(FriendsOnline);
+export const FriendsBlockedMemoized = memo(FriendsBlocked);

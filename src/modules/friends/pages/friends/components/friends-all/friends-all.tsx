@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
-import { theme } from '../../theme';
+import { theme } from '../../../../../../core/theme';
 import { memo, useEffect } from 'react';
-import { UserFriends } from '../user-friends';
+import { UserFriends } from '../../../../../../core/components/user-friends';
 import { RootState } from 'core/store/types';
 import { requestGetUsersAction } from 'modules/user/store';
 import { socket } from 'core/utils/socket';
 
-const AllFriends = () => {
+const FriendsAll = () => {
   const dispatch = useDispatch();
 
   const { users } = useSelector((state: RootState) => state.user);
@@ -58,4 +58,4 @@ const AllFriends = () => {
   );
 };
 
-export const AllFriendsMemoized = memo(AllFriends);
+export const FriendsAllMemoized = memo(FriendsAll);

@@ -11,7 +11,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 const Friends = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [usersMessages, setUsersMessages] = useState<any[]>();
+  const [usersMessages, setUsersMessages] = useState<any[]>([]);
 
   useEffect(() => {
     // const getPersonalMessage = async () => {
@@ -75,8 +75,8 @@ const Friends = () => {
             {usersMessages?.map((value: any) => {
               return (
                 <User
-                  key={value.userData._id}
-                  id={value.userData._id}
+                  key={value.userData.id}
+                  id={value.userData.id}
                   name={value.userData.name}
                   status={value.userData.status}
                   email={value.userData.email}
@@ -110,45 +110,39 @@ const Friends = () => {
           }}
         >
           <Typography variant="h6">Друзья</Typography>
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(5, max-content)',
-              columnGap: '8px',
-            }}
-          >
+          <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(5, max-content)', columnGap: '8px' }}>
             <Button
-              variant={pathname.includes('all-users') ? 'contained' : 'outlined'}
+              variant={pathname.includes('online') ? 'contained' : 'outlined'}
               color="primary"
-              onClick={() => navigate('all-users')}
-            >
-              Все пользователи
-            </Button>
-            <Button
-              variant={pathname.includes('friends-online') ? 'contained' : 'outlined'}
-              color="primary"
-              onClick={() => navigate('friends-online')}
+              onClick={() => navigate('online')}
             >
               В сети
             </Button>
             <Button
-              variant={pathname.includes('friends-invites') ? 'contained' : 'outlined'}
+              variant={pathname.includes('all') ? 'contained' : 'outlined'}
               color="primary"
-              onClick={() => navigate('friends-invites')}
+              onClick={() => navigate('all')}
             >
-              Заявки
+              Все
             </Button>
             <Button
-              variant={pathname.includes('friends-approvals') ? 'contained' : 'outlined'}
+              variant={pathname.includes('invites') ? 'contained' : 'outlined'}
               color="primary"
-              onClick={() => navigate('friends-approvals')}
+              onClick={() => navigate('invites')}
             >
               Ожидание
             </Button>
             <Button
-              variant={pathname.includes('add-to-friends') ? 'contained' : 'outlined'}
+              variant={pathname.includes('blocked') ? 'contained' : 'outlined'}
+              color="primary"
+              onClick={() => navigate('blocked')}
+            >
+              Заблокированные
+            </Button>
+            <Button
+              variant={pathname.includes('add') ? 'contained' : 'outlined'}
               color="success"
-              onClick={() => navigate('add-to-friends')}
+              onClick={() => navigate('add')}
             >
               Добавить в друзья
             </Button>

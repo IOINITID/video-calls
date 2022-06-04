@@ -1,12 +1,13 @@
 import { useSelector } from 'react-redux';
 import { Box } from '@mui/material';
-import { theme } from '../../theme';
+import { theme } from '../../../../../../core/theme';
 import { memo } from 'react';
-import { userApprovalsSelector } from '../../../modules/user/store/selectors';
-import { UserApprovals } from '../user-approvals';
+// import { userFriendsSelector } from '../../../../../user/store/selectors';
+import { UserFriends } from '../../../../../../core/components/user-friends';
+import { RootState } from 'core/store/types';
 
-const FriendsApprovals = () => {
-  const approvals = useSelector(userApprovalsSelector);
+const FriendsOnline = () => {
+  const { friends } = useSelector((state: RootState) => state.user);
 
   return (
     <Box
@@ -30,11 +31,13 @@ const FriendsApprovals = () => {
         },
       }}
     >
-      {approvals.map((approval) => {
-        return <UserApprovals key={approval.id} id={approval.id} name={approval.name} status={approval.status} />;
+      {friends.map((friend) => {
+        return friend.status === 'online' ? (
+          <UserFriends key={friend.id} id={friend.id} name={friend.name} status={friend.status} image={friend.image} />
+        ) : null;
       })}
     </Box>
   );
 };
 
-export const FriendsApprovalsMemoized = memo(FriendsApprovals);
+export const FriendsOnlineMemoized = memo(FriendsOnline);
