@@ -85,6 +85,9 @@ const Authorization = () => {
                 </Box>
               </Box>
               <LoadingButton
+                disableElevation
+                disableRipple
+                sx={{ pdding: '8px 16px', textTransform: 'initial' }}
                 variant="contained"
                 color="primary"
                 size="large"

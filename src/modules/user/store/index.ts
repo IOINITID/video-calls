@@ -3,8 +3,8 @@ import { User } from '../services/types';
 import { UserState } from './types';
 
 const initialState: UserState = {
-  user: undefined,
-  users: undefined,
+  user: null,
+  users: [],
   loading: {
     user: false,
     users: false,
@@ -35,7 +35,7 @@ export const userSlice = createSlice({
     requestGetUserAction: (state: UserState) => {
       state.loading.user = true;
     },
-    successGetUserAction: (state: UserState, { payload }: PayloadAction<User | undefined>) => {
+    successGetUserAction: (state: UserState, { payload }: PayloadAction<User | null>) => {
       state.user = payload;
       state.loading.user = false;
     },

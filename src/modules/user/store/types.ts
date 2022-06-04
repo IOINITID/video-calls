@@ -1,8 +1,8 @@
 import { User } from '../services/types';
 
 export type UserState = {
-  user: User | undefined;
-  users: User[] | undefined;
+  user: User | null;
+  users: User[];
   loading: {
     user: boolean;
     users: boolean;

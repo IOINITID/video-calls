@@ -1,16 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
-import { theme } from '../../../../../../core/theme';
+import { theme } from 'core/theme';
 import { memo, useState, useEffect } from 'react';
-import { userUsersSelector } from 'modules/user/store/selectors';
-import { TextField } from '../../../../../../core/components/text-field';
-// import { requestUpdateUsersAction } from 'modules/user/store';
-import { UserAddInviteToFriends } from '../../../../../../core/components/user-add-invite-to-friends';
+import { TextField } from 'core/components/text-field';
+import { UserAddInviteToFriends } from 'core/components/user-add-invite-to-friends';
+import { RootState } from 'core/store/types';
+import { socket } from 'core/utils/socket';
+import { requestGetUsersAction } from 'modules/user/store';
 
 const FriendsAdd = () => {
   const dispatch = useDispatch();
 
-  const users = useSelector(userUsersSelector);
+  const { users } = useSelector((state: RootState) => state.user);
 
   const [searchValue, setSearchValue] = useState('');
 
@@ -19,6 +20,18 @@ const FriendsAdd = () => {
       // dispatch(postUsersAction({ searchValue }));
     }
   }, [searchValue]);
+
+  useEffect(() => {
+    dispatch(requestGetUsersAction());
+
+    socket.on('on-connect', () => {
+      dispatch(requestGetUsersAction());
+    });
+
+    socket.on('on-disconnect', () => {
+      dispatch(requestGetUsersAction());
+    });
+  }, []);
 
   return (
     <Box sx={{ padding: '0 8px 0 16px', margin: '16px 8px 16px 0' }}>
@@ -50,13 +63,14 @@ const FriendsAdd = () => {
           },
         }}
       >
-        {users?.map((user) => {
+        {users.map((user) => {
           return (
             <UserAddInviteToFriends
               key={user.id}
               id={user.id}
               name={user.name}
               status={user.status}
+              image={user.image}
               setSearchValue={setSearchValue}
             />
           );

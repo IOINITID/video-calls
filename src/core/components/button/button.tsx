@@ -3,7 +3,13 @@ import { memo } from 'react';
 
 const Button = ({ children, ...props }: MUIButtonProps) => {
   return (
-    <MUIButton disableElevation {...props}>
+    <MUIButton
+      disableElevation
+      disableRipple
+      sx={{ padding: '8px 16px', textTransform: 'initial' }}
+      size="small"
+      {...props}
+    >
       {children}
     </MUIButton>
   );

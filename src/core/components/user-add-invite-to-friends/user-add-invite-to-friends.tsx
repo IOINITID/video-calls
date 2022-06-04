@@ -1,19 +1,21 @@
 import { Avatar, Badge, Box, colors, Typography } from '@mui/material';
 import { Dispatch, memo, SetStateAction } from 'react';
-import { theme } from '../../theme';
-import { axiosInstance } from '../../utils/axios-instance';
-import { socket } from '../../utils/socket';
-import { Button } from '../button';
+import { theme } from 'core/theme';
+import { axiosInstance } from 'core/utils/axios-instance';
+import { socket } from 'core/utils/socket';
+import { Button } from 'core/components/button';
 
 const UserAddInviteToFriends = ({
   id,
   name,
   status,
+  image,
   setSearchValue,
 }: {
   id: string;
   name: string;
   status: string;
+  image: string;
   setSearchValue: Dispatch<SetStateAction<string>>;
 }) => {
   return (
@@ -50,7 +52,7 @@ const UserAddInviteToFriends = ({
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           color={status === 'online' ? 'success' : 'error'}
         >
-          <Avatar sx={{ backgroundColor: colors.deepPurple[500] }} />
+          <Avatar sx={{ backgroundColor: colors.deepPurple[500] }} src={image} />
         </Badge>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'max-content' }}>
           <Typography variant="body2">{name ? name : ''}</Typography>

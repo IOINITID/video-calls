@@ -126,9 +126,9 @@ const Friends = () => {
               Все
             </Button>
             <Button
-              variant={pathname.includes('invites') ? 'contained' : 'outlined'}
+              variant={pathname.includes('invitations') ? 'contained' : 'outlined'}
               color="primary"
-              onClick={() => navigate('invites')}
+              onClick={() => navigate('invitations')}
             >
               Ожидание
             </Button>
