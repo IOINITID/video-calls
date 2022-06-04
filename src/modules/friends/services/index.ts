@@ -11,3 +11,13 @@ export const getFriendsService = () => {
     url: ApiUrl.GetFriends,
   });
 };
+
+/**
+ * Service для добавления в список друзей.
+ */
+export const addToFriendsService = () => {
+  return axiosInstance.request<GetFriendsResponse>({
+    method: 'POST',
+    url: ApiUrl.GetFriends,
+  });
+};
