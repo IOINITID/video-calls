@@ -1,12 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { addMessageToChannel } from 'core/services/add-message-to-channel';
-import { getApprovals } from 'core/services/get-approvals';
-import { getChannelMessages } from 'core/services/get-channel-messages';
-import { getChannels } from 'core/services/get-channels';
-import { getInvites } from 'core/services/get-invites';
-import { getFriendsAction } from 'modules/friends/store/actions';
 import { User } from '../services/types';
-import { ChannelResponse, MessageResponse, UserState } from './types';
+import { UserState } from './types';
 
 const initialState: UserState = {
   user: undefined,
@@ -91,26 +85,6 @@ export const userSlice = createSlice({
     setAudioOutDevice: (state: UserState, { payload }: PayloadAction<string>) => {
       state.audioOutDevice = payload;
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(getFriendsAction.fulfilled, (state: UserState, { payload }: PayloadAction<User[]>) => {
-      state.friends = payload;
-    });
-    builder.addCase(getInvites.fulfilled, (state: UserState, { payload }: PayloadAction<User[]>) => {
-      state.invites = payload;
-    });
-    builder.addCase(getApprovals.fulfilled, (state: UserState, { payload }: PayloadAction<User[]>) => {
-      state.approvals = payload;
-    });
-    builder.addCase(getChannels.fulfilled, (state: UserState, { payload }: PayloadAction<ChannelResponse[]>) => {
-      state.channels = payload;
-    });
-    builder.addCase(getChannelMessages.fulfilled, (state: UserState, { payload }: PayloadAction<MessageResponse[]>) => {
-      state.channelMessages = payload;
-    });
-    builder.addCase(addMessageToChannel.fulfilled, (state: UserState, { payload }: PayloadAction<MessageResponse>) => {
-      state.channelMessages = [...state.channelMessages, payload];
-    });
   },
 });
 

@@ -1,13 +1,28 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
-import { theme } from '../../../../../../core/theme';
-import { memo } from 'react';
-// import { userFriendsSelector } from '../../../../../user/store/selectors';
-import { UserFriends } from '../../../../../../core/components/user-friends';
+import { theme } from 'core/theme';
+import { memo, useEffect } from 'react';
+import { UserFriends } from 'core/components/user-friends';
 import { RootState } from 'core/store/types';
+import { requestGetFriendsAction } from 'modules/friends/store';
+import { socket } from 'core/utils/socket';
 
 const FriendsOnline = () => {
-  const { friends } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+
+  const { friends } = useSelector((state: RootState) => state.friends);
+
+  useEffect(() => {
+    dispatch(requestGetFriendsAction());
+
+    socket.on('on-connect', () => {
+      dispatch(requestGetFriendsAction());
+    });
+
+    socket.on('on-disconnect', () => {
+      dispatch(requestGetFriendsAction());
+    });
+  }, []);
 
   return (
     <Box
