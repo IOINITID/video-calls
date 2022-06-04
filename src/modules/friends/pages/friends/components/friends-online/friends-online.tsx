@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { theme } from 'core/theme';
 import { memo, useEffect } from 'react';
 import { UserFriends } from 'core/components/user-friends';
@@ -46,11 +46,24 @@ const FriendsOnline = () => {
         },
       }}
     >
-      {friends.map((friend) => {
-        return friend.status === 'online' ? (
-          <UserFriends key={friend.id} id={friend.id} name={friend.name} status={friend.status} image={friend.image} />
-        ) : null;
-      })}
+      <Box sx={{ padding: '8px 12px' }}>
+        <Typography variant="h6">
+          В сети: {friends && friends.length > 0 ? friends.filter((friend) => friend.status === 'online').length : 0}
+        </Typography>
+      </Box>
+      <Box sx={{ display: 'grid', alignContent: 'start', rowGap: '8px' }}>
+        {friends.map((friend) => {
+          return friend.status === 'online' ? (
+            <UserFriends
+              key={friend.id}
+              id={friend.id}
+              name={friend.name}
+              status={friend.status}
+              image={friend.image}
+            />
+          ) : null;
+        })}
+      </Box>
     </Box>
   );
 };
