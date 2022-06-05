@@ -1,11 +1,15 @@
 import { Avatar, Badge, Box, colors, Typography } from '@mui/material';
+import { requestDeclineInvitationsAction } from 'modules/invitations/store';
 import { memo } from 'react';
+import { useDispatch } from 'react-redux';
 import { theme } from '../../theme';
 import { axiosInstance } from '../../utils/axios-instance';
 import { socket } from '../../utils/socket';
 import { Button } from '../button';
 
 const UserAddToFriends = ({ id, name, status, image }: { id: string; name: string; status: string; image: string }) => {
+  const dispatch = useDispatch();
+
   return (
     <Box
       sx={{
@@ -60,12 +64,8 @@ const UserAddToFriends = ({ id, name, status, image }: { id: string; name: strin
         <Button
           variant="contained"
           color="primary"
-          onClick={async () => {
-            const response = await axiosInstance.post('/add-to-friends', { friendId: id });
-
-            socket.emit('on-add-to-friends', id); // Отправка события пользователю который ждет принятие приглашения
-
-            return response.data;
+          onClick={() => {
+            // socket.emit('on-add-to-friends', id); // Отправка события пользователю который ждет принятие приглашения
           }}
         >
           Добавить
@@ -73,12 +73,10 @@ const UserAddToFriends = ({ id, name, status, image }: { id: string; name: strin
         <Button
           variant="contained"
           color="primary"
-          onClick={async () => {
-            const response = await axiosInstance.post('/remove-invite-to-friends', { friendId: id });
-
-            socket.emit('on-remove-invite-to-friends', id); // Отправка события пользователю который ждет принятия или отклонения приглашения
-
-            return response.data;
+          onClick={() => {
+            dispatch(requestDeclineInvitationsAction({ friend_id: id }));
+            // TODO: Добавить отправку сигналинга для отмены приглашения в друзья
+            // socket.emit('on-remove-invite-to-friends', id); // Отправка события пользователю который ждет принятия или отклонения приглашения
           }}
         >
           Отклонить

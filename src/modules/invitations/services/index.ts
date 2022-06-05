@@ -1,4 +1,5 @@
 import { axiosInstance } from 'core/utils/axios-instance';
+import { requestDeclineInvitationsAction, requestSentInvitationsAction } from '../store';
 import { DeclineInvitationsResponse, GetInvitationsResponse, SentInvitationsResponse } from '../types';
 import { ApiUrl } from './constants';
 
@@ -15,19 +16,21 @@ export const getInvitationsService = () => {
 /**
  * Service для отправки приглашения в друзей.
  */
-export const sentInvitationService = (params: any) => {
+export const sentInvitationService = (params: ReturnType<typeof requestSentInvitationsAction>['payload']) => {
   return axiosInstance.request<SentInvitationsResponse>({
     method: 'POST',
     url: ApiUrl.SentInvitation,
+    data: params,
   });
 };
 
 /**
  * Service для отклонения приглашения в друзей.
  */
-export const declineInvitationService = (params: any) => {
+export const declineInvitationService = (params: ReturnType<typeof requestDeclineInvitationsAction>['payload']) => {
   return axiosInstance.request<DeclineInvitationsResponse>({
     method: 'POST',
     url: ApiUrl.DeclineInvitation,
+    data: params,
   });
 };

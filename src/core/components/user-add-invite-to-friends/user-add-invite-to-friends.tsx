@@ -4,6 +4,8 @@ import { theme } from 'core/theme';
 import { axiosInstance } from 'core/utils/axios-instance';
 import { socket } from 'core/utils/socket';
 import { Button } from 'core/components/button';
+import { useDispatch } from 'react-redux';
+import { requestSentInvitationsAction } from 'modules/invitations/store';
 
 const UserAddInviteToFriends = ({
   id,
@@ -18,6 +20,8 @@ const UserAddInviteToFriends = ({
   image: string;
   setSearchValue: Dispatch<SetStateAction<string>>;
 }) => {
+  const dispatch = useDispatch();
+
   return (
     <Box
       sx={{
@@ -72,14 +76,11 @@ const UserAddInviteToFriends = ({
         <Button
           variant="contained"
           color="primary"
-          onClick={async () => {
-            setSearchValue('');
-
-            const response = await axiosInstance.post('/add-invite-to-friends', { friendId: id });
-
-            socket.emit('on-add-invite-to-friends', id);
-
-            return response.data;
+          onClick={() => {
+            dispatch(requestSentInvitationsAction({ friend_id: id }));
+            // TODO: Добавить отправку сигналинга на отправку приглашения в друзья
+            // setSearchValue('');
+            // socket.emit('on-add-invite-to-friends', id);
           }}
         >
           Добавить в друзья

@@ -1,7 +1,17 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { declineInvitationService, getInvitationsService, sentInvitationService } from '../services';
-import { failureGetInvitationsAction, requestGetInvitationsAction, successGetInvitationsAction } from '../store';
+import {
+  failureDeclineInvitationsAction,
+  failureGetInvitationsAction,
+  failureSentInvitationsAction,
+  requestDeclineInvitationsAction,
+  requestGetInvitationsAction,
+  requestSentInvitationsAction,
+  successDeclineInvitationsAction,
+  successGetInvitationsAction,
+  successSentInvitationsAction,
+} from '../store';
 
 /**
  * Saga для получения приглашений в друзья.
@@ -19,38 +29,41 @@ const getInvitationsSaga = function* (): SagaIterator {
 /**
  * Saga для отправки приглашения в друзей.
  */
-const sentInvitationSaga = function* (payload: any): SagaIterator {
+const sentInvitationSaga = function* ({ payload }: ReturnType<typeof requestSentInvitationsAction>): SagaIterator {
   try {
     const response: Awaited<ReturnType<typeof sentInvitationService>> = yield call(sentInvitationService, payload);
-    // yield put(successGetFriendsAction(response.data.friends));
+    yield put(successSentInvitationsAction(response.data.invitations));
   } catch (error) {
     console.error(error);
-    // yield put(failureGetFriendsAction(error));
+    yield put(failureSentInvitationsAction(error));
   }
 };
 
 /**
  * Saga для отклонения приглашения в друзей.
  */
-const declineInvitationSaga = function* (payload: any): SagaIterator {
+const declineInvitationSaga = function* ({
+  payload,
+}: ReturnType<typeof requestDeclineInvitationsAction>): SagaIterator {
   try {
     const response: Awaited<ReturnType<typeof declineInvitationService>> = yield call(
       declineInvitationService,
       payload
     );
-    // yield put(successGetFriendsAction(response.data.friends));
+    yield put(successDeclineInvitationsAction(response.data.invitations));
   } catch (error) {
     console.error(error);
-    // yield put(failureGetFriendsAction(error));
+    yield put(failureDeclineInvitationsAction(error));
   }
 };
 
 /**
- * Saga для модуля приглашений в друзья.
+ * Saga для модуля приглашения в друзья.
  */
 export const invitationsSaga = function* (): SagaIterator {
   yield all([
     takeEvery(requestGetInvitationsAction.type, getInvitationsSaga),
-    // takeEvery(requestGetInvitationsAction.type, getInvitationsSaga),
+    takeEvery(requestSentInvitationsAction.type, sentInvitationSaga),
+    takeEvery(requestDeclineInvitationsAction.type, declineInvitationSaga),
   ]);
 };
