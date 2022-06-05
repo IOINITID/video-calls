@@ -104,7 +104,7 @@ export const authorizationSlice = createSlice({
 
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
-      socket.close();
+      // socket.close();
     },
     /** Action для выхода из приложения. */
     requestLogoutAction: (state: AuthorizationState) => {
@@ -121,7 +121,7 @@ export const authorizationSlice = createSlice({
 
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
-      socket.close();
+      // socket.close();
     },
     failureLogoutAction: (state: AuthorizationState, { payload }: PayloadAction<any | null>) => {
       state.loading.access_token = false;

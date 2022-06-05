@@ -53,7 +53,7 @@ const UserSettings = () => {
           socket.emit('on-disconnect', user.id);
         }
 
-        socket.close();
+        // socket.close();
       },
       divider: true,
     },
