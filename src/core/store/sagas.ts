@@ -3,8 +3,9 @@ import { SagaIterator } from 'redux-saga';
 import { userSaga } from 'modules/user/sagas';
 import { authorizationModuleSaga } from 'modules/authorization/sagas';
 import { friendsSaga } from 'modules/friends/sagas';
+import { invitationsSaga } from 'modules/invitations/sagas';
 
-const sagas = [authorizationModuleSaga, userSaga, friendsSaga];
+const sagas = [authorizationModuleSaga, userSaga, friendsSaga, invitationsSaga];
 
 /**
  * Saga для всех модулей.
