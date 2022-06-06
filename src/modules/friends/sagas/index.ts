@@ -1,7 +1,17 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
-import { failureGetFriendsAction, requestGetFriendsAction, successGetFriendsAction } from '../store';
-import { getFriendsService } from '../services';
+import {
+  failureAddToFriendsAction,
+  failureGetFriendsAction,
+  failureRemoveFromFriendsAction,
+  requestAddToFriendsAction,
+  requestGetFriendsAction,
+  requestRemoveFromFriendsAction,
+  successAddToFriendsAction,
+  successGetFriendsAction,
+  successRemoveFromFriendsAction,
+} from '../store';
+import { addToFriendsService, getFriendsService, removeFromFriendsService } from '../services';
 
 /**
  * Saga для получения списка друзей.
@@ -17,8 +27,41 @@ const getFriendsSaga = function* (): SagaIterator {
 };
 
 /**
+ * Saga для добавления в спискок друзей.
+ */
+const addToFriendsSaga = function* ({ payload }: ReturnType<typeof requestAddToFriendsAction>): SagaIterator {
+  try {
+    const response: Awaited<ReturnType<typeof addToFriendsService>> = yield call(addToFriendsService, payload);
+    yield put(successAddToFriendsAction(response.data.friends));
+  } catch (error) {
+    console.error(error);
+    yield put(failureAddToFriendsAction(error));
+  }
+};
+
+/**
+ * Saga для удаления из списка друзей.
+ */
+const removeFromFriendsSaga = function* ({ payload }: ReturnType<typeof requestRemoveFromFriendsAction>): SagaIterator {
+  try {
+    const response: Awaited<ReturnType<typeof removeFromFriendsService>> = yield call(
+      removeFromFriendsService,
+      payload
+    );
+    yield put(successRemoveFromFriendsAction(response.data.friends));
+  } catch (error) {
+    console.error(error);
+    yield put(failureRemoveFromFriendsAction(error));
+  }
+};
+
+/**
  * Saga для модуля друзья.
  */
 export const friendsSaga = function* (): SagaIterator {
-  yield all([takeEvery(requestGetFriendsAction.type, getFriendsSaga)]);
+  yield all([
+    takeEvery(requestGetFriendsAction.type, getFriendsSaga),
+    takeEvery(requestAddToFriendsAction.type, addToFriendsSaga),
+    takeEvery(requestRemoveFromFriendsAction.type, removeFromFriendsSaga),
+  ]);
 };
