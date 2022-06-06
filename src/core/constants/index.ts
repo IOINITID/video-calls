@@ -16,3 +16,8 @@ export const API_URL =
 
 export const APPLICATION_URL =
   process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://ioinitid.github.io/video-calls';
+
+export const Event = {
+  Client: {},
+  Server: {},
+};

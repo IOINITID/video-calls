@@ -1,4 +1,5 @@
 import { Avatar, Badge, Box, colors, Typography } from '@mui/material';
+import { Event } from 'modules/friends/pages/constants';
 import { requestAddToFriendsAction } from 'modules/friends/store';
 import { requestDeclineInvitationsAction } from 'modules/invitations/store';
 import { memo } from 'react';
@@ -67,7 +68,7 @@ const UserAddToFriends = ({ id, name, status, image }: { id: string; name: strin
           color="primary"
           onClick={() => {
             dispatch(requestAddToFriendsAction({ friend_id: id }));
-            // socket.emit('on-add-to-friends', id); // Отправка события пользователю который ждет принятие приглашения
+            socket.emit(Event.Client.AddToFriends, id);
           }}
         >
           Добавить
@@ -77,8 +78,7 @@ const UserAddToFriends = ({ id, name, status, image }: { id: string; name: strin
           color="primary"
           onClick={() => {
             dispatch(requestDeclineInvitationsAction({ friend_id: id }));
-            // TODO: Добавить отправку сигналинга для отмены приглашения в друзья
-            // socket.emit('on-remove-invite-to-friends', id); // Отправка события пользователю который ждет принятия или отклонения приглашения
+            socket.emit(Event.Client.DeclineInvitation, id);
           }}
         >
           Отклонить
