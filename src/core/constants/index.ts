@@ -18,6 +18,12 @@ export const APPLICATION_URL =
   process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://ioinitid.github.io/video-calls';
 
 export const Event = {
-  Client: {},
-  Server: {},
+  Client: {
+    Connect: 'client:connect',
+    Disconnect: 'client:disconnect',
+  },
+  Server: {
+    Connect: 'server:connect',
+    Disconnect: 'server:disconnect',
+  },
 };
