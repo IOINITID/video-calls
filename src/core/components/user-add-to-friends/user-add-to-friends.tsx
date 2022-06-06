@@ -5,7 +5,6 @@ import { requestDeclineInvitationsAction } from 'modules/invitations/store';
 import { memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { theme } from '../../theme';
-import { axiosInstance } from '../../utils/axios-instance';
 import { socket } from '../../utils/socket';
 import { Button } from '../button';
 

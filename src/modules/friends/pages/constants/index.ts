@@ -3,5 +3,8 @@ export const Event = {
     AddToFriends: 'client:add_to_friends',
     DeclineInvitation: 'client:decline_invitation',
   },
-  Server: {},
+  Server: {
+    AddToFriends: 'server:add_to_friends',
+    DeclineInvitation: 'server:decline_invitation',
+  },
 };

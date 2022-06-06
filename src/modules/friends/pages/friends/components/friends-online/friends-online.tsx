@@ -6,6 +6,7 @@ import { UserFriends } from 'core/components/user-friends';
 import { RootState } from 'core/store/types';
 import { requestGetFriendsAction } from 'modules/friends/store';
 import { socket } from 'core/utils/socket';
+import { Event } from 'modules/friends/pages/constants';
 
 const FriendsOnline = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,10 @@ const FriendsOnline = () => {
     dispatch(requestGetFriendsAction());
 
     socket.on('on-connect', () => {
+      dispatch(requestGetFriendsAction());
+    });
+
+    socket.on(Event.Server.AddToFriends, () => {
       dispatch(requestGetFriendsAction());
     });
 

@@ -6,6 +6,7 @@ import { UserAddToFriends } from 'core/components/user-add-to-friends';
 import { RootState } from 'core/store/types';
 import { requestGetInvitationsAction } from 'modules/invitations/store';
 import { socket } from 'core/utils/socket';
+import { Event } from 'modules/friends/pages/constants';
 
 const FriendsInvitations = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,10 @@ const FriendsInvitations = () => {
     dispatch(requestGetInvitationsAction());
 
     socket.on('on-connect', () => {
+      dispatch(requestGetInvitationsAction());
+    });
+
+    socket.on(Event.Server.DeclineInvitation, () => {
       dispatch(requestGetInvitationsAction());
     });
 
