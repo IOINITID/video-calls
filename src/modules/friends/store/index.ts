@@ -43,7 +43,7 @@ export const friendsSlice = createSlice({
       state.error.friends = payload;
     },
     // NOTE: Добавление в список друзей
-    requestAddToFriendsAction: (state: FriendsState, { payload }: PayloadAction<{ fridnd_id: string }>) => {
+    requestAddToFriendsAction: (state: FriendsState, { payload }: PayloadAction<{ friend_id: string }>) => {
       state.status.add_to_friends = 'running';
       state.loading.add_to_friends = true;
     },

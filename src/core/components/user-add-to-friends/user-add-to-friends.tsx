@@ -1,4 +1,5 @@
 import { Avatar, Badge, Box, colors, Typography } from '@mui/material';
+import { requestAddToFriendsAction } from 'modules/friends/store';
 import { requestDeclineInvitationsAction } from 'modules/invitations/store';
 import { memo } from 'react';
 import { useDispatch } from 'react-redux';
@@ -65,6 +66,7 @@ const UserAddToFriends = ({ id, name, status, image }: { id: string; name: strin
           variant="contained"
           color="primary"
           onClick={() => {
+            dispatch(requestAddToFriendsAction({ friend_id: id }));
             // socket.emit('on-add-to-friends', id); // Отправка события пользователю который ждет принятие приглашения
           }}
         >
