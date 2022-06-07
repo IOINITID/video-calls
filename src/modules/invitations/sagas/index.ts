@@ -36,7 +36,7 @@ const sentInvitationSaga = function* ({ payload }: ReturnType<typeof requestSent
     const response: Awaited<ReturnType<typeof sentInvitationService>> = yield call(sentInvitationService, payload);
     yield put(successSentInvitationsAction(response.data.invitations));
 
-    // NOTE: Отправка сигналинга для отправки приглашения в друзья
+    // NOTE: Отправка события отправки приглашения в друзья
     socket.emit(Event.Client.SentInvitation, payload.friend_id);
   } catch (error) {
     console.error(error);
@@ -57,7 +57,7 @@ const declineInvitationSaga = function* ({
     );
     yield put(successDeclineInvitationsAction(response.data.invitations));
 
-    // NOTE: Отправка сигналинга для отмены приглашения в друзья
+    // NOTE: Отправка события отмены приглашения в друзья
     socket.emit(Event.Client.DeclineInvitation, payload.friend_id);
   } catch (error) {
     console.error(error);
