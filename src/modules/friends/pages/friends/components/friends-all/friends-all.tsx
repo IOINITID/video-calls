@@ -25,6 +25,10 @@ const FriendsAll = () => {
       dispatch(requestGetFriendsAction());
     });
 
+    socket.on(EventFriends.Server.AddToFriends, () => {
+      dispatch(requestGetFriendsAction());
+    });
+
     socket.on(EventFriends.Server.RemoveFromFriends, () => {
       dispatch(requestGetFriendsAction());
     });

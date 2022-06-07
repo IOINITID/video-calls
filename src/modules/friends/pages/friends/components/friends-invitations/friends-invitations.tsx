@@ -7,6 +7,7 @@ import { RootState } from 'core/store/types';
 import { requestGetInvitationsAction } from 'modules/invitations/store';
 import { socket } from 'core/utils/socket';
 import { Event as EventInvitations } from 'modules/invitations/constants';
+import { Event as EventFriends } from 'modules/friends/constants';
 import { Event } from 'core/constants';
 
 const FriendsInvitations = () => {
@@ -30,6 +31,10 @@ const FriendsInvitations = () => {
     });
 
     socket.on(EventInvitations.Server.DeclineInvitation, () => {
+      dispatch(requestGetInvitationsAction());
+    });
+
+    socket.on(EventFriends.Server.AddToFriends, () => {
       dispatch(requestGetInvitationsAction());
     });
   }, []);
