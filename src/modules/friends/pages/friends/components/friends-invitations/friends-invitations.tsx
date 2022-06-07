@@ -6,7 +6,8 @@ import { UserAddToFriends } from 'core/components/user-add-to-friends';
 import { RootState } from 'core/store/types';
 import { requestGetInvitationsAction } from 'modules/invitations/store';
 import { socket } from 'core/utils/socket';
-import { Event } from 'modules/friends/pages/constants';
+import { Event as EventInvitations } from 'modules/invitations/constants';
+import { Event } from 'core/constants';
 
 const FriendsInvitations = () => {
   const dispatch = useDispatch();
@@ -16,15 +17,19 @@ const FriendsInvitations = () => {
   useEffect(() => {
     dispatch(requestGetInvitationsAction());
 
-    socket.on('on-connect', () => {
+    socket.on(Event.Server.Connect, () => {
       dispatch(requestGetInvitationsAction());
     });
 
-    socket.on(Event.Server.DeclineInvitation, () => {
+    socket.on(Event.Server.Disconnect, () => {
       dispatch(requestGetInvitationsAction());
     });
 
-    socket.on('on-disconnect', () => {
+    socket.on(EventInvitations.Server.SentInvitation, () => {
+      dispatch(requestGetInvitationsAction());
+    });
+
+    socket.on(EventInvitations.Server.DeclineInvitation, () => {
       dispatch(requestGetInvitationsAction());
     });
   }, []);

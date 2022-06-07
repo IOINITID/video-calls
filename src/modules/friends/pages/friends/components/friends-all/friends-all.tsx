@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
-import { theme } from '../../../../../../core/theme';
+import { theme } from 'core/theme';
 import { memo, useEffect } from 'react';
-import { UserFriends } from '../../../../../../core/components/user-friends';
+import { UserFriends } from 'core/components/user-friends';
 import { RootState } from 'core/store/types';
 import { socket } from 'core/utils/socket';
 import { requestGetFriendsAction } from 'modules/friends/store';
+import { Event as EventFriends } from 'modules/friends/constants';
+import { Event } from 'core/constants';
 
 const FriendsAll = () => {
   const dispatch = useDispatch();
@@ -15,11 +17,15 @@ const FriendsAll = () => {
   useEffect(() => {
     dispatch(requestGetFriendsAction());
 
-    socket.on('on-connect', () => {
+    socket.on(Event.Server.Connect, () => {
       dispatch(requestGetFriendsAction());
     });
 
-    socket.on('on-disconnect', () => {
+    socket.on(Event.Server.Disconnect, () => {
+      dispatch(requestGetFriendsAction());
+    });
+
+    socket.on(EventFriends.Server.RemoveFromFriends, () => {
       dispatch(requestGetFriendsAction());
     });
   }, []);

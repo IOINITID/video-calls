@@ -16,6 +16,7 @@ import { User } from '../user';
 import { socket } from '../../utils/socket';
 import { RootState } from 'core/store/types';
 import { requestGetUsersAction } from 'modules/user/store';
+import { Event } from 'core/constants';
 
 const AllUsers = () => {
   const dispatch = useDispatch();
@@ -225,7 +226,9 @@ const AllUsers = () => {
           onClick={() => {
             dispatch(requestLogoutAction());
 
-            socket.emit('on-disconnect', user?.id);
+            if (user?.id) {
+              socket.emit(Event.Client.Disconnect, user.id);
+            }
           }}
         >
           Выйти из аккаунта

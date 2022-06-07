@@ -1,6 +1,7 @@
 import { Avatar, Badge, Box, colors, Typography } from '@mui/material';
-import { Event } from 'modules/friends/pages/constants';
 import { requestAddToFriendsAction } from 'modules/friends/store';
+import { Event as EventFriends } from 'modules/friends/constants';
+import { Event as EventInvitations } from 'modules/invitations/constants';
 import { requestDeclineInvitationsAction } from 'modules/invitations/store';
 import { memo } from 'react';
 import { useDispatch } from 'react-redux';
@@ -67,7 +68,7 @@ const UserAddToFriends = ({ id, name, status, image }: { id: string; name: strin
           color="primary"
           onClick={() => {
             dispatch(requestAddToFriendsAction({ friend_id: id }));
-            socket.emit(Event.Client.AddToFriends, id);
+            socket.emit(EventFriends.Client.AddToFriends, id);
           }}
         >
           Добавить
@@ -77,7 +78,7 @@ const UserAddToFriends = ({ id, name, status, image }: { id: string; name: strin
           color="primary"
           onClick={() => {
             dispatch(requestDeclineInvitationsAction({ friend_id: id }));
-            socket.emit(Event.Client.DeclineInvitation, id);
+            socket.emit(EventInvitations.Client.DeclineInvitation, id);
           }}
         >
           Отклонить

@@ -5,6 +5,7 @@ import { socket } from 'core/utils/socket';
 import { requestGetUserAction } from 'modules/user/store';
 import { RootState } from 'core/store/types';
 import { requestRefreshAction } from 'modules/authorization/store';
+import { Event } from 'core/constants';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const AppContainer = () => {
     if (authorizated) {
       dispatch(requestGetUserAction());
 
-      socket.on('on-connect', () => {
+      socket.on(Event.Server.Connect, () => {
         dispatch(requestGetUserAction());
       });
     }
@@ -34,7 +35,7 @@ const AppContainer = () => {
 
   useEffect(() => {
     if (user?.id) {
-      socket.emit('on-connect', user.id);
+      socket.emit(Event.Client.Connect, user.id);
     }
   }, [user?.id]);
 

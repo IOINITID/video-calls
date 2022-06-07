@@ -1,26 +1,25 @@
 import { Avatar, Badge, Box, colors, Typography } from '@mui/material';
 import { Dispatch, memo, SetStateAction } from 'react';
 import { theme } from 'core/theme';
-import { axiosInstance } from 'core/utils/axios-instance';
 import { socket } from 'core/utils/socket';
 import { Button } from 'core/components/button';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { requestSentInvitationsAction } from 'modules/invitations/store';
+import { Event } from 'modules/invitations/constants';
+import { RootState } from 'core/store/types';
 
-const UserAddInviteToFriends = ({
-  id,
-  name,
-  status,
-  image,
-  setSearchValue,
-}: {
+type UserAddInviteToFriends = {
   id: string;
   name: string;
   status: string;
   image: string;
   setSearchValue: Dispatch<SetStateAction<string>>;
-}) => {
+};
+
+const UserAddInviteToFriends = ({ id, name, status, image, setSearchValue }: UserAddInviteToFriends) => {
   const dispatch = useDispatch();
+
+  const { user } = useSelector((state: RootState) => state.user);
 
   return (
     <Box
@@ -78,9 +77,11 @@ const UserAddInviteToFriends = ({
           color="primary"
           onClick={() => {
             dispatch(requestSentInvitationsAction({ friend_id: id }));
-            // TODO: Добавить отправку сигналинга на отправку приглашения в друзья
+
+            if (user?.id) {
+              socket.emit(Event.Client.SentInvitation, user.id, id);
+            }
             // setSearchValue('');
-            // socket.emit('on-add-invite-to-friends', id);
           }}
         >
           Добавить в друзья

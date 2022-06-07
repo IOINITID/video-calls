@@ -7,6 +7,7 @@ import { UserAddInviteToFriends } from 'core/components/user-add-invite-to-frien
 import { RootState } from 'core/store/types';
 import { socket } from 'core/utils/socket';
 import { requestGetUsersAction } from 'modules/user/store';
+import { Event } from 'core/constants';
 
 const FriendsAdd = () => {
   const dispatch = useDispatch();
@@ -24,11 +25,11 @@ const FriendsAdd = () => {
   useEffect(() => {
     dispatch(requestGetUsersAction());
 
-    socket.on('on-connect', () => {
+    socket.on(Event.Server.Connect, () => {
       dispatch(requestGetUsersAction());
     });
 
-    socket.on('on-disconnect', () => {
+    socket.on(Event.Server.Disconnect, () => {
       dispatch(requestGetUsersAction());
     });
   }, []);

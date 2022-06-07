@@ -3,9 +3,12 @@ import { memo, useState } from 'react';
 import { Chat, Call, MoreVert } from '@mui/icons-material';
 import { theme } from '../../theme';
 import { socket } from '../../utils/socket';
-import { axiosInstance } from '../../utils/axios-instance';
+import { useDispatch } from 'react-redux';
+import { requestRemoveFromFriendsAction } from 'modules/friends/store';
+import { Event } from 'modules/friends/constants';
 
 const UserFriends = ({ id, name, status, image }: { id: string; name: string; status: string; image: string }) => {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
   return (
@@ -80,14 +83,10 @@ const UserFriends = ({ id, name, status, image }: { id: string; name: string; st
         <MenuItem onClick={() => setAnchorEl(null)}>Написать</MenuItem>
         <MenuItem onClick={() => setAnchorEl(null)}>Позвонить</MenuItem>
         <MenuItem
-          onClick={async () => {
+          onClick={() => {
+            dispatch(requestRemoveFromFriendsAction({ friend_id: id }));
+            socket.emit(Event.Client.RemoveFromFriends);
             setAnchorEl(null);
-
-            const response = await axiosInstance.post('/remove-from-friends', { friendId: id });
-
-            socket.emit('on-remove-from-friends', id); // Отправка события пользователю, которого удаляют из друзей
-
-            return response.data;
           }}
         >
           Удалить из друзей

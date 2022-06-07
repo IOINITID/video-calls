@@ -1,5 +1,6 @@
 import { css } from '@emotion/css';
 import { Box, Divider, Link, Typography } from '@mui/material';
+import { Event } from 'core/constants';
 import { RootState } from 'core/store/types';
 import { socket } from 'core/utils/socket';
 import { requestLogoutAction } from 'modules/authorization/store';
@@ -50,7 +51,7 @@ const UserSettings = () => {
         dispatch(requestLogoutAction());
 
         if (user?.id) {
-          socket.emit('on-disconnect', user.id);
+          socket.emit(Event.Client.Disconnect, user.id);
         }
 
         // socket.close();
