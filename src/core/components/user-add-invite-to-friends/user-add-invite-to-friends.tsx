@@ -77,10 +77,6 @@ const UserAddInviteToFriends = ({ id, name, status, image, setSearchValue }: Use
           color="primary"
           onClick={() => {
             dispatch(requestSentInvitationsAction({ friend_id: id }));
-
-            if (user?.id) {
-              socket.emit(Event.Client.SentInvitation, user.id, id);
-            }
             // setSearchValue('');
           }}
         >

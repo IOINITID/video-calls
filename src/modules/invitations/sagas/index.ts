@@ -12,6 +12,8 @@ import {
   successGetInvitationsAction,
   successSentInvitationsAction,
 } from '../store';
+import { socket } from 'core/utils/socket';
+import { Event } from '../constants';
 
 /**
  * Saga для получения приглашений в друзья.
@@ -33,6 +35,9 @@ const sentInvitationSaga = function* ({ payload }: ReturnType<typeof requestSent
   try {
     const response: Awaited<ReturnType<typeof sentInvitationService>> = yield call(sentInvitationService, payload);
     yield put(successSentInvitationsAction(response.data.invitations));
+
+    // NOTE: Отправка сигналинга для отправки приглашения в друзья
+    socket.emit(Event.Client.SentInvitation, payload.friend_id);
   } catch (error) {
     console.error(error);
     yield put(failureSentInvitationsAction(error));
@@ -51,6 +56,9 @@ const declineInvitationSaga = function* ({
       payload
     );
     yield put(successDeclineInvitationsAction(response.data.invitations));
+
+    // NOTE: Отправка сигналинга для отмены приглашения в друзья
+    socket.emit(Event.Client.DeclineInvitation, payload.friend_id);
   } catch (error) {
     console.error(error);
     yield put(failureDeclineInvitationsAction(error));

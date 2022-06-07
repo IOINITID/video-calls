@@ -85,7 +85,6 @@ const UserFriends = ({ id, name, status, image }: { id: string; name: string; st
         <MenuItem
           onClick={() => {
             dispatch(requestRemoveFromFriendsAction({ friend_id: id }));
-            socket.emit(Event.Client.RemoveFromFriends);
             setAnchorEl(null);
           }}
         >

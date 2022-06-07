@@ -12,6 +12,8 @@ import {
   successRemoveFromFriendsAction,
 } from '../store';
 import { addToFriendsService, getFriendsService, removeFromFriendsService } from '../services';
+import { socket } from 'core/utils/socket';
+import { Event } from '../constants';
 
 /**
  * Saga для получения списка друзей.
@@ -33,6 +35,9 @@ const addToFriendsSaga = function* ({ payload }: ReturnType<typeof requestAddToF
   try {
     const response: Awaited<ReturnType<typeof addToFriendsService>> = yield call(addToFriendsService, payload);
     yield put(successAddToFriendsAction(response.data.friends));
+
+    // NOTE: Отправка сигналинга для добавления в друзья
+    socket.emit(Event.Client.AddToFriends, payload.friend_id);
   } catch (error) {
     console.error(error);
     yield put(failureAddToFriendsAction(error));
@@ -49,6 +54,9 @@ const removeFromFriendsSaga = function* ({ payload }: ReturnType<typeof requestR
       payload
     );
     yield put(successRemoveFromFriendsAction(response.data.friends));
+
+    // NOTE: Отправка сигналинга для удаления из друзей
+    socket.emit(Event.Client.RemoveFromFriends);
   } catch (error) {
     console.error(error);
     yield put(failureRemoveFromFriendsAction(error));
