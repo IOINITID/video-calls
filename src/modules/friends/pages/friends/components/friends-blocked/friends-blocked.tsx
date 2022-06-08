@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
 import { Box } from '@mui/material';
-import { theme } from '../../../../../../core/theme';
+import { theme } from 'core/theme';
 import { memo } from 'react';
 import { userApprovalsSelector } from '../../../../../user/store/selectors';
-import { UserApprovals } from '../../../../../../core/components/user-approvals';
+import { UserApprovals } from 'core/components/user-approvals';
 
 const FriendsBlocked = () => {
   const approvals = useSelector(userApprovalsSelector);

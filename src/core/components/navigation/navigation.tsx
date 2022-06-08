@@ -7,7 +7,6 @@ import { theme } from '../../theme';
 const Navigation = () => {
   const navigate = useNavigate();
 
-  //  TODO: Добавить Drawer компонент
   return (
     <Box
       sx={{

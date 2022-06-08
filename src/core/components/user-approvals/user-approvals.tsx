@@ -5,7 +5,13 @@ import { axiosInstance } from '../../utils/axios-instance';
 import { socket } from '../../utils/socket';
 import { Button } from '../button';
 
-const UserApprovals = ({ id, name, status }: { id: string; name: string; status: string }) => {
+type UserApprovalsProps = {
+  id: string;
+  name: string;
+  status: string;
+};
+
+const UserApprovals = ({ id, name, status }: UserApprovalsProps) => {
   return (
     <Box
       sx={{

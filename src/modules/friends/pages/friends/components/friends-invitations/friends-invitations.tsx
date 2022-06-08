@@ -18,6 +18,18 @@ const FriendsInvitations = () => {
   useEffect(() => {
     dispatch(requestGetInvitationsAction());
 
+    // NOTE: Объединение событий для обновления списка приглашений в друзья
+    // socket.on(
+    //   Event.Server.Connect ||
+    //     Event.Server.Disconnect ||
+    //     EventInvitations.Server.SentInvitation ||
+    //     EventInvitations.Server.DeclineInvitation ||
+    //     EventFriends.Server.AddToFriends,
+    //   () => {
+    //     dispatch(requestGetInvitationsAction());
+    //   }
+    // );
+
     socket.on(Event.Server.Connect, () => {
       dispatch(requestGetInvitationsAction());
     });

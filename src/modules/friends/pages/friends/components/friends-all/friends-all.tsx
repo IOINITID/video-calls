@@ -17,6 +17,17 @@ const FriendsAll = () => {
   useEffect(() => {
     dispatch(requestGetFriendsAction());
 
+    // NOTE: Объединение событий для обновления списка друзей
+    // socket.on(
+    //   Event.Server.Connect ||
+    //     Event.Server.Disconnect ||
+    //     EventFriends.Server.AddToFriends ||
+    //     EventFriends.Server.RemoveFromFriends,
+    //   () => {
+    //     dispatch(requestGetFriendsAction());
+    //   }
+    // );
+
     socket.on(Event.Server.Connect, () => {
       dispatch(requestGetFriendsAction());
     });

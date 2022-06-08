@@ -1,11 +1,9 @@
 import { Avatar, Badge, Box, colors, Typography } from '@mui/material';
 import { Dispatch, memo, SetStateAction } from 'react';
 import { theme } from 'core/theme';
-import { socket } from 'core/utils/socket';
 import { Button } from 'core/components/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestSentInvitationsAction } from 'modules/invitations/store';
-import { Event } from 'modules/invitations/constants';
 import { RootState } from 'core/store/types';
 
 type UserAddInviteToFriends = {

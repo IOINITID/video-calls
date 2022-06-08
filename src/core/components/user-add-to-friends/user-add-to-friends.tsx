@@ -6,7 +6,14 @@ import { useDispatch } from 'react-redux';
 import { theme } from '../../theme';
 import { Button } from '../button';
 
-const UserAddToFriends = ({ id, name, status, image }: { id: string; name: string; status: string; image: string }) => {
+type UserAddToFriendsProps = {
+  id: string;
+  name: string;
+  status: string;
+  image: string;
+};
+
+const UserAddToFriends = ({ id, name, status, image }: UserAddToFriendsProps) => {
   const dispatch = useDispatch();
 
   return (

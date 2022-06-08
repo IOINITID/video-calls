@@ -1,13 +1,18 @@
-import { Avatar, Badge, Box, colors, Menu, MenuItem, Typography } from '@mui/material';
 import { memo, useState } from 'react';
+import { Avatar, Badge, Box, colors, Menu, MenuItem, Typography } from '@mui/material';
 import { Chat, Call, MoreVert } from '@mui/icons-material';
-import { theme } from '../../theme';
-import { socket } from '../../utils/socket';
+import { theme } from 'core/theme';
 import { useDispatch } from 'react-redux';
 import { requestRemoveFromFriendsAction } from 'modules/friends/store';
-import { Event } from 'modules/friends/constants';
 
-const UserFriends = ({ id, name, status, image }: { id: string; name: string; status: string; image: string }) => {
+type UserFriendsProps = {
+  id: string;
+  name: string;
+  status: string;
+  image: string;
+};
+
+const UserFriends = ({ id, name, status, image }: UserFriendsProps) => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 

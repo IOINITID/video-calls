@@ -1,25 +1,15 @@
+import { memo } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
 import { Navigation } from 'core/components/navigation';
 import { User } from 'core/components/user';
 import { UserControl } from 'core/components/user-control';
 import { theme } from 'core/theme';
-// import { axiosInstance } from 'core/utils/axios-instance';
-import { memo, useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const Friends = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [usersMessages, setUsersMessages] = useState<any[]>([]);
-
-  useEffect(() => {
-    // const getPersonalMessage = async () => {
-    //   const response = await axiosInstance.post('/get-personal-messages-channels');
-    //   setUsersMessages(response.data);
-    // };
-    // getPersonalMessage();
-  }, []);
 
   return (
     <Box
@@ -72,7 +62,7 @@ const Friends = () => {
           }}
         >
           <Box sx={{ display: 'grid', rowGap: '12px', padding: '0 4px' }}>
-            {usersMessages?.map((value: any) => {
+            {/* {usersMessages?.map((value: any) => {
               return (
                 <User
                   key={value.userData.id}
@@ -80,10 +70,9 @@ const Friends = () => {
                   name={value.userData.name}
                   status={value.userData.status}
                   email={value.userData.email}
-                  channelId={value.value._id}
                 />
               );
-            })}
+            })} */}
           </Box>
         </Box>
         {/* Управление пользователем */}

@@ -1,23 +1,20 @@
 import { memo } from 'react';
 import { Avatar, colors, Badge, Box, Typography, IconButton } from '@mui/material';
-import { theme } from '../../theme';
+import { theme } from 'core/theme';
 import { DeleteOutline } from '@mui/icons-material';
-import { socket } from '../../utils/socket';
+import { socket } from 'core/utils/socket';
 import { useSelector } from 'react-redux';
-import { userUserSelector } from '../../../modules/user/store/selectors';
+import { userUserSelector } from 'modules/user/store/selectors';
 import { useNavigate } from 'react-router-dom';
 
-const User = ({
-  name,
-  status,
-  channelId,
-}: {
+type UserProps = {
   id: string;
   name: string;
   status: string;
   email: string;
-  channelId?: string;
-}) => {
+};
+
+const User = ({ name, status }: UserProps) => {
   const user = useSelector(userUserSelector);
   const navigate = useNavigate();
 
@@ -48,8 +45,8 @@ const User = ({
         },
       }}
       onClick={() => {
-        socket.emit('on-channel-join', channelId, user?.id);
-        navigate('/messages');
+        // socket.emit('on-channel-join', channelId, user?.id);
+        // navigate('/messages');
       }}
     >
       <Badge

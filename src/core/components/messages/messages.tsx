@@ -127,7 +127,6 @@ const Messages = () => {
                   name={value.userData.name}
                   status={value.userData.status}
                   email={value.userData.email}
-                  channelId={value.value._id}
                 />
               );
             })}
