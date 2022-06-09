@@ -1,5 +1,5 @@
 import { axiosInstance } from 'core/utils/axios-instance';
-import { AddToFriendsResponse, GetFriendsResponse, RemoveFromFriendsResponse } from '../types';
+import { AddToFriendsResponse, GetFriendsResponse, GetFriendsUsersResponse, RemoveFromFriendsResponse } from '../types';
 import { ApiUrl } from './constants';
 
 /**
@@ -9,6 +9,16 @@ export const getFriendsService = () => {
   return axiosInstance.request<GetFriendsResponse>({
     method: 'GET',
     url: ApiUrl.GetFriends,
+  });
+};
+
+/**
+ * Service для получения списка пользователей, которых можно добавить в друзья.
+ */
+export const getFriendsUsersService = () => {
+  return axiosInstance.request<GetFriendsUsersResponse>({
+    method: 'GET',
+    url: ApiUrl.GetFriendsUsers,
   });
 };
 

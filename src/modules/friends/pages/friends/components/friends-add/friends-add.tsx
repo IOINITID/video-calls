@@ -6,13 +6,13 @@ import { TextField } from 'core/components/text-field';
 import { UserAddInviteToFriends } from 'core/components/user-add-invite-to-friends';
 import { RootState } from 'core/store/types';
 import { socket } from 'core/utils/socket';
-import { requestGetUsersAction } from 'modules/user/store';
 import { Event } from 'core/constants';
+import { requestGetFriendsUsersAction } from 'modules/friends/store';
 
 const FriendsAdd = () => {
   const dispatch = useDispatch();
 
-  const { users } = useSelector((state: RootState) => state.user);
+  const { friends_users } = useSelector((state: RootState) => state.friends);
 
   const [searchValue, setSearchValue] = useState('');
 
@@ -23,14 +23,14 @@ const FriendsAdd = () => {
   }, [searchValue]);
 
   useEffect(() => {
-    dispatch(requestGetUsersAction());
+    dispatch(requestGetFriendsUsersAction());
 
     socket.on(Event.Server.Connect, () => {
-      dispatch(requestGetUsersAction());
+      dispatch(requestGetFriendsUsersAction());
     });
 
     socket.on(Event.Server.Disconnect, () => {
-      dispatch(requestGetUsersAction());
+      dispatch(requestGetFriendsUsersAction());
     });
   }, []);
 
@@ -64,14 +64,16 @@ const FriendsAdd = () => {
           },
         }}
       >
-        {users.map((user) => {
+        {friends_users.map((friends_user) => {
           return (
             <UserAddInviteToFriends
-              key={user.id}
-              id={user.id}
-              name={user.name}
-              status={user.status}
-              image={user.image}
+              key={friends_user.id}
+              id={friends_user.id}
+              name={friends_user.name}
+              status={friends_user.status}
+              image={friends_user.image}
+              sentInvitation={friends_user.sent_invitation}
+              addToFriends={friends_user.add_to_friends}
               setSearchValue={setSearchValue}
             />
           );

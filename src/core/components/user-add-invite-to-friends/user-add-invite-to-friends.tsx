@@ -11,10 +11,20 @@ type UserAddInviteToFriends = {
   name: string;
   status: string;
   image: string;
+  sentInvitation: boolean | null;
+  addToFriends: boolean | null;
   setSearchValue: Dispatch<SetStateAction<string>>;
 };
 
-const UserAddInviteToFriends = ({ id, name, status, image, setSearchValue }: UserAddInviteToFriends) => {
+const UserAddInviteToFriends = ({
+  id,
+  name,
+  status,
+  image,
+  sentInvitation,
+  addToFriends,
+  setSearchValue,
+}: UserAddInviteToFriends) => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state: RootState) => state.user);
@@ -77,8 +87,9 @@ const UserAddInviteToFriends = ({ id, name, status, image, setSearchValue }: Use
             dispatch(requestSentInvitationsAction({ friend_id: id }));
             // setSearchValue('');
           }}
+          disabled={Boolean(sentInvitation) || Boolean(addToFriends)}
         >
-          Добавить в друзья
+          {sentInvitation ? 'Запрос отправлен' : addToFriends ? 'В друзьях' : 'Добавить в друзья'}
         </Button>
       </Box>
     </Box>

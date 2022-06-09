@@ -1,21 +1,26 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from 'modules/user/services/types';
+import { FriendsUser } from '../types';
 import { FriendsState } from './types';
 
 const initialState: FriendsState = {
   friends: [],
+  friends_users: [],
   status: {
     friends: 'idle',
+    friends_users: 'idle',
     add_to_friends: 'idle',
     remove_from_friends: 'idle',
   },
   loading: {
     friends: false,
+    friends_users: false,
     add_to_friends: false,
     remove_from_friends: false,
   },
   error: {
     friends: null,
+    friends_users: null,
     add_to_friends: null,
     remove_from_friends: null,
   },
@@ -41,6 +46,23 @@ export const friendsSlice = createSlice({
       state.status.friends = 'error';
       state.loading.friends = false;
       state.error.friends = payload;
+    },
+    // NOTE: Получение списка пользователей, которых можно добавить в друзья
+    requestGetFriendsUsersAction: (state: FriendsState) => {
+      state.status.friends_users = 'running';
+      state.loading.friends_users = true;
+    },
+    successGetFriendsUsersAction: (state: FriendsState, { payload }: PayloadAction<FriendsUser[]>) => {
+      state.friends_users = payload;
+      state.status.friends_users = 'success';
+      state.loading.friends_users = false;
+      state.error.friends_users = null;
+    },
+    failureGetFriendsUsersAction: (state: FriendsState, { payload }: PayloadAction<any | null>) => {
+      // const {error}= getError();
+      state.status.friends_users = 'error';
+      state.loading.friends_users = false;
+      state.error.friends_users = payload;
     },
     // NOTE: Добавление в список друзей
     requestAddToFriendsAction: (state: FriendsState, { payload }: PayloadAction<{ friend_id: string }>) => {
@@ -89,6 +111,9 @@ export const {
   requestRemoveFromFriendsAction,
   successRemoveFromFriendsAction,
   failureRemoveFromFriendsAction,
+  requestGetFriendsUsersAction,
+  successGetFriendsUsersAction,
+  failureGetFriendsUsersAction,
 } = friendsSlice.actions;
 
 export const friendsReducer = friendsSlice.reducer;

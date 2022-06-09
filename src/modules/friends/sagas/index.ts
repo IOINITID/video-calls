@@ -3,15 +3,18 @@ import { SagaIterator } from 'redux-saga';
 import {
   failureAddToFriendsAction,
   failureGetFriendsAction,
+  failureGetFriendsUsersAction,
   failureRemoveFromFriendsAction,
   requestAddToFriendsAction,
   requestGetFriendsAction,
+  requestGetFriendsUsersAction,
   requestRemoveFromFriendsAction,
   successAddToFriendsAction,
   successGetFriendsAction,
+  successGetFriendsUsersAction,
   successRemoveFromFriendsAction,
 } from '../store';
-import { addToFriendsService, getFriendsService, removeFromFriendsService } from '../services';
+import { addToFriendsService, getFriendsService, getFriendsUsersService, removeFromFriendsService } from '../services';
 import { socket } from 'core/utils/socket';
 import { Event } from '../constants';
 
@@ -25,6 +28,19 @@ const getFriendsSaga = function* (): SagaIterator {
   } catch (error) {
     console.error(error);
     yield put(failureGetFriendsAction(error));
+  }
+};
+
+/**
+ * Saga для получения списка пользователей, которых можно добавить в друзья.
+ */
+const getFriendsUsersSaga = function* (): SagaIterator {
+  try {
+    const response: Awaited<ReturnType<typeof getFriendsUsersService>> = yield call(getFriendsUsersService);
+    yield put(successGetFriendsUsersAction(response.data.friends_users));
+  } catch (error) {
+    console.error(error);
+    yield put(failureGetFriendsUsersAction(error));
   }
 };
 
@@ -69,6 +85,7 @@ const removeFromFriendsSaga = function* ({ payload }: ReturnType<typeof requestR
 export const friendsSaga = function* (): SagaIterator {
   yield all([
     takeEvery(requestGetFriendsAction.type, getFriendsSaga),
+    takeEvery(requestGetFriendsUsersAction.type, getFriendsUsersSaga),
     takeEvery(requestAddToFriendsAction.type, addToFriendsSaga),
     takeEvery(requestRemoveFromFriendsAction.type, removeFromFriendsSaga),
   ]);
