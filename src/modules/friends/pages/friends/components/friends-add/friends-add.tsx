@@ -7,6 +7,8 @@ import { UserAddInviteToFriends } from 'core/components/user-add-invite-to-frien
 import { RootState } from 'core/store/types';
 import { socket } from 'core/utils/socket';
 import { Event } from 'core/constants';
+import { Event as EventFriends } from 'modules/friends/constants';
+import { Event as EventInvitations } from 'modules/invitations/constants';
 import { requestGetFriendsUsersAction } from 'modules/friends/store';
 
 const FriendsAdd = () => {
@@ -30,6 +32,22 @@ const FriendsAdd = () => {
     });
 
     socket.on(Event.Server.Disconnect, () => {
+      dispatch(requestGetFriendsUsersAction());
+    });
+
+    socket.on(EventFriends.Server.AddToFriends, () => {
+      dispatch(requestGetFriendsUsersAction());
+    });
+
+    socket.on(EventFriends.Server.RemoveFromFriends, () => {
+      dispatch(requestGetFriendsUsersAction());
+    });
+
+    socket.on(EventInvitations.Server.DeclineInvitation, () => {
+      dispatch(requestGetFriendsUsersAction());
+    });
+
+    socket.on(EventInvitations.Server.SentInvitation, () => {
       dispatch(requestGetFriendsUsersAction());
     });
   }, []);
