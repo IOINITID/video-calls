@@ -23,29 +23,29 @@ const AppContainer = () => {
     }
   }, []);
 
-  const getPing = () => {
-    const timestamp = Date.now();
+  // const getPing = () => {
+  //   const timestamp = Date.now();
 
-    socket.emit('client:ping', timestamp);
-  };
+  //   socket.emit('client:ping', timestamp);
+  // };
 
   useEffect(() => {
     if (authorizated) {
       dispatch(requestGetUserAction());
 
-      const getPingInterval = setInterval(getPing, 5000);
+      // const getPingInterval = setInterval(getPing, 5000);
 
-      socket.on('server:ping', (timestamp: number) => {
-        console.log('PING:', Date.now() - timestamp + 'ms');
-      });
+      // socket.on('server:ping', (timestamp: number) => {
+      //   console.log('PING:', Date.now() - timestamp + 'ms');
+      // });
 
       socket.on(Event.Server.Connect, () => {
         dispatch(requestGetUserAction());
       });
 
-      return () => {
-        clearInterval(getPingInterval);
-      };
+      // return () => {
+      //   clearInterval(getPingInterval);
+      // };
     }
   }, [authorizated]);
 
