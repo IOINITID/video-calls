@@ -92,6 +92,7 @@ const FriendsAdd = () => {
               image={friends_user.image}
               sentInvitation={friends_user.sent_invitation}
               addToFriends={friends_user.add_to_friends}
+              receivedInvitation={friends_user.received_invitation}
               setSearchValue={setSearchValue}
             />
           );

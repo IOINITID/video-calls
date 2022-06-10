@@ -14,6 +14,7 @@ type UserAddInviteToFriends = {
   image: string;
   sentInvitation: boolean | null;
   addToFriends: boolean | null;
+  receivedInvitation: boolean | null;
   setSearchValue: Dispatch<SetStateAction<string>>;
 };
 
@@ -24,6 +25,7 @@ const UserAddInviteToFriends = ({
   image,
   sentInvitation,
   addToFriends,
+  receivedInvitation,
   setSearchValue,
 }: UserAddInviteToFriends) => {
   const dispatch = useDispatch();
@@ -81,45 +83,41 @@ const UserAddInviteToFriends = ({
           justifyContent: 'end',
         }}
       >
-        <Button
-          variant="contained"
-          color="primary"
-          onMouseEnter={(event) => {
-            if (addToFriends) {
-              event.currentTarget.textContent = 'Удалить из друзей';
-              event.currentTarget.style.backgroundColor = theme.palette.error.main;
-            }
-
-            if (sentInvitation) {
-              event.currentTarget.textContent = 'Отклонить приглашение';
-              event.currentTarget.style.backgroundColor = theme.palette.error.main;
-            }
-          }}
-          onMouseLeave={(event) => {
-            if (addToFriends) {
-              event.currentTarget.textContent = 'В друзьях';
-              event.currentTarget.style.backgroundColor = theme.palette.primary.main;
-            }
-
-            if (sentInvitation) {
-              event.currentTarget.textContent = 'Запрос отправлен';
-              event.currentTarget.style.backgroundColor = theme.palette.primary.main;
-            }
-          }}
-          onClick={() => {
-            if (addToFriends) {
-              dispatch(requestRemoveFromFriendsAction({ friend_id: id }));
-            } else if (sentInvitation) {
-              dispatch(requestDeclineInvitationsAction({ friend_id: id }));
-            } else {
+        {/* NOTE: Если invitation received есть, написать Ожидает добавления и блокировать кнопку */}
+        {!addToFriends && !sentInvitation && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
               dispatch(requestSentInvitationsAction({ friend_id: id }));
-            }
-            // setSearchValue('');
-          }}
-          // disabled={Boolean(sentInvitation) || Boolean(addToFriends)}
-        >
-          {sentInvitation ? 'Запрос отправлен' : addToFriends ? 'В друзьях' : 'Добавить в друзья'}
-        </Button>
+            }}
+            disabled={Boolean(receivedInvitation)}
+          >
+            {receivedInvitation ? 'Отправил приглашение' : 'Добавить в друзья'}
+          </Button>
+        )}
+        {addToFriends && (
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => {
+              dispatch(requestRemoveFromFriendsAction({ friend_id: id }));
+            }}
+          >
+            Удалить из друзей
+          </Button>
+        )}
+        {sentInvitation && (
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => {
+              dispatch(requestDeclineInvitationsAction({ friend_id: id }));
+            }}
+          >
+            Отклонить приглашение
+          </Button>
+        )}
       </Box>
     </Box>
   );
