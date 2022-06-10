@@ -5,6 +5,6 @@ export const Event = {
   },
   Server: {
     AddToFriends: 'server:add_to_friends',
-    RemoveFromFriends: 'client:remove_from_friends',
+    RemoveFromFriends: 'server:remove_from_friends',
   },
 };

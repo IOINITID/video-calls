@@ -72,7 +72,7 @@ const removeFromFriendsSaga = function* ({ payload }: ReturnType<typeof requestR
     yield put(successRemoveFromFriendsAction(response.data.friends));
 
     // NOTE: Отправка события для удаления из друзей
-    socket.emit(Event.Client.RemoveFromFriends);
+    socket.emit(Event.Client.RemoveFromFriends, payload.friend_id);
   } catch (error) {
     console.error(error);
     yield put(failureRemoveFromFriendsAction(error));
