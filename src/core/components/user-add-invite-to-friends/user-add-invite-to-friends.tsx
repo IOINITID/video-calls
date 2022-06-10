@@ -118,15 +118,33 @@ const UserAddInviteToFriends = ({
           </Button>
         )}
         {receivedInvitation && (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              dispatch(requestAddToFriendsAction({ friend_id: id }));
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, max-content)',
+              alignItems: 'center',
+              columnGap: '8px',
             }}
           >
-            Принять приглашение
-          </Button>
+            <Button
+              variant="outlined"
+              color="success"
+              onClick={() => {
+                dispatch(requestAddToFriendsAction({ friend_id: id }));
+              }}
+            >
+              Принять приглашение
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => {
+                dispatch(requestDeclineInvitationsAction({ friend_id: id }));
+              }}
+            >
+              Отклонить приглашение
+            </Button>
+          </Box>
         )}
       </Box>
     </Box>
