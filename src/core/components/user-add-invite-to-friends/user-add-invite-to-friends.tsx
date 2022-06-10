@@ -5,7 +5,7 @@ import { Button } from 'core/components/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestDeclineInvitationsAction, requestSentInvitationsAction } from 'modules/invitations/store';
 import { RootState } from 'core/store/types';
-import { requestRemoveFromFriendsAction } from 'modules/friends/store';
+import { requestAddToFriendsAction, requestRemoveFromFriendsAction } from 'modules/friends/store';
 
 type UserAddInviteToFriends = {
   id: string;
@@ -84,16 +84,15 @@ const UserAddInviteToFriends = ({
         }}
       >
         {/* NOTE: Если invitation received есть, написать Ожидает добавления и блокировать кнопку */}
-        {!addToFriends && !sentInvitation && (
+        {!addToFriends && !sentInvitation && !receivedInvitation && (
           <Button
             variant="contained"
             color="primary"
             onClick={() => {
               dispatch(requestSentInvitationsAction({ friend_id: id }));
             }}
-            disabled={Boolean(receivedInvitation)}
           >
-            {receivedInvitation ? 'Отправил приглашение' : 'Добавить в друзья'}
+            Добавить в друзья
           </Button>
         )}
         {addToFriends && (
@@ -116,6 +115,17 @@ const UserAddInviteToFriends = ({
             }}
           >
             Отклонить приглашение
+          </Button>
+        )}
+        {receivedInvitation && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              dispatch(requestAddToFriendsAction({ friend_id: id }));
+            }}
+          >
+            Принять приглашение
           </Button>
         )}
       </Box>
