@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom';
 const VoiceAndVideo = () => {
   const navigate = useNavigate();
 
-  const { state, stream, getUserMedia } = useUserMedia();
+  const { state, stream, getUserMedia, stopUserMedia } = useUserMedia();
   const { audioInDevices, audioOutDevices, videoInDevices, getDeviceInfo } = useDeviceInfo();
 
   const [audioInDevice, setAudioInDevice] = useState('');
@@ -280,6 +280,17 @@ const VoiceAndVideo = () => {
                 }}
               >
                 Проверить видео
+              </Button>
+            )}
+            {isVideo && (
+              <Button
+                variant="contained"
+                onClick={() => {
+                  stopUserMedia();
+                  setIsVideo(false);
+                }}
+              >
+                Остановть проверку
               </Button>
             )}
           </Box>

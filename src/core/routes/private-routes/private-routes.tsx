@@ -11,6 +11,7 @@ import { FriendsAdd } from 'modules/friends/pages/friends/components/friends-add
 import { UserProfile } from 'modules/user/pages/settings/components/user-profile';
 import { UserAccount } from 'modules/user/pages/settings/components/user-account';
 import { VoiceAndVideo } from 'modules/user/pages/settings/components/voice-and-video';
+import { Meet } from 'modules/meet/pages/meet';
 
 const PrivateRoutes = () => {
   return (
@@ -40,6 +41,8 @@ const PrivateRoutes = () => {
       </Route>
       {/* NOTE: Каналы */}
       <Route path="channels" element={<Channels />} />
+      {/* NOTE: Встреча */}
+      <Route path="meet" element={<Meet />} />
       <Route path="*" element={<Navigate to="friends/online" />} />
     </Routes>
   );
