@@ -77,7 +77,7 @@ const Meet = () => {
         candidate.sdpMLineIndex = event.candidate.sdpMLineIndex;
       }
 
-      socket.emit('client:meet_candidate', user?.id, candidate);
+      socket.emit('client:meet_candidate', 'ef0eca5a-5304-4937-8fa6-03a905f99b92', candidate);
       console.log('LOGS: Client meet candidate');
     });
     peerConnection.current.addEventListener('track', (event) => {
@@ -102,7 +102,7 @@ const Meet = () => {
     if (peerConnection.current) {
       const offer = await peerConnection.current.createOffer();
 
-      socket.emit('client:meet_offer', user?.id, offer.sdp);
+      socket.emit('client:meet_offer', 'ef0eca5a-5304-4937-8fa6-03a905f99b92', offer.sdp);
       console.log('LOGS: Client meet offer');
 
       await peerConnection.current.setLocalDescription(offer);
@@ -125,7 +125,7 @@ const Meet = () => {
 
       const answer = await peerConnection.current.createAnswer();
 
-      socket.emit('client:meet_answer', user?.id, answer.sdp);
+      socket.emit('client:meet_answer', 'ef0eca5a-5304-4937-8fa6-03a905f99b92', answer.sdp);
       console.log('LOGS: Client meet answer');
 
       await peerConnection.current.setLocalDescription(answer);
@@ -288,7 +288,7 @@ const Meet = () => {
                 sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}
                 onClick={() => {
                   getUserMedia({ video: true, audio: true });
-                  socket.emit('client:meet_start_call', user?.id);
+                  socket.emit('client:meet_start_call', 'ef0eca5a-5304-4937-8fa6-03a905f99b92');
                 }}
               >
                 Начать вызов
@@ -299,7 +299,7 @@ const Meet = () => {
                 sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}
                 onClick={() => {
                   stopUserMedia();
-                  socket.emit('client:meet_end_call', user?.id);
+                  socket.emit('client:meet_end_call', 'ef0eca5a-5304-4937-8fa6-03a905f99b92');
                 }}
               >
                 Закончить вызов
@@ -324,7 +324,7 @@ const Meet = () => {
             <Button
               sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}
               onClick={() => {
-                socket.emit('client:meet_answer', user?.id);
+                socket.emit('client:meet_answer', 'ef0eca5a-5304-4937-8fa6-03a905f99b92');
               }}
             >
               Ответить
