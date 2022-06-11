@@ -52,6 +52,19 @@ const AppContainer = () => {
   useEffect(() => {
     if (user?.id) {
       socket.emit(Event.Client.Connect, user.id);
+
+      const handleOnline = () => {
+        socket.emit(Event.Client.Connect, user.id);
+
+        console.log('Client status: online');
+      };
+
+      const handleOffline = () => {
+        console.log('Client status: offline');
+      };
+
+      window.addEventListener('online', handleOnline);
+      window.addEventListener('offline', handleOffline);
     }
   }, [user?.id]);
 
