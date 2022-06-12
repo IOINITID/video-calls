@@ -109,7 +109,10 @@ const Meet = () => {
 
       setStream(stream);
 
-      // NOTE: Создание peer соединения
+      if (userVideo.current) {
+        userVideo.current.srcObject = stream;
+      }
+
       // NOTE: Создание peer соединения
       peerConnection.current = new RTCPeerConnection({
         iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
