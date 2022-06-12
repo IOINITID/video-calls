@@ -21,20 +21,22 @@ const Meet = () => {
   const userVideo = useRef<HTMLVideoElement | null>(null);
   const friendVideo = useRef<HTMLVideoElement | null>(null);
 
+  const friendId = 'ef0eca5a-5304-4937-8fa6-03a905f99b92';
+
   useEffect(() => {
-    socket.on('server:meet_offer', (offer: RTCSessionDescriptionInit) => {
-      handleOffer(offer);
-      console.log('LOGS: Server meet offer', offer);
+    socket.on('server:meet_offer', (user_id: string, friend_id: string, offer: RTCSessionDescriptionInit) => {
+      // console.log('LOGS: Server meet offer', user_id, friend_id, offer);
+      handleOffer(user_id, friend_id, offer);
     });
 
-    socket.on('server:meet_answer', (answer: RTCSessionDescriptionInit) => {
-      handleAnswer(answer);
-      console.log('LOGS: Server meet answer', answer);
+    socket.on('server:meet_answer', (user_id: string, friend_id: string, answer: RTCSessionDescriptionInit) => {
+      // console.log('LOGS: Server meet answer', user_id, friend_id, answer);
+      handleAnswer(user_id, friend_id, answer);
     });
 
-    socket.on('server:meet_candidate', (candidate: RTCIceCandidate) => {
+    socket.on('server:meet_candidate', (user_id: string, friend_id: string, candidate: RTCIceCandidate) => {
+      // console.log('LOGS: Server meet candidate', user_id, friend_id, candidate);
       handleCandidate(candidate);
-      console.log('LOGS: Server meet candidate', candidate);
     });
 
     socket.on('server:meet_start_call', () => {
@@ -44,13 +46,13 @@ const Meet = () => {
       }
 
       startCall();
-      console.log('LOGS: Server start call');
+      // console.log('LOGS: Server start call');
     });
 
     socket.on('server:meet_end_call', () => {
       if (peerConnection.current) {
         endCall();
-        console.log('LOGS: Server end call');
+        // console.log('LOGS: Server end call');
       }
     });
   }, []);
@@ -63,77 +65,88 @@ const Meet = () => {
 
   // NOTE: Создание peer соединения
   const createPeerConnection = () => {
-    peerConnection.current = new RTCPeerConnection();
-    peerConnection.current.addEventListener('icecandidate', (event) => {
-      const candidate: Record<string, unknown> = {
-        candidate: null,
-        sdpMid: null,
-        sdpMLineIndex: null,
-      };
-
-      if (event.candidate) {
-        candidate.candidate = event.candidate.candidate;
-        candidate.sdpMid = event.candidate.sdpMid;
-        candidate.sdpMLineIndex = event.candidate.sdpMLineIndex;
-      }
-
-      socket.emit('client:meet_candidate', 'ef0eca5a-5304-4937-8fa6-03a905f99b92', candidate);
-      console.log('LOGS: Client meet candidate');
+    // NOTE: Создание peer соединения
+    peerConnection.current = new RTCPeerConnection({
+      iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
     });
-    peerConnection.current.addEventListener('track', (event) => {
+
+    // NOTE: Добавление обработчика события icecandidate
+    peerConnection.current.onicecandidate = (event) => {
+      // const candidate: Record<string, unknown> = {
+      //   candidate: null,
+      //   sdpMid: null,
+      //   sdpMLineIndex: null,
+      // };
+
+      // if (event.candidate) {
+      //   candidate.candidate = event.candidate.candidate;
+      //   candidate.sdpMid = event.candidate.sdpMid;
+      //   candidate.sdpMLineIndex = event.candidate.sdpMLineIndex;
+      // }
+
+      socket.emit('client:meet_candidate', user?.id, friendId, event.candidate);
+      console.log('LOGS: icecandidate', event.candidate);
+    };
+
+    // NOTE: Обновление обработчика события track
+    peerConnection.current.ontrack = (event) => {
+      console.log('LOGS: ontrack event', event);
       if (friendVideo.current) {
         friendVideo.current.srcObject = event.streams[0];
       }
+    };
+
+    // NOTE: Добавление медиапотока к peer соединению
+    stream?.getTracks().forEach((track) => {
+      if (peerConnection.current) {
+        peerConnection.current.addTrack(track, stream);
+      }
     });
-    if (stream) {
-      stream.getTracks().forEach((track) => {
-        if (peerConnection.current) {
-          peerConnection.current.addTrack(track, stream);
-        }
-      });
-    }
+
+    console.log('LOGS: Peer connection', peerConnection.current);
   };
 
   // NOTE: Начать звонок
   const startCall = async () => {
-    // TODO: Проверить необходимость использования await
-    await createPeerConnection();
+    // NOTE: Получение медиапотока
+    getUserMedia({ video: true, audio: true });
 
-    if (peerConnection.current) {
-      const offer = await peerConnection.current.createOffer();
+    // NOTE: Создание peer соединения
+    createPeerConnection();
 
-      socket.emit('client:meet_offer', 'ef0eca5a-5304-4937-8fa6-03a905f99b92', offer.sdp);
-      console.log('LOGS: Client meet offer');
+    // NOTE: Создание предложения для peer соединения
+    const offer = await peerConnection.current?.createOffer();
 
-      await peerConnection.current.setLocalDescription(offer);
-    }
+    // NOTE: Отправка предложения другому пользователю
+    socket.emit('client:meet_offer', user?.id, friendId, offer);
+
+    console.log('LOGS: Peer connection', peerConnection.current);
+
+    // NOTE: Установка предложения локально для peer соединения
+    await peerConnection.current?.setLocalDescription(offer);
   };
 
   // NOTE: Обработка предложения вызова
-  const handleOffer = async (offer: RTCSessionDescriptionInit) => {
+  const handleOffer = async (user_id: string, friend_id: string, offer: RTCSessionDescriptionInit) => {
     // TODO: Проверить необходимость проверки на наличие peer соединения
     // if (peerConnection.current) {
     //   console.log('Соединение уже установлено.');
     //   return;
     // }
 
-    // TODO: Проверить необходимость использования await
-    await createPeerConnection();
+    createPeerConnection();
 
-    if (peerConnection.current) {
-      await peerConnection.current.setRemoteDescription(offer);
+    await peerConnection.current?.setRemoteDescription(offer);
 
-      const answer = await peerConnection.current.createAnswer();
+    const answer = await peerConnection.current?.createAnswer();
 
-      socket.emit('client:meet_answer', 'ef0eca5a-5304-4937-8fa6-03a905f99b92', answer.sdp);
-      console.log('LOGS: Client meet answer');
+    socket.emit('client:meet_answer', friend_id, user_id, answer);
 
-      await peerConnection.current.setLocalDescription(answer);
-    }
+    await peerConnection.current?.setLocalDescription(answer);
   };
 
   // NOTE: Обработка ответа вызова
-  const handleAnswer = async (answer: RTCSessionDescriptionInit) => {
+  const handleAnswer = async (user_id: string, friend_id: string, answer: RTCSessionDescriptionInit) => {
     if (!peerConnection.current) {
       console.error('Peer соединение не установлено.');
       return;
@@ -144,6 +157,8 @@ const Meet = () => {
 
   // NOTE: Обработка получения кандидата для соединения
   const handleCandidate = async (candidate: RTCIceCandidate) => {
+    console.log('LOGS: handle candidate', candidate);
+
     if (!peerConnection.current) {
       console.error('Соединение не установлено.');
       return;
@@ -287,8 +302,8 @@ const Meet = () => {
               <Button
                 sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}
                 onClick={() => {
-                  getUserMedia({ video: true, audio: true });
-                  socket.emit('client:meet_start_call', 'ef0eca5a-5304-4937-8fa6-03a905f99b92');
+                  startCall();
+                  // socket.emit('client:meet_start_call');
                 }}
               >
                 Начать вызов
@@ -299,7 +314,7 @@ const Meet = () => {
                 sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}
                 onClick={() => {
                   stopUserMedia();
-                  socket.emit('client:meet_end_call', 'ef0eca5a-5304-4937-8fa6-03a905f99b92');
+                  // socket.emit('client:meet_end_call');
                 }}
               >
                 Закончить вызов
@@ -317,14 +332,13 @@ const Meet = () => {
                 borderRadius: '8px',
               }}
               ref={friendVideo}
-              muted
               autoPlay
             />
 
             <Button
               sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}
               onClick={() => {
-                socket.emit('client:meet_answer', 'ef0eca5a-5304-4937-8fa6-03a905f99b92');
+                // socket.emit('client:meet_answer');
               }}
             >
               Ответить
