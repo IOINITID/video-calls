@@ -61,6 +61,15 @@ const Meet = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (stream) {
+      stream.getTracks().forEach((track) => {
+        track.stop();
+        track.enabled = false;
+      });
+    }
+  }, [stream]);
+
   // NOTE: Создание peer соединения
   const createPeerConnection = () => {
     if (stream) {
@@ -360,20 +369,22 @@ const Meet = () => {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateRows: 'repeat(2, 1fr)',
+            gridTemplateColumns: '1fr',
+            gridTemplateRows: 'repeat(2, calc((100vh - 120px) / 2 ))',
             alignItems: 'center',
             justifyContent: 'center',
-            rowGap: '32px',
+            rowGap: '16px',
             width: '100%',
-            padding: '32px',
+            height: 'calc(100vh - 72px)',
+            padding: '16px 32px',
           }}
         >
-          <Box sx={{ position: 'relative' }}>
+          <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
             <Box
               component="video"
               sx={{
                 width: '100%',
-                height: 'calc((100vh - 168px) / 2)',
+                height: '100%',
                 backgroundColor: theme.palette.grey['700'],
                 objectFit: 'cover',
                 borderRadius: '8px',
@@ -384,6 +395,8 @@ const Meet = () => {
             />
             {!stream && (
               <Button
+                variant="contained"
+                color="success"
                 sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}
                 onClick={() => {
                   startCall();
@@ -393,23 +406,13 @@ const Meet = () => {
                 Начать вызов
               </Button>
             )}
-            {stream && (
-              <Button
-                sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}
-                onClick={() => {
-                  // socket.emit('client:meet_end_call');
-                }}
-              >
-                Закончить вызов
-              </Button>
-            )}
           </Box>
-          <Box sx={{ position: 'relative' }}>
+          <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
             <Box
               component="video"
               sx={{
                 width: '100%',
-                height: 'calc((100vh - 168px) / 2)',
+                height: '100%',
                 backgroundColor: theme.palette.grey['700'],
                 objectFit: 'cover',
                 borderRadius: '8px',
@@ -417,8 +420,28 @@ const Meet = () => {
               ref={friendVideo}
               autoPlay
             />
-
-            <Button
+            {stream && (
+              <Button
+                variant="contained"
+                color="error"
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: 10,
+                }}
+                onClick={() => {
+                  socket.emit('client:meet_end_call');
+                  navigate('/');
+                }}
+              >
+                Закончить вызов
+              </Button>
+            )}
+            {/* <Button
+              variant="contained"
+              color="success"
               sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}
               onClick={() => {
                 // NOTE: Получение медиапотока
@@ -427,7 +450,7 @@ const Meet = () => {
               }}
             >
               Ответить
-            </Button>
+            </Button> */}
           </Box>
         </Box>
       </Box>

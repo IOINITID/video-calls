@@ -1,9 +1,9 @@
-import { Button as MUIButton, ButtonProps as MUIButtonProps } from '@mui/material';
 import { memo } from 'react';
+import { Button as MUIButton, ButtonProps as MUIButtonProps } from '@mui/material';
 
-const Button = ({ children, ...props }: MUIButtonProps) => {
+const Button = ({ children, sx, ...props }: MUIButtonProps) => {
   return (
-    <MUIButton disableElevation disableRipple sx={{ padding: '8px 16px', textTransform: 'initial' }} {...props}>
+    <MUIButton disableElevation disableRipple sx={{ padding: '8px 16px', textTransform: 'initial', ...sx }} {...props}>
       {children}
     </MUIButton>
   );
