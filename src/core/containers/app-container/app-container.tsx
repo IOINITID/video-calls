@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { App } from 'core/components/app';
 import { socket } from 'core/utils/socket';
@@ -6,12 +6,18 @@ import { requestGetUserAction } from 'modules/user/store';
 import { RootState } from 'core/store/types';
 import { requestRefreshAction } from 'modules/authorization/store';
 import { Event } from 'core/constants';
+import { ModalIncomingCall } from 'core/modals/modal-incoming-call';
+import { Box } from '@mui/material';
+import { User } from 'modules/user/services/types';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
 
   const { authorizated } = useSelector((state: RootState) => state.authorization);
   const { user } = useSelector((state: RootState) => state.user);
+
+  const [isIncomingCall, setIsIncomingCall] = useState(false);
+  const [callingUser, setIsCallignUser] = useState<User>();
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
@@ -43,6 +49,13 @@ const AppContainer = () => {
         dispatch(requestGetUserAction());
       });
 
+      socket.on('server:meet_start_call', (user: User) => {
+        setIsIncomingCall(true);
+        setIsCallignUser(user);
+
+        console.log('LOGS: Server start call from user', user);
+      });
+
       // return () => {
       //   clearInterval(getPingInterval);
       // };
@@ -68,7 +81,18 @@ const AppContainer = () => {
     }
   }, [user?.id]);
 
-  return <App isAuthorizated={authorizated} />;
+  return (
+    <>
+      <App isAuthorizated={authorizated} />;
+      <ModalIncomingCall
+        open={isIncomingCall}
+        onClose={() => {
+          setIsIncomingCall(false);
+        }}
+        user={callingUser}
+      />
+    </>
+  );
 };
 
 export { AppContainer };

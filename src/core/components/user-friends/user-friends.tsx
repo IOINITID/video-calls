@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { requestRemoveFromFriendsAction } from 'modules/friends/store';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'core/store/types';
+import { socket } from 'core/utils/socket';
 
 type UserFriendsProps = {
   id: string;
@@ -121,6 +122,7 @@ const UserFriends = ({ id, name, status, image }: UserFriendsProps) => {
           onClick={() => {
             if (user?.id) {
               navigate(`/meet/${id}`);
+
               console.log('LOGS: Call button pressed');
             }
 
