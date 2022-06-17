@@ -2,7 +2,6 @@ import { memo } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
 import { Navigation } from 'core/components/navigation';
-import { User } from 'core/components/user';
 import { UserControl } from 'core/components/user-control';
 import { theme } from 'core/theme';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';

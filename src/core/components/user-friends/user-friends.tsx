@@ -1,9 +1,11 @@
 import { memo, useState } from 'react';
-import { Avatar, Badge, Box, colors, Menu, MenuItem, Typography } from '@mui/material';
+import { Avatar, Badge, Box, colors, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { Chat, Call, MoreVert } from '@mui/icons-material';
 import { theme } from 'core/theme';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { requestRemoveFromFriendsAction } from 'modules/friends/store';
+import { useNavigate } from 'react-router-dom';
+import { RootState } from 'core/store/types';
 
 type UserFriendsProps = {
   id: string;
@@ -14,7 +16,11 @@ type UserFriendsProps = {
 
 const UserFriends = ({ id, name, status, image }: UserFriendsProps) => {
   const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
+
+  const { user } = useSelector((state: RootState) => state.user);
+
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   return (
     <Box
@@ -67,26 +73,62 @@ const UserFriends = ({ id, name, status, image }: UserFriendsProps) => {
           justifyContent: 'end',
         }}
       >
-        <Box sx={{ cursor: 'pointer' }}>
+        <IconButton
+          sx={{ width: '32px', height: '32px' }}
+          onClick={() => {
+            console.log('LOGS: Chat button pressed');
+          }}
+        >
           <Chat />
-        </Box>
-        <Box sx={{ cursor: 'pointer' }}>
+        </IconButton>
+        <IconButton
+          sx={{ width: '32px', height: '32px' }}
+          onClick={() => {
+            if (user?.id) {
+              navigate(`/meet/${id}`);
+              console.log('LOGS: Call button pressed');
+            }
+          }}
+        >
           <Call />
-        </Box>
-        <Box sx={{ cursor: 'pointer' }} onClick={(event) => setAnchorEl(event.currentTarget)}>
+        </IconButton>
+        <IconButton
+          sx={{ width: '32px', height: '32px' }}
+          onClick={(event) => {
+            setAnchorEl(event.currentTarget);
+            console.log('LOGS: More button pressed');
+          }}
+        >
           <MoreVert />
-        </Box>
+        </IconButton>
       </Box>
+      {/* NOTE: Меню действий для пользователя который находится в друзьях */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
-        onClose={() => setAnchorEl(null)}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
+        onClose={() => {
+          setAnchorEl(null);
         }}
       >
-        <MenuItem onClick={() => setAnchorEl(null)}>Написать</MenuItem>
-        <MenuItem onClick={() => setAnchorEl(null)}>Позвонить</MenuItem>
+        <MenuItem
+          onClick={() => {
+            setAnchorEl(null);
+          }}
+        >
+          Написать
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            if (user?.id) {
+              navigate(`/meet/${id}`);
+              console.log('LOGS: Call button pressed');
+            }
+
+            setAnchorEl(null);
+          }}
+        >
+          Позвонить
+        </MenuItem>
         <MenuItem
           onClick={() => {
             dispatch(requestRemoveFromFriendsAction({ friend_id: id }));

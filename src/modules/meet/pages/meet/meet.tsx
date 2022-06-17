@@ -4,7 +4,7 @@ import { Button } from 'core/components/button';
 import { Navigation } from 'core/components/navigation';
 import { UserControl } from 'core/components/user-control';
 import { theme } from 'core/theme';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useUserMedia } from 'modules/user/hooks';
 import { socket } from 'core/utils/socket';
 import { useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import { RootState } from 'core/store/types';
 
 const Meet = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const { pathname } = useLocation();
 
   const { user } = useSelector((state: RootState) => state.user);
@@ -22,10 +23,9 @@ const Meet = () => {
   const userVideo = useRef<HTMLVideoElement | null>(null);
   const friendVideo = useRef<HTMLVideoElement | null>(null);
 
-  const friendId =
-    user?.id === '7c9ad0a7-b9d9-46fb-9562-79b00891a8cb'
-      ? 'ef0eca5a-5304-4937-8fa6-03a905f99b92'
-      : '7c9ad0a7-b9d9-46fb-9562-79b00891a8cb';
+  const friendId = id;
+
+  console.log({ friendId });
 
   useEffect(() => {
     socket.on('server:meet_offer', (user_id: string, friend_id: string, offer: RTCSessionDescriptionInit) => {
