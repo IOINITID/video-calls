@@ -49,11 +49,12 @@ const AppContainer = () => {
         dispatch(requestGetUserAction());
       });
 
-      socket.on('server:meet_start_call', (user: User) => {
+      // NOTE: Событие входящего вызова от пользователя
+      socket.on('server:meet_start_call', (payload: { userFromCall: User }) => {
         setIsIncomingCall(true);
-        setIsCallignUser(user);
+        setIsCallignUser(payload.userFromCall);
 
-        console.log('LOGS: Server start call from user', user);
+        console.log(`LOGS: Входящий вызов от пользователя: ${payload.userFromCall.name}`);
       });
 
       // return () => {

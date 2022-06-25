@@ -46,7 +46,7 @@ const ModalIncomingCall = ({ open, onClose, user }: ModalIncomingCallProps) => {
             color="success"
             onClick={() => {
               if (user?.id) {
-                navigate(`meet/${user.id}`);
+                navigate(`meet/${user.id}/${false}`);
               }
 
               onClose();

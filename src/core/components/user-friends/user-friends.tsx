@@ -86,8 +86,8 @@ const UserFriends = ({ id, name, status, image }: UserFriendsProps) => {
           sx={{ width: '32px', height: '32px' }}
           onClick={() => {
             if (user?.id) {
-              navigate(`/meet/${id}`);
-              console.log('LOGS: Call button pressed');
+              navigate(`/meet/${id}/${true}`);
+              console.log('LOGS: Кнопка позвонить нажата.');
             }
           }}
         >
@@ -97,7 +97,7 @@ const UserFriends = ({ id, name, status, image }: UserFriendsProps) => {
           sx={{ width: '32px', height: '32px' }}
           onClick={(event) => {
             setAnchorEl(event.currentTarget);
-            console.log('LOGS: More button pressed');
+            console.log('LOGS: Кнопка еще нажата.');
           }}
         >
           <MoreVert />
@@ -121,9 +121,8 @@ const UserFriends = ({ id, name, status, image }: UserFriendsProps) => {
         <MenuItem
           onClick={() => {
             if (user?.id) {
-              navigate(`/meet/${id}`);
-
-              console.log('LOGS: Call button pressed');
+              navigate(`/meet/${id}/${true}`);
+              console.log('LOGS: Кнопка позвонить нажата.');
             }
 
             setAnchorEl(null);
