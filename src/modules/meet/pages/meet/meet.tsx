@@ -9,7 +9,8 @@ import { useUserMedia } from 'modules/user/hooks';
 import { socket } from 'core/utils/socket';
 import { useSelector } from 'react-redux';
 import { RootState } from 'core/store/types';
-import { CallEnd, CallEndRounded } from '@mui/icons-material';
+import { CallEndRounded } from '@mui/icons-material';
+import { VideoCard } from 'core/components/video-card';
 
 const Meet = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const Meet = () => {
   const { user } = useSelector((state: RootState) => state.user);
 
   const [stream, setStream] = useState<MediaStream>();
+  const [callingState, setCallingState] = useState<'ready' | 'calling' | 'connecting' | 'connected'>('ready');
 
   const peerConnection = useRef<RTCPeerConnection | null>(null);
   const userVideo = useRef<HTMLVideoElement | null>(null);
@@ -62,6 +64,7 @@ const Meet = () => {
         if (initiator === 'true') {
           console.log('LOGS: Отправка события начала вызова.');
           socket.emit('client:meet_start_call', { userFromCall: user.id, userToCall: id });
+          setCallingState('calling');
         }
 
         if (initiator === 'false') {
@@ -84,6 +87,7 @@ const Meet = () => {
         // NOTE: Начало установки соединения между пользователями
         console.log('LOGS: Начало установки соединения между пользователями.');
         startConnection();
+        setCallingState('connecting');
       });
 
       socket.on(
@@ -153,18 +157,12 @@ const Meet = () => {
 
       // NOTE: Добавление обработчика события icecandidate
       peerConnection.current.onicecandidate = (event) => {
-        // const candidate: Record<string, unknown> = {
-        //   candidate: null,
-        //   sdpMid: null,
-        //   sdpMLineIndex: null,
-        // };
-        // if (event.candidate) {
-        //   candidate.candidate = event.candidate.candidate;
-        //   candidate.sdpMid = event.candidate.sdpMid;
-        //   candidate.sdpMLineIndex = event.candidate.sdpMLineIndex;
-        // }
         socket.emit('client:meet_candidate', user?.id, friendId, event.candidate);
         console.log('LOGS: icecandidate event', event);
+
+        if (peerConnection.current && peerConnection.current.iceConnectionState === 'connected') {
+          setCallingState('connected');
+        }
       };
 
       // NOTE: Обновление обработчика события track
@@ -376,27 +374,29 @@ const Meet = () => {
             display: 'grid',
             width: '100%',
             height: '100%',
-            padding: '128px 32px',
+            padding: '16px',
             position: 'relative',
             alignItems: 'center',
             justifyContent: 'center',
             gridTemplateColumns: '1fr',
           }}
         >
-          {/* NOTE: Видео пользователя которому звонят */}
+          {/* NOTE: Контейнер видео пользователя которому звонят */}
           <Box
             sx={{
               position: 'relative',
-              width: '100%',
-              height: '100%',
+              width: '640px',
+              height: '360px',
+              alignSelf: 'center',
+              justifySelf: 'center',
 
               '&:hover .call-end-button': {
                 display: 'grid',
               },
             }}
           >
-            <Box
-              component="video"
+            {/* NOTE: Видео пользователя которому звонят */}
+            <VideoCard
               sx={{
                 position: 'absolute',
                 top: '0',
@@ -411,23 +411,56 @@ const Meet = () => {
               ref={friendVideo}
               autoPlay
             />
-            <Box
-              component="video"
+
+            {/* NOTE: Видео пользователя в мини окне */}
+            <VideoCard
               ref={userVideo}
               sx={{
                 position: 'absolute',
-                top: '24px',
-                right: '24px',
-                width: '25%',
-                height: '25%',
+                top: '16px',
+                right: '16px',
+                width: '128px',
+                height: '72px',
                 backgroundColor: theme.palette.grey['700'],
                 objectFit: 'cover',
                 borderRadius: '8px',
                 zIndex: 2,
               }}
-              muted
               autoPlay
+              muted
             />
+
+            {callingState === 'calling' ? (
+              <Typography
+                variant="body2"
+                sx={{
+                  position: 'absolute',
+                  bottom: '88px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  zIndex: 2,
+                  color: '#ffffff',
+                }}
+              >
+                Звоним пользователю...
+              </Typography>
+            ) : callingState === 'connecting' ? (
+              <Typography
+                variant="body2"
+                sx={{
+                  position: 'absolute',
+                  bottom: '88px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  zIndex: 2,
+                  color: '#ffffff',
+                }}
+              >
+                Подключение...
+              </Typography>
+            ) : null}
+
+            {/* NOTE: Кнопка закончить вызов */}
             {stream && (
               <Button
                 className="call-end-button"

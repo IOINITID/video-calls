@@ -84,7 +84,7 @@ const AppContainer = () => {
 
   return (
     <>
-      <App isAuthorizated={authorizated} />;
+      <App isAuthorizated={authorizated} />
       <ModalIncomingCall
         open={isIncomingCall}
         onClose={() => {
