@@ -7,7 +7,6 @@ import { RootState } from 'core/store/types';
 import { requestRefreshAction } from 'modules/authorization/store';
 import { Event } from 'core/constants';
 import { ModalIncomingCall } from 'core/modals/modal-incoming-call';
-import { Box } from '@mui/material';
 import { User } from 'modules/user/services/types';
 
 const AppContainer = () => {
@@ -17,7 +16,7 @@ const AppContainer = () => {
   const { user } = useSelector((state: RootState) => state.user);
 
   const [isIncomingCall, setIsIncomingCall] = useState(false);
-  const [callingUser, setIsCallignUser] = useState<User>();
+  const [callingUser, setIsCallignUser] = useState<User | null>(null);
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
@@ -55,6 +54,13 @@ const AppContainer = () => {
         setIsCallignUser(payload.userFromCall);
 
         console.log(`LOGS: Входящий вызов от пользователя: ${payload.userFromCall.name}`);
+      });
+
+      // NOTE: Событие отклонения входящего вызова от пользователя
+      socket.on('server:meet_end_call', () => {
+        setIsIncomingCall(false);
+
+        console.log('LOGS: Входящий вызов от пользователя отклонен.');
       });
 
       // return () => {

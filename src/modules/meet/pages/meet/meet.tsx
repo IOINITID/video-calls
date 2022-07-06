@@ -14,13 +14,13 @@ import { VideoCard } from 'core/components/video-card';
 
 const Meet = () => {
   const navigate = useNavigate();
-  const { id, initiator } = useParams();
   const { pathname } = useLocation();
 
   const { user } = useSelector((state: RootState) => state.user);
+  const { meet } = useSelector((state: RootState) => state.meet);
 
   const [stream, setStream] = useState<MediaStream>();
-  const [callingState, setCallingState] = useState<'ready' | 'calling' | 'connecting' | 'connected'>('ready');
+  const [callingState, setCallingState] = useState<RTCIceConnectionState>('new');
 
   const peerConnection = useRef<RTCPeerConnection | null>(null);
   const userVideo = useRef<HTMLVideoElement | null>(null);
@@ -29,7 +29,8 @@ const Meet = () => {
   // TODO: Добавить store для пользователя которому звонят, с его фоном и изображением и для получения id
 
   // TODO: Переименовать на userToCall
-  const friendId = id;
+  const friendId = meet.user?.id ? meet.user.id : '';
+  const initiator = meet.isInitiator;
 
   // NOTE: Получение медиапотока с устройств
   const getStream = async () => {
@@ -43,7 +44,7 @@ const Meet = () => {
   // NOTE: Получение медиапотока с устройств
   useEffect(() => {
     console.log('LOGS: Получение медиапотока с устройств.');
-    console.log(`LOGS: Пользователь инициатор: ${initiator === 'true' ? true : false}`);
+    console.log(`LOGS: Пользователь инициатор: ${initiator}`);
 
     getStream();
   }, []);
@@ -60,26 +61,25 @@ const Meet = () => {
       }
 
       // NOTE: Отправка события начала вызова
-      if (user?.id && id) {
-        if (initiator === 'true') {
+      if (user?.id && friendId) {
+        if (initiator) {
           console.log('LOGS: Отправка события начала вызова.');
-          socket.emit('client:meet_start_call', { userFromCall: user.id, userToCall: id });
-          setCallingState('calling');
+          socket.emit('client:meet_start_call', { userFromCall: user.id, userToCall: friendId });
         }
 
-        if (initiator === 'false') {
+        if (!initiator) {
           console.log('LOGS: Отправка события принятия вызова.');
-          socket.emit('client:meet_accept_call', { userFromCall: user.id, userToCall: id });
+          socket.emit('client:meet_accept_call', { userFromCall: user.id, userToCall: friendId });
         }
       }
 
-      socket.on('server:meet_accept_call', () => {
+      socket.once('server:meet_accept_call', () => {
         if (peerConnection.current) {
           console.log('LOGS: Соединение уже установленно.');
           return;
         }
 
-        if (initiator === 'false') {
+        if (!initiator) {
           console.log('LOGS: Пользователь инициатор вызова.');
           return;
         }
@@ -87,10 +87,9 @@ const Meet = () => {
         // NOTE: Начало установки соединения между пользователями
         console.log('LOGS: Начало установки соединения между пользователями.');
         startConnection();
-        setCallingState('connecting');
       });
 
-      socket.on(
+      socket.once(
         'server:meet_offer',
         (payload: { userFromCall: string; userToCall: string }, offer: RTCSessionDescriptionInit) => {
           // console.log('LOGS: Server meet offer', user_id, friend_id, offer);
@@ -98,17 +97,17 @@ const Meet = () => {
         }
       );
 
-      socket.on('server:meet_answer', (user_id: string, friend_id: string, answer: RTCSessionDescriptionInit) => {
+      socket.once('server:meet_answer', (user_id: string, friend_id: string, answer: RTCSessionDescriptionInit) => {
         // console.log('LOGS: Server meet answer', user_id, friend_id, answer);
         handleAnswer(user_id, friend_id, answer);
       });
 
-      socket.on('server:meet_candidate', (user_id: string, friend_id: string, candidate: RTCIceCandidate) => {
+      socket.once('server:meet_candidate', (user_id: string, friend_id: string, candidate: RTCIceCandidate) => {
         // console.log('LOGS: Server meet candidate', user_id, friend_id, candidate);
         handleCandidate(candidate);
       });
 
-      socket.on('server:meet_end_call', () => {
+      socket.once('server:meet_end_call', () => {
         if (peerConnection.current) {
           endCall();
           navigate('/');
@@ -126,7 +125,7 @@ const Meet = () => {
         });
       }
     };
-  }, [stream, user?.id]);
+  }, [stream, user, meet]);
 
   // NOTE: Создание peer соединения
   const createPeerConnection = () => {
@@ -159,9 +158,12 @@ const Meet = () => {
       peerConnection.current.onicecandidate = (event) => {
         socket.emit('client:meet_candidate', user?.id, friendId, event.candidate);
         console.log('LOGS: icecandidate event', event);
+      };
 
-        if (peerConnection.current && peerConnection.current.iceConnectionState === 'connected') {
-          setCallingState('connected');
+      // NOTE: Добавление обработчика события onconnectionstatechange
+      peerConnection.current.onconnectionstatechange = () => {
+        if (peerConnection.current) {
+          setCallingState(peerConnection.current.iceConnectionState);
         }
       };
 
@@ -197,9 +199,9 @@ const Meet = () => {
         const offer = await peerConnection.current.createOffer();
 
         // NOTE: Отправка предложения другому пользователю
-        if (user?.id && id) {
+        if (user?.id && friendId) {
           console.log('LOGS: Отправка предложения другому пользователю.');
-          socket.emit('client:meet_offer', { userFromCall: user.id, userToCall: id }, offer);
+          socket.emit('client:meet_offer', { userFromCall: user.id, userToCall: friendId }, offer);
         }
 
         // NOTE: Установка предложения пользователю локально для peer соединения
@@ -403,7 +405,7 @@ const Meet = () => {
                 left: '0',
                 width: '100%',
                 height: '100%',
-                backgroundColor: theme.palette.grey['700'],
+                backgroundColor: meet.user?.color ? meet.user.color : theme.palette.grey['700'],
                 objectFit: 'cover',
                 borderRadius: '8px',
                 zIndex: 1,
@@ -430,7 +432,7 @@ const Meet = () => {
               muted
             />
 
-            {callingState === 'calling' ? (
+            {callingState === 'new' ? (
               <Typography
                 variant="body2"
                 sx={{
@@ -442,9 +444,9 @@ const Meet = () => {
                   color: '#ffffff',
                 }}
               >
-                Звоним пользователю...
+                Звоним пользователю {meet.user?.name ? meet.user.name : 'Неизвестный пользователь'}...
               </Typography>
-            ) : callingState === 'connecting' ? (
+            ) : callingState === 'checking' ? (
               <Typography
                 variant="body2"
                 sx={{
@@ -481,7 +483,7 @@ const Meet = () => {
                   padding: '0',
                 }}
                 onClick={() => {
-                  socket.emit('client:meet_end_call', id);
+                  socket.emit('client:meet_end_call', friendId);
                   navigate('/');
                 }}
               >

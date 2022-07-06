@@ -63,15 +63,7 @@ const FriendsOnline = () => {
       </Box>
       <Box sx={{ display: 'grid', alignContent: 'start', rowGap: '8px' }}>
         {friends.map((friend) => {
-          return friend.status === 'online' ? (
-            <UserFriends
-              key={friend.id}
-              id={friend.id}
-              name={friend.name}
-              status={friend.status}
-              image={friend.image}
-            />
-          ) : null;
+          return friend.status === 'online' ? <UserFriends key={friend.id} user={friend} /> : null;
         })}
       </Box>
     </Box>

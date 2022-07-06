@@ -7,15 +7,14 @@ import { requestRemoveFromFriendsAction } from 'modules/friends/store';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'core/store/types';
 import { socket } from 'core/utils/socket';
+import { setMeetAction } from 'modules/meet/store';
+import { User } from 'modules/user/services/types';
 
 type UserFriendsProps = {
-  id: string;
-  name: string;
-  status: string;
-  image: string;
+  user: User;
 };
 
-const UserFriends = ({ id, name, status, image }: UserFriendsProps) => {
+const UserFriends = ({ user: friend }: UserFriendsProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -55,13 +54,13 @@ const UserFriends = ({ id, name, status, image }: UserFriendsProps) => {
           overlap="circular"
           variant="dot"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          color={status === 'online' ? 'success' : 'error'}
+          color={user?.status && user.status === 'online' ? 'success' : 'error'}
         >
-          <Avatar sx={{ backgroundColor: colors.deepPurple[500] }} src={image} />
+          <Avatar sx={{ backgroundColor: colors.deepPurple[500] }} src={user?.image ? user.image : ''} />
         </Badge>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'max-content' }}>
-          <Typography variant="body2">{name ? name : ''}</Typography>
-          <Typography variant="caption">{status === 'online' ? 'В сети' : 'Не в сети'}</Typography>
+          <Typography variant="body2">{user?.name ? user.name : ''}</Typography>
+          <Typography variant="caption">{user?.status && user.status === 'online' ? 'В сети' : 'Не в сети'}</Typography>
         </Box>
       </Box>
       {/* Кнопки взаимодействия с пользователем */}
@@ -85,8 +84,10 @@ const UserFriends = ({ id, name, status, image }: UserFriendsProps) => {
         <IconButton
           sx={{ width: '32px', height: '32px' }}
           onClick={() => {
+            dispatch(setMeetAction({ user: friend, isInitiator: true }));
+
             if (user?.id) {
-              navigate(`/meet/${id}/${true}`);
+              navigate('/meet');
               console.log('LOGS: Кнопка позвонить нажата.');
             }
           }}
@@ -120,8 +121,10 @@ const UserFriends = ({ id, name, status, image }: UserFriendsProps) => {
         </MenuItem>
         <MenuItem
           onClick={() => {
+            dispatch(setMeetAction({ user: friend, isInitiator: true }));
+
             if (user?.id) {
-              navigate(`/meet/${id}/${true}`);
+              navigate('/meet');
               console.log('LOGS: Кнопка позвонить нажата.');
             }
 
@@ -132,7 +135,7 @@ const UserFriends = ({ id, name, status, image }: UserFriendsProps) => {
         </MenuItem>
         <MenuItem
           onClick={() => {
-            dispatch(requestRemoveFromFriendsAction({ friend_id: id }));
+            dispatch(requestRemoveFromFriendsAction({ friend_id: friend.id }));
             setAnchorEl(null);
           }}
         >

@@ -43,7 +43,7 @@ const PrivateRoutes = () => {
       <Route path="channels" element={<Channels />} />
       {/* NOTE: Встреча */}
       <Route path="meet">
-        <Route path=":id/:initiator" element={<Meet />} />
+        <Route index element={<Meet />} />
       </Route>
       <Route path="*" element={<Navigate to="friends/online" />} />
     </Routes>

@@ -1,17 +1,20 @@
 import { Box, Modal, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
 import { socket } from 'core/utils/socket';
+import { setMeetAction } from 'modules/meet/store';
 import { User } from 'modules/user/services/types';
 import { memo } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 type ModalIncomingCallProps = {
   open: boolean;
   onClose: () => void;
-  user: User | undefined;
+  user: User | null;
 };
 
 const ModalIncomingCall = ({ open, onClose, user }: ModalIncomingCallProps) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   return (
@@ -45,8 +48,10 @@ const ModalIncomingCall = ({ open, onClose, user }: ModalIncomingCallProps) => {
             variant="contained"
             color="success"
             onClick={() => {
+              dispatch(setMeetAction({ user, isInitiator: false }));
+
               if (user?.id) {
-                navigate(`meet/${user.id}/${false}`);
+                navigate('/meet');
               }
 
               onClose();

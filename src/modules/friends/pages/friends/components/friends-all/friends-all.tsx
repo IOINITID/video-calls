@@ -72,15 +72,7 @@ const FriendsAll = () => {
       </Box>
       <Box sx={{ display: 'grid', alignContent: 'start', rowGap: '8px' }}>
         {friends.map((friend) => {
-          return (
-            <UserFriends
-              key={friend.id}
-              id={friend.id}
-              name={friend.name}
-              status={friend.status}
-              image={friend.image}
-            />
-          );
+          return <UserFriends key={friend.id} user={friend} />;
         })}
       </Box>
     </Box>

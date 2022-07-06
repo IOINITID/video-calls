@@ -5,6 +5,7 @@ import { rootSaga } from 'core/store/sagas';
 import { authorizationReducer } from 'modules/authorization/store';
 import { friendsReducer } from 'modules/friends/store';
 import { invitationsReducer } from 'modules/invitations/store';
+import { meetReducer } from 'modules/meet/store';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -14,6 +15,7 @@ const store = configureStore({
     user: userReducer,
     friends: friendsReducer,
     invitations: invitationsReducer,
+    meet: meetReducer,
   },
   middleware: [sagaMiddleware],
 });
