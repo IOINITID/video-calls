@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Avatar, Box, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
 import { Navigation } from 'core/components/navigation';
 import { UserControl } from 'core/components/user-control';
@@ -429,6 +429,22 @@ const Meet = () => {
               }}
               autoPlay
               muted
+            />
+
+            {/* NOTE: Изображение пользователя */}
+            <Avatar
+              sx={{
+                position: 'absolute',
+                width: '100px',
+                height: '100px',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 2,
+                backgroundColor: meet.user?.color ? meet.user.color : meet.user?.default_color,
+                boxShadow: '0 0 16px 4px rgb(0 0 0 / 25%)',
+              }}
+              src={meet.user?.image ? meet.user.image : ''}
             />
 
             {callingState === 'new' ? (
