@@ -4,7 +4,7 @@ import { Button } from 'core/components/button';
 import { Navigation } from 'core/components/navigation';
 import { UserControl } from 'core/components/user-control';
 import { theme } from 'core/theme';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useUserMedia } from 'modules/user/hooks';
 import { socket } from 'core/utils/socket';
 import { useSelector } from 'react-redux';
@@ -14,7 +14,6 @@ import { VideoCard } from 'core/components/video-card';
 
 const Meet = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   const { user } = useSelector((state: RootState) => state.user);
   const { meet } = useSelector((state: RootState) => state.meet);
