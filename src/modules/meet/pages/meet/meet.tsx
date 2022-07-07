@@ -73,7 +73,7 @@ const Meet = () => {
         }
       }
 
-      socket.once('server:meet_accept_call', () => {
+      socket.on('server:meet_accept_call', () => {
         if (peerConnection.current) {
           console.log('LOGS: Соединение уже установленно.');
           return;
@@ -89,7 +89,7 @@ const Meet = () => {
         startConnection();
       });
 
-      socket.once(
+      socket.on(
         'server:meet_offer',
         (payload: { userFromCall: string; userToCall: string }, offer: RTCSessionDescriptionInit) => {
           // console.log('LOGS: Server meet offer', user_id, friend_id, offer);
@@ -97,17 +97,17 @@ const Meet = () => {
         }
       );
 
-      socket.once('server:meet_answer', (user_id: string, friend_id: string, answer: RTCSessionDescriptionInit) => {
+      socket.on('server:meet_answer', (user_id: string, friend_id: string, answer: RTCSessionDescriptionInit) => {
         // console.log('LOGS: Server meet answer', user_id, friend_id, answer);
         handleAnswer(user_id, friend_id, answer);
       });
 
-      socket.once('server:meet_candidate', (user_id: string, friend_id: string, candidate: RTCIceCandidate) => {
+      socket.on('server:meet_candidate', (user_id: string, friend_id: string, candidate: RTCIceCandidate) => {
         // console.log('LOGS: Server meet candidate', user_id, friend_id, candidate);
         handleCandidate(candidate);
       });
 
-      socket.once('server:meet_end_call', () => {
+      socket.on('server:meet_end_call', () => {
         if (peerConnection.current) {
           endCall();
           navigate('/');
