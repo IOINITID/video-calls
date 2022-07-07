@@ -432,20 +432,22 @@ const Meet = () => {
             />
 
             {/* NOTE: Изображение пользователя */}
-            <Avatar
-              sx={{
-                position: 'absolute',
-                width: '100px',
-                height: '100px',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                zIndex: 2,
-                backgroundColor: meet.user?.color ? meet.user.color : meet.user?.default_color,
-                boxShadow: '0 0 16px 4px rgb(0 0 0 / 25%)',
-              }}
-              src={meet.user?.image ? meet.user.image : ''}
-            />
+            {callingState !== 'connected' && (
+              <Avatar
+                sx={{
+                  position: 'absolute',
+                  width: '100px',
+                  height: '100px',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: 2,
+                  backgroundColor: meet.user?.color ? meet.user.color : meet.user?.default_color,
+                  boxShadow: '0 0 16px 4px rgb(0 0 0 / 25%)',
+                }}
+                src={meet.user?.image ? meet.user.image : ''}
+              />
+            )}
 
             {callingState === 'new' ? (
               <Typography

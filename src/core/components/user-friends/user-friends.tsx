@@ -2,11 +2,9 @@ import { memo, useState } from 'react';
 import { Avatar, Badge, Box, colors, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { Chat, Call, MoreVert } from '@mui/icons-material';
 import { theme } from 'core/theme';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { requestRemoveFromFriendsAction } from 'modules/friends/store';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from 'core/store/types';
-import { socket } from 'core/utils/socket';
 import { setMeetAction } from 'modules/meet/store';
 import { User } from 'modules/user/services/types';
 
@@ -17,8 +15,6 @@ type UserFriendsProps = {
 const UserFriends = ({ user: friend }: UserFriendsProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { user } = useSelector((state: RootState) => state.user);
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -54,13 +50,15 @@ const UserFriends = ({ user: friend }: UserFriendsProps) => {
           overlap="circular"
           variant="dot"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          color={user?.status && user.status === 'online' ? 'success' : 'error'}
+          color={friend?.status && friend.status === 'online' ? 'success' : 'error'}
         >
-          <Avatar sx={{ backgroundColor: colors.deepPurple[500] }} src={user?.image ? user.image : ''} />
+          <Avatar sx={{ backgroundColor: colors.deepPurple[500] }} src={friend?.image ? friend.image : ''} />
         </Badge>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'max-content' }}>
-          <Typography variant="body2">{user?.name ? user.name : ''}</Typography>
-          <Typography variant="caption">{user?.status && user.status === 'online' ? 'В сети' : 'Не в сети'}</Typography>
+          <Typography variant="body2">{friend?.name ? friend.name : ''}</Typography>
+          <Typography variant="caption">
+            {friend?.status && friend.status === 'online' ? 'В сети' : 'Не в сети'}
+          </Typography>
         </Box>
       </Box>
       {/* Кнопки взаимодействия с пользователем */}
@@ -85,11 +83,8 @@ const UserFriends = ({ user: friend }: UserFriendsProps) => {
           sx={{ width: '32px', height: '32px' }}
           onClick={() => {
             dispatch(setMeetAction({ user: friend, isInitiator: true }));
-
-            if (user?.id) {
-              navigate('/meet');
-              console.log('LOGS: Кнопка позвонить нажата.');
-            }
+            navigate('/meet');
+            console.log('LOGS: Кнопка позвонить нажата.');
           }}
         >
           <Call />
@@ -122,13 +117,9 @@ const UserFriends = ({ user: friend }: UserFriendsProps) => {
         <MenuItem
           onClick={() => {
             dispatch(setMeetAction({ user: friend, isInitiator: true }));
-
-            if (user?.id) {
-              navigate('/meet');
-              console.log('LOGS: Кнопка позвонить нажата.');
-            }
-
+            navigate('/meet');
             setAnchorEl(null);
+            console.log('LOGS: Кнопка позвонить нажата.');
           }}
         >
           Позвонить
