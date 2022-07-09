@@ -7,6 +7,7 @@ const initialState: MeetState = {
     user: null,
     isInitiator: false,
   },
+  meetState: 'new',
 };
 
 export const meetSlice = createSlice({
@@ -14,13 +15,19 @@ export const meetSlice = createSlice({
   initialState,
   reducers: {
     // NOTE: Получение пользователя которому звоним
-    setMeetAction: (state: MeetState, { payload }: PayloadAction<{ user: User | null; isInitiator: boolean }>) => {
+    setMeetAction: (
+      state: MeetState,
+      { payload }: PayloadAction<{ user: User | null; isInitiator: boolean; meetState?: RTCIceConnectionState }>
+    ) => {
       state.meet.user = payload.user;
       state.meet.isInitiator = payload.isInitiator;
+    },
+    setMeetStateAction: (state: MeetState, { payload }: PayloadAction<{ meetState: RTCIceConnectionState }>) => {
+      state.meetState = payload.meetState;
     },
   },
 });
 
-export const { setMeetAction } = meetSlice.actions;
+export const { setMeetAction, setMeetStateAction } = meetSlice.actions;
 
 export const meetReducer = meetSlice.reducer;

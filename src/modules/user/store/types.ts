@@ -3,6 +3,10 @@ import { User } from '../services/types';
 export type UserState = {
   user: User | null;
   users: User[];
+  media: {
+    audio: boolean;
+    video: boolean;
+  };
   loading: {
     user: boolean;
     users: boolean;

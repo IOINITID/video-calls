@@ -5,4 +5,5 @@ export type MeetState = {
     user: User | null;
     isInitiator: boolean;
   };
+  meetState: RTCIceConnectionState;
 };

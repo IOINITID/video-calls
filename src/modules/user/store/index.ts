@@ -5,6 +5,10 @@ import { UserState } from './types';
 const initialState: UserState = {
   user: null,
   users: [],
+  media: {
+    audio: true,
+    video: true,
+  },
   loading: {
     user: false,
     users: false,
@@ -85,6 +89,9 @@ export const userSlice = createSlice({
     setAudioOutDevice: (state: UserState, { payload }: PayloadAction<string>) => {
       state.audioOutDevice = payload;
     },
+    setMediaAction: (state: UserState, { payload }: PayloadAction<{ audio: boolean; video: boolean }>) => {
+      state.media = payload;
+    },
   },
 });
 
@@ -104,6 +111,7 @@ export const {
   requestGetUsersAction,
   successGetUsersAction,
   failureGetUsersAction,
+  setMediaAction,
 } = userSlice.actions;
 
 export const userReducer = userSlice.reducer;

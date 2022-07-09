@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import { Avatar, Box, Typography } from '@mui/material';
+import { Avatar, Box, IconButton, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
 import { Navigation } from 'core/components/navigation';
 import { UserControl } from 'core/components/user-control';
@@ -7,25 +7,28 @@ import { theme } from 'core/theme';
 import { useNavigate } from 'react-router-dom';
 import { useUserMedia } from 'modules/user/hooks';
 import { socket } from 'core/utils/socket';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'core/store/types';
-import { CallEndRounded } from '@mui/icons-material';
+import { CallEndRounded, Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-material';
 import { VideoCard } from 'core/components/video-card';
+import { setMeetStateAction } from 'modules/meet/store';
+import { setMediaAction } from 'modules/user/store';
 
 const Meet = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user } = useSelector((state: RootState) => state.user);
+  const { user, media } = useSelector((state: RootState) => state.user);
   const { meet } = useSelector((state: RootState) => state.meet);
 
   const [stream, setStream] = useState<MediaStream>();
+  const [friendMedia, setFriendMedia] = useState<MediaStreamConstraints>({ audio: true, video: true });
   const [callingState, setCallingState] = useState<RTCIceConnectionState>('new');
 
   const peerConnection = useRef<RTCPeerConnection | null>(null);
   const userVideo = useRef<HTMLVideoElement | null>(null);
   const friendVideo = useRef<HTMLVideoElement | null>(null);
-
-  // TODO: Добавить store для пользователя которому звонят, с его фоном и изображением и для получения id
+  const friendStream = useRef<MediaStream | null>(null);
 
   // TODO: Переименовать на userToCall
   const friendId = meet.user?.id ? meet.user.id : '';
@@ -46,7 +49,97 @@ const Meet = () => {
     console.log(`LOGS: Пользователь инициатор: ${initiator}`);
 
     getStream();
+    dispatch(setMediaAction({ audio: true, video: true }));
+    dispatch(setMeetStateAction({ meetState: 'new' }));
+
+    return () => {
+      socket.removeListener('server:media_state_change');
+      socket.removeListener('server:meet_accept_call');
+      socket.removeListener('server:meet_offer');
+      socket.removeListener('server:meet_answer');
+      socket.removeListener('server:meet_candidate');
+      socket.removeListener('server:meet_end_call');
+    };
   }, []);
+
+  useEffect(() => {
+    if (friendVideo.current && friendStream.current) {
+      if (friendMedia.video) {
+        if (friendStream.current) {
+          friendVideo.current.srcObject = friendStream.current;
+        }
+      } else {
+        friendVideo.current.srcObject = null;
+      }
+    }
+  }, [stream, friendMedia]);
+
+  useEffect(() => {
+    if (stream) {
+      // NOTE: getSenders -> [audio, video]
+      if (peerConnection.current) {
+        console.log('senders', peerConnection.current.getSenders());
+
+        // TODO: Регировать на сигналинг и обновлять значения
+        // setFriendConstraints({
+        //   video: peerConnection.current.getSenders()[1].track?.enabled,
+        //   audio: peerConnection.current.getSenders()[0].track?.enabled,
+        // });
+      }
+
+      if (media.audio) {
+        if (peerConnection.current) {
+          peerConnection.current.getSenders()[0].replaceTrack(
+            stream
+              .getAudioTracks()
+              .slice()
+              .map((track) => {
+                track.enabled = true;
+                return track;
+              })[0] || null
+          );
+        }
+      } else {
+        if (peerConnection.current) {
+          peerConnection.current.getSenders()[0].replaceTrack(
+            stream
+              .getAudioTracks()
+              .slice()
+              .map((track) => {
+                track.enabled = false;
+                return track;
+              })[0] || null
+          );
+        }
+      }
+
+      if (media.video) {
+        if (peerConnection.current) {
+          peerConnection.current.getSenders()[1].replaceTrack(
+            stream
+              .getVideoTracks()
+              .slice()
+              .map((track) => {
+                track.enabled = true;
+                return track;
+              })[0] || null
+          );
+        }
+      } else {
+        if (peerConnection.current) {
+          peerConnection.current.getSenders()[1].replaceTrack(
+            stream
+              .getVideoTracks()
+              .slice()
+              .map((track) => {
+                track.enabled = false;
+                return track;
+              })[0] || null
+          );
+        }
+      }
+    }
+  }, [stream, media]);
 
   // NOTE: Когда медиапоток и ID пользователя готовы и пользователь является инициатором вызова, отправка события для звонка пользователю
   useEffect(() => {
@@ -71,6 +164,10 @@ const Meet = () => {
           socket.emit('client:meet_accept_call', { userFromCall: user.id, userToCall: friendId });
         }
       }
+
+      socket.on('server:media_state_change', (payload: { media: { audio: boolean; video: boolean } }) => {
+        setFriendMedia(payload.media);
+      });
 
       socket.on('server:meet_accept_call', () => {
         if (peerConnection.current) {
@@ -108,6 +205,8 @@ const Meet = () => {
 
       socket.on('server:meet_end_call', () => {
         if (peerConnection.current) {
+          dispatch(setMeetStateAction({ meetState: 'disconnected' }));
+          dispatch(setMediaAction({ audio: true, video: true }));
           endCall();
           navigate('/');
           // console.log('LOGS: Server end call');
@@ -163,13 +262,17 @@ const Meet = () => {
       peerConnection.current.onconnectionstatechange = () => {
         if (peerConnection.current) {
           setCallingState(peerConnection.current.iceConnectionState);
+          dispatch(setMeetStateAction({ meetState: peerConnection.current.iceConnectionState }));
         }
       };
 
       // NOTE: Обновление обработчика события track
       peerConnection.current.ontrack = (event) => {
         console.log('LOGS: ontrack event', event);
+        console.log('EVENT_STREAMS', event.streams[0].getVideoTracks(), event.streams[0].getAudioTracks());
+
         if (friendVideo.current) {
+          friendStream.current = event.streams[0];
           friendVideo.current.srcObject = event.streams[0];
         }
       };
@@ -278,6 +381,10 @@ const Meet = () => {
     if (userVideo.current) {
       userVideo.current.srcObject = null;
     }
+
+    socket.emit('client:meet_end_call', friendId);
+    dispatch(setMeetStateAction({ meetState: 'new' }));
+    navigate('/');
   };
 
   return (
@@ -390,10 +497,7 @@ const Meet = () => {
               height: '360px',
               alignSelf: 'center',
               justifySelf: 'center',
-
-              '&:hover .call-end-button': {
-                display: 'grid',
-              },
+              overflow: 'hidden',
             }}
           >
             {/* NOTE: Видео пользователя которому звонят */}
@@ -413,10 +517,25 @@ const Meet = () => {
               autoPlay
             />
 
+            {/* NOTE: Тень для кнопок */}
+            <Box
+              sx={{
+                width: '100%',
+                height: '64px',
+                position: 'absolute',
+                bottom: '0',
+                left: '0',
+                background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.35) 100%)',
+                zIndex: 2,
+              }}
+            />
+
             {/* NOTE: Видео пользователя в мини окне */}
+
             <VideoCard
               ref={userVideo}
               sx={{
+                display: media.video ? 'grid' : 'none',
                 position: 'absolute',
                 top: '16px',
                 right: '16px',
@@ -432,7 +551,7 @@ const Meet = () => {
             />
 
             {/* NOTE: Изображение пользователя */}
-            {callingState !== 'connected' && (
+            {(callingState !== 'connected' || !friendMedia.video) && (
               <Avatar
                 sx={{
                   position: 'absolute',
@@ -479,33 +598,79 @@ const Meet = () => {
               </Typography>
             ) : null}
 
-            {/* NOTE: Кнопка закончить вызов */}
-            {stream && (
-              <Button
-                className="call-end-button"
-                variant="contained"
-                color="error"
+            {stream && callingState === 'connected' && (
+              <Box
                 sx={{
-                  display: 'none',
-                  minWidth: '48px',
-                  minHeight: '48px',
-                  width: '48px',
-                  height: '48px',
                   position: 'absolute',
-                  bottom: '24px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
+                  bottom: '0',
+                  left: '0',
+                  width: '100%',
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, max-content)',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  columnGap: '8px',
+                  padding: '16px 0',
                   zIndex: 2,
-                  borderRadius: '50%',
-                  padding: '0',
-                }}
-                onClick={() => {
-                  socket.emit('client:meet_end_call', friendId);
-                  navigate('/');
                 }}
               >
-                <CallEndRounded sx={{ width: '24px', height: '24px' }} />
-              </Button>
+                {/* NOTE: Кнопка вкл/выкл микрофон */}
+                <IconButton
+                  sx={{
+                    // display: 'none',
+                    minWidth: '32px',
+                    minHeight: '32px',
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                  }}
+                >
+                  {friendMedia.audio ? (
+                    <Mic sx={{ color: theme.palette.common.white, width: '16px', height: '16px' }} />
+                  ) : (
+                    <MicOff sx={{ color: theme.palette.grey[700] }} />
+                  )}
+                </IconButton>
+
+                {/* NOTE: Кнопка закончить вызов */}
+                <Button
+                  variant="contained"
+                  color="error"
+                  sx={{
+                    minWidth: '32px',
+                    minHeight: '32px',
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                  }}
+                  onClick={() => {
+                    endCall();
+                  }}
+                >
+                  <CallEndRounded sx={{ color: theme.palette.common.white, width: '16px', height: '16px' }} />
+                </Button>
+
+                {/* NOTE: Кнопка вкл/выкл камеру */}
+                <IconButton
+                  // onClick={() => {
+                  //   setConstraints({ ...constraints, video: !constraints.video });
+                  // }}
+                  sx={{
+                    // display: 'none',
+                    minWidth: '32px',
+                    minHeight: '32px',
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                  }}
+                >
+                  {friendMedia.video ? (
+                    <Videocam sx={{ color: theme.palette.common.white, width: '16px', height: '16px' }} />
+                  ) : (
+                    <VideocamOff sx={{ color: theme.palette.grey[700] }} />
+                  )}
+                </IconButton>
+              </Box>
             )}
           </Box>
         </Box>
