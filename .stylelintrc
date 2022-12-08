@@ -5,6 +5,7 @@
     "indentation": [2, { "ignore": ["inside-parens"] }],
     "string-quotes": "single",
     "no-eol-whitespace": null,
-    "no-missing-end-of-source-newline": null
+    "no-missing-end-of-source-newline": null,
+    "selector-max-id": null
   }
 }
