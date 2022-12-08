@@ -1,4 +1,5 @@
-import { render } from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
@@ -23,7 +24,7 @@ const Root = () => {
 
     html,
     body,
-    .root {
+    #root {
       height: 100%;
     }
 
@@ -55,4 +56,8 @@ const Root = () => {
   );
 };
 
-render(<Root />, document.querySelector('.root'));
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <Root />
+  </React.StrictMode>
+);
