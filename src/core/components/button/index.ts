@@ -1,1 +1,1 @@
-export { ButtonMemoized as Button } from './button';
+export { Button } from './button';

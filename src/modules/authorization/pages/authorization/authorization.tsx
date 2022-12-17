@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { TextField } from 'core/components/text-field';
 import { Box, InputAdornment, IconButton, Typography, Link } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -8,15 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import authorizationImage from 'core/assets/images/authorization-image.jpg';
 import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { css } from '@linaria/core';
-import { LoadingButton } from '@mui/lab';
-import { RootState } from 'core/store/types';
 import { requestAuthorizationAction } from 'modules/authorization/store';
+import { Button } from 'core/components/button';
 
 const Authorization = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { loading } = useSelector((state: RootState) => state.authorization);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -84,20 +81,13 @@ const Authorization = () => {
                   />
                 </Box>
               </Box>
-              <LoadingButton
-                disableElevation
-                disableRipple
-                sx={{ pdding: '8px 16px', textTransform: 'initial' }}
-                variant="contained"
-                color="primary"
-                size="large"
-                loading={loading.access_token || loading.refresh_token}
+              <Button
                 onClick={() => {
                   dispatch(requestAuthorizationAction({ email, password }));
                 }}
               >
                 Войти
-              </LoadingButton>
+              </Button>
             </Box>
             <Typography variant="subtitle2">
               У Вас ещё нет профиля?{' '}

@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Box, Typography, TextField, InputAdornment, IconButton, Link } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { theme } from 'core/theme';
@@ -8,14 +8,11 @@ import { requestRegistrationAction } from 'modules/authorization/store';
 import authorizationImage from 'core/assets/images/authorization-image.jpg';
 import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { css } from '@linaria/core';
-import { LoadingButton } from '@mui/lab';
-import { RootState } from 'core/store/types';
+import { Button } from 'core/components/button';
 
 const Registration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { loading } = useSelector((state: RootState) => state.authorization);
 
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -102,18 +99,9 @@ const Registration = () => {
                     политикой обработки персональных данных
                   </Link>
                 </Typography>
-                <LoadingButton
-                  disableElevation
-                  disableRipple
-                  sx={{ pdding: '8px 16px', textTransform: 'initial' }}
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  loading={loading.access_token || loading.refresh_token}
-                  onClick={() => dispatch(requestRegistrationAction({ email, name, password }))}
-                >
+                <Button onClick={() => dispatch(requestRegistrationAction({ email, name, password }))}>
                   Зарегистрироваться
-                </LoadingButton>
+                </Button>
               </Box>
             </Box>
             <Typography variant="subtitle2">

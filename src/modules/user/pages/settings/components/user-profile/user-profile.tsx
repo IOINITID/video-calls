@@ -1,6 +1,5 @@
 import { css } from '@linaria/core';
 import { AddPhotoAlternateOutlined, CancelOutlined, Check, Colorize, Edit } from '@mui/icons-material';
-import { LoadingButton } from '@mui/lab';
 import { Box, Link, Slide, Snackbar, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
 import { TextField } from 'core/components/text-field';
@@ -150,10 +149,7 @@ const UserProfile = () => {
             >
               <Typography>Сброс</Typography>
             </Link>
-            <LoadingButton
-              sx={{ textTransform: 'initial' }}
-              variant="contained"
-              color="success"
+            <Button
               onClick={() => {
                 dispatch(
                   requestUpdateUserAction({
@@ -169,7 +165,7 @@ const UserProfile = () => {
               }}
             >
               Сохранить изменения
-            </LoadingButton>
+            </Button>
           </Box>
         }
       />
@@ -231,8 +227,6 @@ const UserProfile = () => {
               }}
             >
               <Button
-                sx={{ textTransform: 'initial' }}
-                variant="contained"
                 onClick={() => {
                   if (imageInput.current) {
                     imageInput.current.click();
@@ -360,16 +354,7 @@ const UserProfile = () => {
                   Мы рекомендуем использовать изображение как минимум 600x240. Доступные форматы PNG, JPG или
                   анимированные GIF размером не более 5МБ.
                 </Typography>
-                <Button
-                  sx={{ textTransform: 'initial' }}
-                  disableRipple
-                  disableElevation
-                  variant="contained"
-                  color="success"
-                  onClick={() => null}
-                >
-                  Загрузить баннер
-                </Button>
+                <Button onClick={() => null}>Загрузить баннер</Button>
               </Box>
             </Box>
           </Box>
