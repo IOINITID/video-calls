@@ -1,4 +1,4 @@
-import { css } from '@emotion/css';
+import { css } from '@linaria/core';
 import { Box, Divider, Link, Typography } from '@mui/material';
 import { Event } from 'core/constants';
 import { RootState } from 'core/store/types';

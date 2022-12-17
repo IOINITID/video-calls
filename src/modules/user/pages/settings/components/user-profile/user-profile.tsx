@@ -1,4 +1,4 @@
-import { css } from '@emotion/css';
+import { css } from '@linaria/core';
 import { AddPhotoAlternateOutlined, CancelOutlined, Check, Colorize, Edit } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { Box, Link, Slide, Snackbar, Typography } from '@mui/material';
@@ -96,6 +96,7 @@ const UserProfile = () => {
         id="image"
         name="image"
         label="Изображение профиля"
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         inputProps={{ ref: (input: any) => (imageInput.current = input) }}
         onChange={handleImageChange}
         placeholder="Выберите изображение профиля"

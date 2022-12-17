@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { requestRegistrationAction } from 'modules/authorization/store';
 import authorizationImage from 'core/assets/images/authorization-image.jpg';
 import { AuthorizationLayout } from 'core/layouts/authorization-layout';
-import { css } from '@emotion/css';
+import { css } from '@linaria/core';
 import { LoadingButton } from '@mui/lab';
 import { RootState } from 'core/store/types';
 

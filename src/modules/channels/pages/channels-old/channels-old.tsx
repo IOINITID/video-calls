@@ -25,7 +25,7 @@ import { getChannels } from 'core/services/get-channels';
 import { TextField } from 'core/components/text-field';
 import { getChannelMessages } from 'core/services/get-channel-messages';
 import { socket } from 'core/utils/socket';
-import { css } from '@emotion/css';
+import { css } from '@linaria/core';
 
 const ChannelsOld = () => {
   const dispatch = useDispatch();

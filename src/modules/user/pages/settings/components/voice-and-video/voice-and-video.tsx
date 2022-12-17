@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import { css } from '@emotion/css';
+import { css } from '@linaria/core';
 import { CancelOutlined } from '@mui/icons-material';
 import {
   Box,
