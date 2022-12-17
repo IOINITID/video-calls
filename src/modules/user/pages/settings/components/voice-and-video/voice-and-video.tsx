@@ -201,9 +201,7 @@ const VoiceAndVideo = () => {
           Проблемы с микрофоном? Начните проверку и скажите какую-нибудь ерунду - мы тут же ее воспроизведем.
         </Typography>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'max-content 1fr', alignItems: 'center', columnGap: '8px' }}>
-          <Button variant="contained" onClick={() => setIsAudio(!isAudio)}>
-            {isAudio ? 'Прекратить проверку' : 'Давайте проверим'}
-          </Button>
+          <Button onClick={() => setIsAudio(!isAudio)}>{isAudio ? 'Прекратить проверку' : 'Давайте проверим'}</Button>
           <Box>
             <LinearProgress variant="determinate" value={0} />
             {isAudio && <Typography variant="caption">Воспроизводим ваш прекрасный голос</Typography>}
@@ -273,7 +271,6 @@ const VoiceAndVideo = () => {
             />
             {!isVideo && (
               <Button
-                variant="contained"
                 onClick={() => {
                   getUserMedia({ audio: true, video: true });
                   setIsVideo(true);
@@ -284,7 +281,6 @@ const VoiceAndVideo = () => {
             )}
             {isVideo && (
               <Button
-                variant="contained"
                 onClick={() => {
                   stopUserMedia();
                   setIsVideo(false);
@@ -367,9 +363,7 @@ const VoiceAndVideo = () => {
         </Box>
         {/* NOTE: Сбросить голосовые настройки */}
         <Box>
-          <Button variant="outlined" color="error">
-            Сбросить голосовые настройки
-          </Button>
+          <Button>Сбросить голосовые настройки</Button>
         </Box>
       </Box>
     </Box>

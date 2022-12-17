@@ -146,8 +146,6 @@ const ModalChangeUserEmail = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
             <Typography sx={{ fontSize: '14px' }}>Отмена</Typography>
           </Link>
           <Button
-            sx={{ textTransform: 'initial' }}
-            variant="contained"
             onClick={() => {
               // TODO: Добавить валидацию на email и длину пароля
               if (email.trim() && password.trim()) {
