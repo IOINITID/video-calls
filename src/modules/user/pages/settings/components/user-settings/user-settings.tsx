@@ -1,4 +1,4 @@
-import { css } from '@linaria/core';
+// import { css } from '@linaria/core';
 import { Box, Divider, Link, Typography } from '@mui/material';
 import { Event } from 'core/constants';
 import { RootState } from 'core/store/types';
@@ -63,26 +63,26 @@ const UserSettings = () => {
   return (
     <Box sx={{ padding: '60px 8px', backgroundColor: '#43454a' }}>
       <Typography
-        className={css`
-          padding: 6px 10px !important;
-          font-weight: 700 !important;
-          font-size: 12px !important;
-          line-height: 16px !important;
-          color: #a0a2a6;
-          text-transform: uppercase;
-        `}
+      // className={css`
+      //   padding: 6px 10px !important;
+      //   font-weight: 700 !important;
+      //   font-size: 12px !important;
+      //   line-height: 16px !important;
+      //   color: #a0a2a6;
+      //   text-transform: uppercase;
+      // `}
       >
         Настройки пользователя
       </Typography>
       <Box
         component="ul"
-        className={css`
-          display: grid;
-          margin: 0;
-          padding: 0;
-          list-style: none;
-          row-gap: 2px;
-        `}
+        // className={css`
+        //   display: grid;
+        //   margin: 0;
+        //   padding: 0;
+        //   list-style: none;
+        //   row-gap: 2px;
+        // `}
       >
         {userSettingsConfig.map((value) => {
           return (
@@ -91,24 +91,24 @@ const UserSettings = () => {
               <Box
                 key={value.id}
                 component="li"
-                className={css`
-                  padding: 6px 10px !important;
-                  font-weight: 500 !important;
-                  font-size: 16px !important;
-                  line-height: 20px !important;
-                  background-color: ${location.pathname.includes(value.path) ? `#60656c` : 'none'};
-                  border-radius: 4px;
-                  cursor: pointer;
+                // className={css`
+                //   padding: 6px 10px !important;
+                //   font-weight: 500 !important;
+                //   font-size: 16px !important;
+                //   line-height: 20px !important;
+                //   background-color: ${location.pathname.includes(value.path) ? `#60656c` : 'none'};
+                //   border-radius: 4px;
+                //   cursor: pointer;
 
-                  &:hover,
-                  &:focus {
-                    background-color: ${location.pathname.includes(value.path) ? '#565a61' : '#87888d'};
+                //   &:hover,
+                //   &:focus {
+                //     background-color: ${location.pathname.includes(value.path) ? '#565a61' : '#87888d'};
 
-                    p {
-                      color: #dfe0e1;
-                    }
-                  }
-                `}
+                //     p {
+                //       color: #dfe0e1;
+                //     }
+                //   }
+                // `}
                 onClick={value.onClick}
               >
                 <Link underline="none">
@@ -122,14 +122,14 @@ const UserSettings = () => {
         })}
       </Box>
       <Typography
-        className={css`
-          padding: 6px 10px !important;
-          font-weight: 700 !important;
-          font-size: 12px !important;
-          line-height: 16px !important;
-          color: #a0a2a6;
-          text-transform: uppercase;
-        `}
+      // className={css`
+      //   padding: 6px 10px !important;
+      //   font-weight: 700 !important;
+      //   font-size: 12px !important;
+      //   line-height: 16px !important;
+      //   color: #a0a2a6;
+      //   text-transform: uppercase;
+      // `}
       >
         Настройки приложения
       </Typography>

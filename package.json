@@ -39,6 +39,8 @@
   },
   "homepage": "https://github.com/IOINITID/video-calls#readme",
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@linaria/core": "^4.2.4",
     "@mui/icons-material": "5.3.1",
     "@mui/lab": "5.0.0-alpha.68",

@@ -174,14 +174,14 @@ const UserProfile = () => {
         }
       />
       <Typography
-        className={css`
-          padding-bottom: 20px !important;
-          font-weight: 600 !important;
-          font-size: 20px !important;
-          line-height: 24px !important;
-          color: #ffffff !important;
-          border-bottom: 1px solid #000000;
-        `}
+      // className={css`
+      //   padding-bottom: 20px !important;
+      //   font-weight: 600 !important;
+      //   font-size: 20px !important;
+      //   line-height: 24px !important;
+      //   color: #ffffff !important;
+      //   border-bottom: 1px solid #000000;
+      // `}
       >
         Профиль пользователя
       </Typography>
@@ -212,13 +212,13 @@ const UserProfile = () => {
         <Box>
           <Box sx={{ padding: '20px 0', borderBottom: '1px solid #000000' }}>
             <Typography
-              className={css`
-                margin-bottom: 8px !important;
-                font-weight: 600 !important;
-                font-size: 12px !important;
-                line-height: 16px !important;
-                text-transform: uppercase !important;
-              `}
+            // className={css`
+            //   margin-bottom: 8px !important;
+            //   font-weight: 600 !important;
+            //   font-size: 12px !important;
+            //   line-height: 16px !important;
+            //   text-transform: uppercase !important;
+            // `}
             >
               Аватар
             </Typography>
@@ -255,13 +255,13 @@ const UserProfile = () => {
           {/* NOTE: Цвет профиля */}
           <Box sx={{ padding: '20px 0', borderBottom: '1px solid #000000' }}>
             <Typography
-              className={css`
-                margin-bottom: 8px !important;
-                font-weight: 600 !important;
-                font-size: 12px !important;
-                line-height: 16px !important;
-                text-transform: uppercase !important;
-              `}
+            // className={css`
+            //   margin-bottom: 8px !important;
+            //   font-weight: 600 !important;
+            //   font-size: 12px !important;
+            //   line-height: 16px !important;
+            //   text-transform: uppercase !important;
+            // `}
             >
               Цвет профиля
             </Typography>
@@ -284,10 +284,10 @@ const UserProfile = () => {
                   {isDefaultColor && <Check sx={{ fill: '#ffffff' }} width={24} height={24} />}
                 </Box>
                 <Typography
-                  className={css`
-                    font-size: 12px !important;
-                    line-height: 16px !important;
-                  `}
+                // className={css`
+                //   font-size: 12px !important;
+                //   line-height: 16px !important;
+                // `}
                 >
                   По умолчанию
                 </Typography>
@@ -333,10 +333,10 @@ const UserProfile = () => {
                 </Box>
                 <Colorize sx={{ position: 'absolute', top: '0', right: '8px' }} width={14} height={14} />
                 <Typography
-                  className={css`
-                    font-size: 12px !important;
-                    line-height: 16px !important;
-                  `}
+                // className={css`
+                //   font-size: 12px !important;
+                //   line-height: 16px !important;
+                // `}
                 >
                   Пользовательские
                 </Typography>
@@ -345,13 +345,13 @@ const UserProfile = () => {
             {/* NOTE: Настройка баннера */}
             <Box sx={{ paddingTop: '20px' }}>
               <Typography
-                className={css`
-                  margin-bottom: 8px !important;
-                  font-weight: 600 !important;
-                  font-size: 12px !important;
-                  line-height: 16px !important;
-                  text-transform: uppercase !important;
-                `}
+              // className={css`
+              //   margin-bottom: 8px !important;
+              //   font-weight: 600 !important;
+              //   font-size: 12px !important;
+              //   line-height: 16px !important;
+              //   text-transform: uppercase !important;
+              // `}
               >
                 Баннер профиля
               </Typography>
@@ -376,22 +376,22 @@ const UserProfile = () => {
           {/* NOTE: Обо мне */}
           <Box sx={{ padding: '20px 0' }}>
             <Typography
-              className={css`
-                margin-bottom: 8px !important;
-                font-weight: 600 !important;
-                font-size: 12px !important;
-                line-height: 16px !important;
-                text-transform: uppercase !important;
-              `}
+            // className={css`
+            //   margin-bottom: 8px !important;
+            //   font-weight: 600 !important;
+            //   font-size: 12px !important;
+            //   line-height: 16px !important;
+            //   text-transform: uppercase !important;
+            // `}
             >
               Обо мне
             </Typography>
             <Typography
-              className={css`
-                margin-bottom: 8px !important;
-                font-size: 14px !important;
-                line-height: 20px !important;
-              `}
+            // className={css`
+            //   margin-bottom: 8px !important;
+            //   font-size: 14px !important;
+            //   line-height: 20px !important;
+            // `}
             >
               Можно использовать разметку теста и ссылки.
             </Typography>
@@ -409,13 +409,13 @@ const UserProfile = () => {
         <Box>
           <Box sx={{ padding: '20px 0 0 0' }}>
             <Typography
-              className={css`
-                margin-bottom: 8px !important;
-                font-weight: 600 !important;
-                font-size: 12px !important;
-                line-height: 16px !important;
-                text-transform: uppercase !important;
-              `}
+            // className={css`
+            //   margin-bottom: 8px !important;
+            //   font-weight: 600 !important;
+            //   font-size: 12px !important;
+            //   line-height: 16px !important;
+            //   text-transform: uppercase !important;
+            // `}
             >
               Предпросмотр
             </Typography>
@@ -521,20 +521,20 @@ const UserProfile = () => {
             >
               {/* NOTE: Имя пользователя */}
               <Typography
-                className={css`
-                  padding: 16px 0;
-                  color: #ffffff;
-                `}
+              // className={css`
+              //   padding: 16px 0;
+              //   color: #ffffff;
+              // `}
               >
                 {user?.name}
                 {/* NOTE: Тег пользователя */}
                 <Typography
-                  className={css`
-                    font-size: 20px;
-                    line-height: 24px;
-                    color: #b9bbbe;
-                    text-transform: uppercase;
-                  `}
+                  // className={css`
+                  //   font-size: 20px;
+                  //   line-height: 24px;
+                  //   color: #b9bbbe;
+                  //   text-transform: uppercase;
+                  // `}
                   component="span"
                 >
                   #{user?.id.slice(-4)}
@@ -542,16 +542,16 @@ const UserProfile = () => {
               </Typography>
               {/* NOTE: Обо мне */}
               <Typography
-                className={css`
-                  margin-bottom: 8px !important;
-                  padding: 20px 0 0 0 !important;
-                  font-weight: 600 !important;
-                  font-size: 12px !important;
-                  line-height: 16px !important;
-                  color: #b9bbbe;
-                  text-transform: uppercase !important;
-                  border-top: 1px solid ${theme.palette.grey[800]};
-                `}
+                // className={css`
+                //   margin-bottom: 8px !important;
+                //   padding: 20px 0 0 0 !important;
+                //   font-weight: 600 !important;
+                //   font-size: 12px !important;
+                //   line-height: 16px !important;
+                //   color: #b9bbbe;
+                //   text-transform: uppercase !important;
+                //   border-top: 1px solid ${theme.palette.grey[800]};
+                // `}
                 variant="subtitle1"
               >
                 Обо мне
@@ -561,16 +561,16 @@ const UserProfile = () => {
               </Typography>
               {/* NOTE: Настройка профиля */}
               <Typography
-                className={css`
-                  margin-bottom: 8px !important;
-                  padding: 20px 0 0 0 !important;
-                  font-weight: 600 !important;
-                  font-size: 12px !important;
-                  line-height: 16px !important;
-                  color: #b9bbbe;
-                  text-transform: uppercase !important;
-                  border-top: 1px solid ${theme.palette.grey[800]};
-                `}
+                // className={css`
+                //   margin-bottom: 8px !important;
+                //   padding: 20px 0 0 0 !important;
+                //   font-weight: 600 !important;
+                //   font-size: 12px !important;
+                //   line-height: 16px !important;
+                //   color: #b9bbbe;
+                //   text-transform: uppercase !important;
+                //   border-top: 1px solid ${theme.palette.grey[800]};
+                // `}
                 variant="subtitle1"
               >
                 Настройка профиля

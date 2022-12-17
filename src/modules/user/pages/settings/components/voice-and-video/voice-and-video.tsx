@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import { css } from '@linaria/core';
+// import { css } from '@linaria/core';
 import { CancelOutlined } from '@mui/icons-material';
 import {
   Box,
@@ -108,13 +108,13 @@ const VoiceAndVideo = () => {
       </Box>
       {/* NOTE: Настройки голоса */}
       <Typography
-        className={css`
-          padding-bottom: 20px !important;
-          font-weight: 600 !important;
-          font-size: 20px !important;
-          line-height: 24px !important;
-          color: #ffffff !important;
-        `}
+      // className={css`
+      //   padding-bottom: 20px !important;
+      //   font-weight: 600 !important;
+      //   font-size: 20px !important;
+      //   line-height: 24px !important;
+      //   color: #ffffff !important;
+      // `}
       >
         Насройки голоса
       </Typography>
@@ -241,12 +241,12 @@ const VoiceAndVideo = () => {
       {/* NOTE: Настройки видео */}
       <Box>
         <Typography
-          className={css`
-            font-weight: 600 !important;
-            font-size: 20px !important;
-            line-height: 24px !important;
-            color: #ffffff !important;
-          `}
+        // className={css`
+        //   font-weight: 600 !important;
+        //   font-size: 20px !important;
+        //   line-height: 24px !important;
+        //   color: #ffffff !important;
+        // `}
         >
           Насройки видео
         </Typography>
