@@ -96,9 +96,7 @@ const Messages = () => {
         </Box>
         {/* Друзья */}
         <Box sx={{ padding: '16px' }}>
-          <Button fullWidth variant="contained" onClick={() => navigate('/friends/all-friends')}>
-            Друзья
-          </Button>
+          <Button onClick={() => navigate('/friends/all-friends')}>Друзья</Button>
         </Box>
         {/* Список сообщений от пользователей */}
         <Box
@@ -201,9 +199,7 @@ const Messages = () => {
               onChange={(event) => setMessage(event.target.value)}
               placeholder="Введите текст сообщения"
             />
-            <Button variant="contained" color="primary" onClick={handleSendMessage}>
-              Отправить сообщение
-            </Button>
+            <Button onClick={handleSendMessage}>Отправить сообщение</Button>
           </Box>
         </Box>
         {/* Содержимое вкладки */}

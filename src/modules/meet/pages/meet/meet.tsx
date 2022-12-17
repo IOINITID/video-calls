@@ -415,9 +415,7 @@ const Meet = () => {
         </Box>
         {/* Друзья */}
         <Box sx={{ padding: '16px' }}>
-          <Button fullWidth variant="contained" onClick={() => navigate('/friends')}>
-            Друзья
-          </Button>
+          <Button onClick={() => navigate('/friends')}>Друзья</Button>
         </Box>
         {/* Список сообщений от пользователей */}
         <Box
@@ -634,15 +632,6 @@ const Meet = () => {
 
                 {/* NOTE: Кнопка закончить вызов */}
                 <Button
-                  variant="contained"
-                  color="error"
-                  sx={{
-                    minWidth: '32px',
-                    minHeight: '32px',
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '50%',
-                  }}
                   onClick={() => {
                     endCall();
                   }}

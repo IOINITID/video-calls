@@ -45,8 +45,6 @@ const ModalIncomingCall = ({ open, onClose, user }: ModalIncomingCallProps) => {
           }}
         >
           <Button
-            variant="contained"
-            color="success"
             onClick={() => {
               dispatch(setMeetAction({ user, isInitiator: false }));
 
@@ -60,8 +58,6 @@ const ModalIncomingCall = ({ open, onClose, user }: ModalIncomingCallProps) => {
             Ответить
           </Button>
           <Button
-            variant="contained"
-            color="error"
             onClick={() => {
               if (user?.id) {
                 socket.emit('client:meet_end_call', user.id);

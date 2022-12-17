@@ -65,8 +65,6 @@ const UserApprovals = ({ id, name, status }: UserApprovalsProps) => {
       >
         <Typography variant="body1">Ожидает добавления в друзья</Typography>
         <Button
-          variant="contained"
-          color="primary"
           onClick={async () => {
             const response = await axiosInstance.post('/remove-invite-to-friends', { friendId: id });
 
