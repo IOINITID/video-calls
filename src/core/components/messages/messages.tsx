@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { theme } from 'core/theme';
 import { Navigation } from 'core/components/navigation';
 import { UserControl } from 'core/components/user-control';
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userChannelMessagesSelector, userUserSelector } from 'modules/user/store/selectors';
 import { getChannelMessages } from 'core/services/get-channel-messages';
 import { Input } from '../input';
+import { css } from '@linaria/core';
 
 const Messages = () => {
   const navigate = useNavigate();
@@ -68,55 +69,77 @@ const Messages = () => {
   }, []);
 
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: '72px 376px 1fr',
-        height: '100%',
-        backgroundColor: theme.palette.common.white,
-      }}
+    <div
+      className={css`
+        display: grid;
+        grid-template-columns: 72px 376px 1fr;
+        height: 100%;
+        background-color: #ffffff;
+      `}
     >
       {/* Навигация */}
-      <Box sx={{ backgroundColor: theme.palette.grey[200] }}>
+      <div
+        className={css`
+          background-color: ${theme.palette.grey[200]};
+        `}
+      >
         <Navigation />
-      </Box>
+      </div>
 
       {/* Личные сообщения*/}
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateRows: '72px max-content 1fr 64px',
-          backgroundColor: theme.palette.grey[400],
-          overflow: 'hidden',
-        }}
+      <div
+        className={css`
+          display: grid;
+          grid-template-rows: 72px max-content 1fr 64px;
+          overflow: hidden;
+          background-color: ${theme.palette.grey[400]};
+        `}
       >
         {/* Заголовок  */}
-        <Box sx={{ padding: '24px 20px', borderBottom: `1px solid ${theme.palette.grey[600]}` }}>
-          <Typography variant="h6">Личные сообщения</Typography>
-        </Box>
-        {/* Друзья */}
-        <Box sx={{ padding: '16px' }}>
-          <Button onClick={() => navigate('/friends/all-friends')}>Друзья</Button>
-        </Box>
-        {/* Список сообщений от пользователей */}
-        <Box
-          sx={{
-            margin: '28px 4px',
-            overflowY: 'scroll',
-            '&::-webkit-scrollbar': {
-              width: '4px',
-            },
-            '&::-webkit-scrollbar-track': {
-              backgroundColor: 'none',
-            },
-            '&::-webkit-scrollbar-thumb': {
-              backgroundColor: theme.palette.grey[300],
-              border: `1px solid ${theme.palette.grey[500]}`,
-              borderRadius: '8px',
-            },
-          }}
+        <div
+          className={css`
+            padding: 24px 20px;
+            border-bottom: 1px solid ${theme.palette.grey[600]};
+          `}
         >
-          <Box sx={{ display: 'grid', rowGap: '12px', padding: '0 4px' }}>
+          <Typography variant="h6">Личные сообщения</Typography>
+        </div>
+        {/* Друзья */}
+        <div
+          className={css`
+            padding: 16px;
+          `}
+        >
+          <Button onClick={() => navigate('/friends/all-friends')}>Друзья</Button>
+        </div>
+        {/* Список сообщений от пользователей */}
+        <div
+          className={css`
+            margin: 28px 4px;
+            overflow-y: scroll;
+
+            &::-webkit-scrollbar {
+              width: 4px;
+            }
+
+            &::-webkit-scrollbar-track {
+              background-color: none;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              background-color: ${theme.palette.grey[300]};
+              border: 1px solid ${theme.palette.grey[500]};
+              border-radius: 8px;
+            }
+          `}
+        >
+          <div
+            className={css`
+              display: grid;
+              row-gap: 12px;
+              padding: 0 4px;
+            `}
+          >
             {usersMessages?.map((value: any) => {
               return (
                 <User
@@ -128,54 +151,62 @@ const Messages = () => {
                 />
               );
             })}
-          </Box>
-        </Box>
+          </div>
+        </div>
         {/* Управление пользователем */}
         <UserControl />
-      </Box>
+      </div>
       {/* Блок друзья */}
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateRows: '1fr',
-          backgroundColor: theme.palette.grey[500],
-          overflow: 'hidden',
-        }}
+      <div
+        className={css`
+          display: grid;
+          grid-template-rows: 1fr;
+          overflow: hidden;
+          background-color: ${theme.palette.grey[500]};
+        `}
       >
         {/* Сообщения */}
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateRows: '1fr max-content',
-            rowGap: '16px',
-            margin: '24px 16px',
-            backgroundColor: theme.palette.common.white,
-            borderRadius: '8px',
-            padding: '16px',
-            overflow: 'hidden',
-          }}
+        <div
+          className={css`
+            display: grid;
+            grid-template-rows: 1fr max-content;
+            row-gap: 16px;
+            margin: 24px 16px;
+            padding: 16px;
+            overflow: hidden;
+            background-color: ${theme.palette.common.white};
+            border-radius: 8px;
+          `}
         >
-          <Box
-            sx={{
-              display: 'grid',
-              padding: '8px',
-              overflow: 'hidden',
-              gridTemplateRows: 'max-content 1fr',
-              rowGap: '16px',
-            }}
+          <div
+            className={css`
+              display: grid;
+              grid-template-rows: max-content 1fr;
+              padding: 8px;
+              row-gap: 16px;
+              overflow: hidden;
+            `}
           >
             <Typography>Сообщения:</Typography>
-            <Box sx={{ display: 'grid', overflow: 'scroll', rowGap: '8px', alignContent: 'start', height: '100%' }}>
+            <div
+              className={css`
+                display: grid;
+                align-content: start;
+                height: 100%;
+                overflow: scroll;
+                row-gap: 8px;
+              `}
+            >
               {channelMessages?.map((message) => {
                 return (
-                  <Box
+                  <div
                     key={message._id}
-                    sx={{
-                      padding: '8px',
-                      border: '1px solid #000000',
-                      display: 'grid',
-                      borderRadius: '8px',
-                    }}
+                    className={css`
+                      display: grid;
+                      padding: 8px;
+                      border: 1px solid #000000;
+                      border-radius: 8px;
+                    `}
                   >
                     <User
                       id={message._id}
@@ -184,12 +215,18 @@ const Messages = () => {
                       email={message.author.email}
                     />
                     <Typography>{message.text}</Typography>
-                  </Box>
+                  </div>
                 );
               })}
-            </Box>
-          </Box>
-          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr max-content', columnGap: '16px' }}>
+            </div>
+          </div>
+          <div
+            className={css`
+              display: grid;
+              grid-template-columns: 1fr max-content;
+              column-gap: 16px;
+            `}
+          >
             <Input
               type="text"
               id="message"
@@ -200,12 +237,12 @@ const Messages = () => {
               placeholder="Введите текст сообщения"
             />
             <Button onClick={handleSendMessage}>Отправить сообщение</Button>
-          </Box>
-        </Box>
+          </div>
+        </div>
         {/* Содержимое вкладки */}
         <Outlet />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 
