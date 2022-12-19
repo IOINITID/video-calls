@@ -2,7 +2,7 @@ import { css } from '@linaria/core';
 import { AddPhotoAlternateOutlined, CancelOutlined, Check, Colorize, Edit } from '@mui/icons-material';
 import { Box, Link, Slide, Snackbar, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
-import { TextField } from 'core/components/text-field';
+import { Input } from 'core/components/input';
 import { theme } from 'core/theme';
 import { useTimer } from 'modules/user/hooks';
 import { requestUpdateUserAction } from 'modules/user/store';
@@ -89,19 +89,19 @@ const UserProfile = () => {
       }}
     >
       {/* NOTE: Input для загрузки изображения */}
-      <TextField
-        sx={{ display: 'none' }}
+      <Input
+        // sx={{ display: 'none' }}
         type="file"
         id="image"
         name="image"
-        label="Изображение профиля"
+        // label="Изображение профиля"
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        inputProps={{ ref: (input: any) => (imageInput.current = input) }}
+        // inputProps={{ ref: (input: any) => (imageInput.current = input) }}
         onChange={handleImageChange}
         placeholder="Выберите изображение профиля"
         autoComplete="off"
-        fullWidth
-        focused
+        // fullWidth
+        // focused
       />
       {/* NOTE: Сохранение изменений профиля пользователя */}
       <Snackbar
@@ -381,12 +381,12 @@ const UserProfile = () => {
               Можно использовать разметку теста и ссылки.
             </Typography>
             {/* TODO: Максимальное число символов 190 и иконка открытия emoji. */}
-            <TextField
+            <Input
               value={description}
               onChange={(event) => setDescription(event.target.value)}
-              multiline
-              rows={4}
-              fullWidth
+              // multiline
+              // rows={4}
+              // fullWidth
             />
           </Box>
         </Box>

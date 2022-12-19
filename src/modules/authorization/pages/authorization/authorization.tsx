@@ -1,6 +1,5 @@
 import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { TextField } from 'core/components/text-field';
 import { Box, InputAdornment, IconButton, Typography, Link } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { theme } from 'core/theme';
@@ -10,6 +9,7 @@ import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { css } from '@linaria/core';
 import { requestAuthorizationAction } from 'modules/authorization/store';
 import { Button } from 'core/components/button';
+import { Input } from 'core/components/input';
 
 const Authorization = () => {
   const dispatch = useDispatch();
@@ -48,36 +48,36 @@ const Authorization = () => {
               <Box sx={{ display: 'grid', rowGap: '32px' }}>
                 <Typography variant="h5">Войти в свой профиль</Typography>
                 <Box sx={{ display: 'grid', rowGap: '24px' }}>
-                  <TextField
+                  <Input
                     type="email"
                     id="email"
                     name="email"
-                    label="Адрес электронной почты"
+                    // label="Адрес электронной почты"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                     placeholder="Введите ваш email"
                     autoComplete="off"
-                    fullWidth
+                    // fullWidth
                   />
-                  <TextField
+                  <Input
                     type={isShowPassword ? 'text' : 'password'}
                     id="password"
                     name="password"
-                    label="Пароль"
+                    // label="Пароль"
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                     placeholder="Введите ваш пароль"
                     autoComplete="off"
-                    fullWidth
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton onClick={() => setIsShowPassword(!isShowPassword)}>
-                            {isShowPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
+                    // fullWidth
+                    // InputProps={{
+                    //   endAdornment: (
+                    //     <InputAdornment position="end">
+                    //       <IconButton onClick={() => setIsShowPassword(!isShowPassword)}>
+                    //         {isShowPassword ? <VisibilityOff /> : <Visibility />}
+                    //       </IconButton>
+                    //     </InputAdornment>
+                    //   ),
+                    // }}
                   />
                 </Box>
               </Box>

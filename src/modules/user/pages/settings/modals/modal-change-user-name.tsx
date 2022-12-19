@@ -1,7 +1,7 @@
 import { Close } from '@mui/icons-material';
 import { Box, Link, Modal, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
-import { TextField } from 'core/components/text-field';
+import { Input } from 'core/components/input';
 import { RootState } from 'core/store/types';
 import { requestUpdateUserAction } from 'modules/user/store';
 import { memo, useState } from 'react';
@@ -60,70 +60,70 @@ const ModalChangeUserName = ({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             <Typography sx={{ fontSize: '14px', color: '#c0c1c4', textTransform: 'uppercase' }}>
               Имя пользователя
             </Typography>
-            <TextField
-              sx={{
-                backgroundColor: '#36383a',
+            <Input
+              // sx={{
+              //   backgroundColor: '#36383a',
 
-                '.MuiOutlinedInput-input': {
-                  color: '#dfe0e1',
-                },
+              //   '.MuiOutlinedInput-input': {
+              //     color: '#dfe0e1',
+              //   },
 
-                // NOTE: Удаляет светлую тень в браузерных стилях
-                'input:-webkit-autofill': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-                'input:-webkit-autofill:hover': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-                'input:-webkit-autofill:focus': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-                'input:-webkit-autofill:active': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-              }}
+              //   // NOTE: Удаляет светлую тень в браузерных стилях
+              //   'input:-webkit-autofill': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              //   'input:-webkit-autofill:hover': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              //   'input:-webkit-autofill:focus': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              //   'input:-webkit-autofill:active': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              // }}
               type="text"
               id="name"
               name="name"
               value={name}
               onChange={(event) => setName(event.target.value)}
               autoComplete="off"
-              fullWidth
+              // fullWidth
             />
           </Box>
           <Box sx={{ display: 'grid', rowGap: '8px' }}>
             <Typography sx={{ fontSize: '14px', color: '#c0c1c4', textTransform: 'uppercase' }}>
               Текущий пароль
             </Typography>
-            <TextField
-              sx={{
-                backgroundColor: '#36383a',
+            <Input
+              // sx={{
+              //   backgroundColor: '#36383a',
 
-                '.MuiOutlinedInput-input': {
-                  color: '#dfe0e1',
-                },
+              //   '.MuiOutlinedInput-input': {
+              //     color: '#dfe0e1',
+              //   },
 
-                // NOTE: Удаляет светлую тень в браузерных стилях
-                'input:-webkit-autofill': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-                'input:-webkit-autofill:hover': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-                'input:-webkit-autofill:focus': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-                'input:-webkit-autofill:active': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-              }}
+              //   // NOTE: Удаляет светлую тень в браузерных стилях
+              //   'input:-webkit-autofill': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              //   'input:-webkit-autofill:hover': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              //   'input:-webkit-autofill:focus': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              //   'input:-webkit-autofill:active': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              // }}
               type="password"
               id="password"
               name="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               autoComplete="off"
-              fullWidth
+              // fullWidth
             />
           </Box>
         </Box>

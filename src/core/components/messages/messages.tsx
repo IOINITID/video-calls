@@ -7,11 +7,11 @@ import { User } from 'core/components/user';
 import { Button } from 'core/components/button';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { axiosInstance } from 'core/utils/axios-instance';
-import { TextField } from 'core/components/text-field';
 import { socket } from 'core/utils/socket';
 import { useDispatch, useSelector } from 'react-redux';
 import { userChannelMessagesSelector, userUserSelector } from 'modules/user/store/selectors';
 import { getChannelMessages } from 'core/services/get-channel-messages';
+import { Input } from '../input';
 
 const Messages = () => {
   const navigate = useNavigate();
@@ -190,11 +190,11 @@ const Messages = () => {
             </Box>
           </Box>
           <Box sx={{ display: 'grid', gridTemplateColumns: '1fr max-content', columnGap: '16px' }}>
-            <TextField
+            <Input
               type="text"
               id="message"
               name="message"
-              label="Сообщение"
+              // label="Сообщение"
               value={message}
               onChange={(event) => setMessage(event.target.value)}
               placeholder="Введите текст сообщения"

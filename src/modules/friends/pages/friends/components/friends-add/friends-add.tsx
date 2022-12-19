@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 import { theme } from 'core/theme';
 import { memo, useState, useEffect } from 'react';
-import { TextField } from 'core/components/text-field';
 import { UserAddInviteToFriends } from 'core/components/user-add-invite-to-friends';
 import { RootState } from 'core/store/types';
 import { socket } from 'core/utils/socket';
@@ -10,6 +9,7 @@ import { Event } from 'core/constants';
 import { Event as EventFriends } from 'modules/friends/constants';
 import { Event as EventInvitations } from 'modules/invitations/constants';
 import { requestGetFriendsUsersAction } from 'modules/friends/store';
+import { Input } from 'core/components/input';
 
 const FriendsAdd = () => {
   const dispatch = useDispatch();
@@ -54,9 +54,9 @@ const FriendsAdd = () => {
 
   return (
     <Box sx={{ padding: '0 8px 0 16px', margin: '16px 8px 16px 0' }}>
-      <TextField
-        fullWidth
-        size="small"
+      <Input
+        // fullWidth
+        // size="small"
         placeholder="Поиск по друзьям"
         value={searchValue}
         onChange={(event) => setSearchValue(event.target.value)}
