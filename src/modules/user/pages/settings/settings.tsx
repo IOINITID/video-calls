@@ -1,8 +1,8 @@
-import { memo, useEffect } from 'react';
-import { Box } from '@mui/material';
+import { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { css } from '@linaria/core';
 import { theme } from 'core/theme';
 import { UserSettings } from 'modules/user/pages/settings/components/user-settings';
-import { Outlet, useNavigate } from 'react-router-dom';
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -13,21 +13,28 @@ const Settings = () => {
   }, []);
 
   return (
-    <Box sx={{ display: 'grid', width: '100%', height: '100%', backgroundColor: theme.palette.grey[500] }}>
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: '224px 740px',
-          height: '100%',
-          justifyContent: 'center',
-          backgroundImage: 'linear-gradient(to right, #43454a 50%, #5e6065 50%)',
-        }}
+    <div
+      className={css`
+        display: grid;
+        width: 100%;
+        height: 100%;
+        background-color: ${theme.palette.grey[500]};
+      `}
+    >
+      <div
+        className={css`
+          display: grid;
+          justify-content: center;
+          grid-template-columns: 224px 740px;
+          height: 100%;
+          background-image: linear-gradient(to right, #43454a 50%, #5e6065 50%);
+        `}
       >
         <UserSettings />
         <Outlet />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 
-export const SettingsMemoized = memo(Settings);
+export { Settings };
