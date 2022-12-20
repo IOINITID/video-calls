@@ -1,19 +1,19 @@
-import { Box } from '@mui/material';
-import { memo, ReactElement } from 'react';
+import { css } from '@linaria/core';
+import { ReactElement } from 'react';
 
 const AuthorizationLayout = ({ children }: { children: ReactElement }) => {
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-      }}
+    <div
+      className={css`
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      `}
     >
       {children}
-    </Box>
+    </div>
   );
 };
 
-export const AuthorizationLayoutMemoized = memo(AuthorizationLayout);
+export { AuthorizationLayout };
