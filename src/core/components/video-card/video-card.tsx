@@ -1,21 +1,19 @@
-import { forwardRef, memo, Ref } from 'react';
-import { Box, BoxProps } from '@mui/material';
+/* eslint-disable jsx-a11y/media-has-caption */
+import { DetailedHTMLProps, forwardRef, Ref, VideoHTMLAttributes } from 'react';
 
 type VideoCardProps = {
-  autoPlay?: boolean;
-  muted?: boolean;
   state?: 'ready' | 'calling' | 'connecting' | 'connected';
-} & BoxProps;
+} & DetailedHTMLProps<VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>;
 
 // eslint-disable-next-line react/display-name
-const VideoCard = forwardRef(({ children, ...props }: VideoCardProps, ref: Ref<HTMLVideoElement | null>) => {
+const VideoCard = forwardRef(({ children, ...props }: VideoCardProps, ref: Ref<HTMLVideoElement>) => {
   return (
-    <Box>
-      <Box component="video" ref={ref} {...props}>
+    <div>
+      <video ref={ref} {...props}>
         {children}
-      </Box>
-    </Box>
+      </video>
+    </div>
   );
 });
 
-export const VideoCardMemoized = memo(VideoCard);
+export { VideoCard };

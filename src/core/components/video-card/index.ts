@@ -1,1 +1,1 @@
-export { VideoCardMemoized as VideoCard } from './video-card';
+export { VideoCard } from './video-card';
