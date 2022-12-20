@@ -1,1 +1,1 @@
-export { AuthorizationLayoutMemoized as AuthorizationLayout } from './authorization-layout';
+export { AuthorizationLayout } from './authorization-layout';

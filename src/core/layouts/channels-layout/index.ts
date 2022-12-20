@@ -1,1 +1,1 @@
-export { ChannelsLayoutMemoized as ChannelsLayout } from './channels-layout';
+export { ChannelsLayout } from './channels-layout';

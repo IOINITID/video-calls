@@ -1,1 +1,1 @@
-export { RegistrationMemoized as Registration } from './registration';
+export { Registration } from './registration';
