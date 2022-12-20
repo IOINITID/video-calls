@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { css } from '@linaria/core';
 import { Typography } from '@mui/material';
-import { theme } from 'core/theme';
 import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { Button } from 'core/components/button';
 import { Input } from 'core/components/input';
@@ -30,7 +29,7 @@ const Registration = () => {
           grid-template-columns: 448px 472px;
           width: 920px;
           overflow: hidden;
-          border: 1px solid ${theme.palette.grey[300]};
+          border: 1px solid #fefefe;
           border-radius: 20px;
         `}
       >
@@ -48,7 +47,7 @@ const Registration = () => {
         <div
           className={css`
             padding: 48px 56px;
-            background-color: ${theme.palette.common.white};
+            background-color: #ffffff;
           `}
         >
           <div
@@ -126,7 +125,7 @@ const Registration = () => {
                   row-gap: 32px;
                 `}
               >
-                <Typography variant="caption" color={theme.palette.grey[500]}>
+                <Typography variant="caption">
                   Регистрируясь, Вы соглашаетесь с{' '}
                   <a
                     className={css`

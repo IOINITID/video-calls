@@ -1,5 +1,5 @@
-import { css } from '@linaria/core';
 import { ReactElement } from 'react';
+import { css } from '@linaria/core';
 
 const AuthorizationLayout = ({ children }: { children: ReactElement }) => {
   return (

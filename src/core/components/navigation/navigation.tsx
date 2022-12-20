@@ -33,7 +33,7 @@ const Navigation = () => {
               justify-content: center;
               width: 40px;
               padding: 8px;
-              background-color: ${theme.palette.grey[400]};
+              background-color: #fefefe;
               border-radius: 8px;
               cursor: pointer;
             `}
@@ -49,7 +49,7 @@ const Navigation = () => {
               justify-content: center;
               width: 40px;
               padding: 8px;
-              background-color: ${theme.palette.grey[400]};
+              background-color: #fefefe;
               border-radius: 8px;
               cursor: pointer;
             `}
@@ -67,7 +67,7 @@ const Navigation = () => {
             justify-content: center;
             width: 40px;
             padding: 8px;
-            background-color: ${theme.palette.grey[400]};
+            background-color: #fefefe;
             border-radius: 8px;
             cursor: pointer;
           `}
@@ -80,4 +80,4 @@ const Navigation = () => {
   );
 };
 
-export const NavigationMemoized = memo(Navigation);
+export { Navigation };

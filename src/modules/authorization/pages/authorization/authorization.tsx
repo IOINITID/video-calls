@@ -5,13 +5,13 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { css } from '@linaria/core';
-import { Typography } from '@mui/material';
-import { theme } from 'core/theme';
+// import { Typography } from '@mui/material';
 import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { Button } from 'core/components/button';
 import { Input } from 'core/components/input';
 import { requestAuthorizationAction } from 'modules/authorization/store';
 import authorizationImage from 'core/assets/images/authorization-image.jpg';
+import { Typography } from '@mui/material';
 
 const Authorization = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const Authorization = () => {
           grid-template-columns: 448px 472px;
           width: 920px;
           overflow: hidden;
-          border: 1px solid ${theme.palette.grey[300]};
+          border: 1px solid #fefefe;
           border-radius: 20px;
         `}
       >
@@ -47,7 +47,7 @@ const Authorization = () => {
         <div
           className={css`
             padding: 48px 56px;
-            background-color: ${theme.palette.common.white};
+            background-color: #ffffff;
           `}
         >
           <div

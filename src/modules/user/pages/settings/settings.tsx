@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { css } from '@linaria/core';
-import { theme } from 'core/theme';
 import { UserSettings } from 'modules/user/pages/settings/components/user-settings';
 
 const Settings = () => {
@@ -18,7 +17,7 @@ const Settings = () => {
         display: grid;
         width: 100%;
         height: 100%;
-        background-color: ${theme.palette.grey[500]};
+        background-color: #fefefe;
       `}
     >
       <div
