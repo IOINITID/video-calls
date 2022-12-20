@@ -1,15 +1,17 @@
-import { memo, useState } from 'react';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Box, Typography, TextField, InputAdornment, IconButton, Link } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { theme } from 'core/theme';
 import { useNavigate } from 'react-router-dom';
-import { requestRegistrationAction } from 'modules/authorization/store';
-import authorizationImage from 'core/assets/images/authorization-image.jpg';
-import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { css } from '@linaria/core';
+import { Typography } from '@mui/material';
+import { theme } from 'core/theme';
+import { AuthorizationLayout } from 'core/layouts/authorization-layout';
 import { Button } from 'core/components/button';
 import { Input } from 'core/components/input';
+import authorizationImage from 'core/assets/images/authorization-image.jpg';
+import { requestRegistrationAction } from 'modules/authorization/store';
 
 const Registration = () => {
   const dispatch = useDispatch();
@@ -22,17 +24,17 @@ const Registration = () => {
 
   return (
     <AuthorizationLayout>
-      <Box
-        sx={{
-          display: 'grid',
-          width: '920px',
-          gridTemplateColumns: '448px 472px',
-          borderRadius: '20px',
-          border: `1px solid ${theme.palette.grey[300]}`,
-          overflow: 'hidden',
-        }}
+      <div
+        className={css`
+          display: grid;
+          grid-template-columns: 448px 472px;
+          width: 920px;
+          overflow: hidden;
+          border: 1px solid ${theme.palette.grey[300]};
+          border-radius: 20px;
+        `}
       >
-        <Box>
+        <div>
           <img
             className={css`
               width: 100%;
@@ -42,13 +44,38 @@ const Registration = () => {
             src={authorizationImage}
             alt="Илюстрация."
           />
-        </Box>
-        <Box sx={{ padding: '48px 56px', backgroundColor: `${theme.palette.common.white}` }}>
-          <Box sx={{ display: 'grid', rowGap: '16px' }}>
-            <Box sx={{ display: 'grid', rowGap: '24px' }}>
-              <Box sx={{ display: 'grid', rowGap: '32px' }}>
+        </div>
+        <div
+          className={css`
+            padding: 48px 56px;
+            background-color: ${theme.palette.common.white};
+          `}
+        >
+          <div
+            className={css`
+              display: grid;
+              row-gap: 16px;
+            `}
+          >
+            <div
+              className={css`
+                display: grid;
+                row-gap: 24px;
+              `}
+            >
+              <div
+                className={css`
+                  display: grid;
+                  row-gap: 32px;
+                `}
+              >
                 <Typography variant="h5">Создать учётную запись</Typography>
-                <Box sx={{ display: 'grid', rowGap: '24px' }}>
+                <div
+                  className={css`
+                    display: grid;
+                    row-gap: 24px;
+                  `}
+                >
                   <Input
                     type="email"
                     id="email"
@@ -91,37 +118,47 @@ const Registration = () => {
                     //   ),
                     // }}
                   />
-                </Box>
-              </Box>
-              <Box sx={{ display: 'grid', rowGap: '32px' }}>
+                </div>
+              </div>
+              <div
+                className={css`
+                  display: grid;
+                  row-gap: 32px;
+                `}
+              >
                 <Typography variant="caption" color={theme.palette.grey[500]}>
                   Регистрируясь, Вы соглашаетесь с{' '}
-                  <Link sx={{ cursor: 'pointer' }} underline="hover">
+                  <a
+                    className={css`
+                      cursor: pointer;
+                    `}
+                  >
                     политикой обработки персональных данных
-                  </Link>
+                  </a>
                 </Typography>
                 <Button onClick={() => dispatch(requestRegistrationAction({ email, name, password }))}>
                   Зарегистрироваться
                 </Button>
-              </Box>
-            </Box>
+              </div>
+            </div>
             <Typography variant="subtitle2">
-              <Link
-                sx={{ cursor: 'pointer' }}
-                underline="hover"
+              <a
+                className={css`
+                  cursor: pointer;
+                `}
                 onClick={(event) => {
                   event.preventDefault();
                   navigate('/authorization');
                 }}
               >
                 Уже зарегистрированы?
-              </Link>
+              </a>
             </Typography>
-          </Box>
-        </Box>
-      </Box>
+          </div>
+        </div>
+      </div>
     </AuthorizationLayout>
   );
 };
 
-export const RegistrationMemoized = memo(Registration);
+export { Registration };
