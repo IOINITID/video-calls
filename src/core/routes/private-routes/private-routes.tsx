@@ -13,6 +13,7 @@ import { UserAccount } from 'modules/user/pages/settings/components/user-account
 import { VoiceAndVideo } from 'modules/user/pages/settings/components/voice-and-video';
 import { Meet } from 'modules/meet/pages/meet';
 
+const FastConnectionLogin = lazy(() => import('modules/fast-connection/pages/fast-connection-login'));
 const FastConnection = lazy(() => import('modules/fast-connection/pages/fast-connection'));
 
 const PrivateRoutes = () => {
@@ -49,7 +50,10 @@ const PrivateRoutes = () => {
           <Route index element={<Meet />} />
         </Route>
         {/* NOTE: Быстрое подключение */}
-        <Route path="fast-connection" element={<FastConnection />} />
+        <Route path="fast-connection">
+          <Route index element={<FastConnectionLogin />} />
+          <Route path=":id" element={<FastConnection />} />
+        </Route>
         <Route path="*" element={<Navigate to="friends/online" />} />
       </Routes>
     </Suspense>

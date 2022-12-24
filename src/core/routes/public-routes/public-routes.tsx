@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { Authorization } from 'modules/authorization/pages/authorization';
 import { Registration } from 'modules/authorization/pages/registration';
 
+const FastConnectionLogin = lazy(() => import('modules/fast-connection/pages/fast-connection-login'));
 const FastConnection = lazy(() => import('modules/fast-connection/pages/fast-connection'));
 
 const PublicRoutes = () => {
@@ -12,6 +13,10 @@ const PublicRoutes = () => {
         <Route path="authorization" element={<Authorization />} />
         <Route path="registration" element={<Registration />} />
         <Route path="fast-connection" element={<FastConnection />} />
+        <Route path="fast-connection">
+          <Route index element={<FastConnectionLogin />} />
+          <Route path=":id" element={<FastConnection />} />
+        </Route>
         <Route path="*" element={<Navigate to="authorization" />} />
       </Routes>
     </Suspense>

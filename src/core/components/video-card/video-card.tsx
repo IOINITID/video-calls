@@ -8,11 +8,9 @@ type VideoCardProps = {
 // eslint-disable-next-line react/display-name
 const VideoCard = forwardRef(({ children, ...props }: VideoCardProps, ref: Ref<HTMLVideoElement>) => {
   return (
-    <div>
-      <video ref={ref} {...props}>
-        {children}
-      </video>
-    </div>
+    <video ref={ref} {...props}>
+      {children}
+    </video>
   );
 });
 
