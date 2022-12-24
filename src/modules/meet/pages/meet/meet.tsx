@@ -5,7 +5,6 @@ import { Navigation } from 'core/components/navigation';
 import { UserControl } from 'core/components/user-control';
 import { theme } from 'core/theme';
 import { useNavigate } from 'react-router-dom';
-import { useUserMedia } from 'modules/user/hooks';
 import { socket } from 'core/utils/socket';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'core/store/types';
@@ -13,6 +12,7 @@ import { CallEndRounded, Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-m
 import { VideoCard } from 'core/components/video-card';
 import { setMeetStateAction } from 'modules/meet/store';
 import { setMediaAction } from 'modules/user/store';
+import { css } from '@linaria/core';
 
 const Meet = () => {
   const dispatch = useDispatch();
@@ -500,17 +500,17 @@ const Meet = () => {
           >
             {/* NOTE: Видео пользователя которому звонят */}
             <VideoCard
-              sx={{
-                position: 'absolute',
-                top: '0',
-                left: '0',
-                width: '100%',
-                height: '100%',
-                backgroundColor: meet.user?.color ? meet.user.color : theme.palette.grey['700'],
-                objectFit: 'cover',
-                borderRadius: '8px',
-                zIndex: 1,
-              }}
+              className={css`
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                background-color: '#fefefe';
+                border-radius: 8px;
+              `}
               ref={friendVideo}
               autoPlay
             />
@@ -532,18 +532,18 @@ const Meet = () => {
 
             <VideoCard
               ref={userVideo}
-              sx={{
-                display: media.video ? 'grid' : 'none',
-                position: 'absolute',
-                top: '16px',
-                right: '16px',
-                width: '128px',
-                height: '72px',
-                backgroundColor: theme.palette.grey['700'],
-                objectFit: 'cover',
-                borderRadius: '8px',
-                zIndex: 2,
-              }}
+              className={css`
+                position: absolute;
+                top: 16px;
+                right: 16px;
+                z-index: 2;
+                display: grid;
+                width: 128px;
+                height: 72px;
+                background-color: #fefefe;
+                object-fit: cover;
+                border-radius: 8px;
+              `}
               autoPlay
               muted
             />
