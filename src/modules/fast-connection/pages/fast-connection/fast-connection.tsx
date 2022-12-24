@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { css } from '@linaria/core';
+import { Button } from 'core/components/button';
 import { VideoCard } from 'core/components/video-card';
 
 import { AuthorizationLayout } from 'core/layouts/authorization-layout';
@@ -14,14 +15,31 @@ const FastConnection = () => {
 
   const video = useRef<HTMLVideoElement | null>(null);
 
-  useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then((value) => {
-      setVideoStream(value);
+  const setVideo = (isActive: boolean) => {
+    if (!isActive) {
+      videoStream?.getTracks().forEach((value) => {
+        // value.enabled = false;
+        value.stop();
+      });
+
+      setVideoStream(null);
 
       if (video.current) {
-        video.current.srcObject = value;
+        video.current.srcObject = null;
       }
-    });
+    } else {
+      navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then((value) => {
+        setVideoStream(value);
+
+        if (video.current) {
+          video.current.srcObject = value;
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    console.log('LOGS: Mounted.');
   }, []);
 
   return (
@@ -42,10 +60,15 @@ const FastConnection = () => {
         >
           Назад
         </a>
+
         <p>Подключение: {params.id}</p>
         <p>Ваше имя: {localStorage.getItem('name')}</p>
 
         <p>Ваше видео:</p>
+
+        <Button onClick={() => (videoStream ? setVideo(false) : setVideo(true))}>
+          {videoStream ? 'Выключить видео' : 'Включить видео'}
+        </Button>
 
         <VideoCard
           ref={video}
