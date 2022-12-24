@@ -107,6 +107,12 @@ const Authorization = () => {
                 </div>
               </div>
               <Button onClick={() => dispatch(requestAuthorizationAction({ email, password }))}>Войти</Button>
+              <hr
+                className={css`
+                  width: 100%;
+                `}
+              />
+              <Button onClick={() => navigate('/fast-connection')}>Быстрое подключение</Button>
             </div>
             <Typography variant="subtitle2">
               У Вас ещё нет профиля?{' '}

@@ -138,6 +138,12 @@ const Registration = () => {
                 <Button onClick={() => dispatch(requestRegistrationAction({ email, name, password }))}>
                   Зарегистрироваться
                 </Button>
+                <hr
+                  className={css`
+                    width: 100%;
+                  `}
+                />
+                <Button onClick={() => navigate('/fast-connection')}>Быстрое подключение</Button>
               </div>
             </div>
             <Typography variant="subtitle2">
