@@ -34,7 +34,7 @@ export class MediaStreamController extends StreamController {
    * @returns возвращает медиапоток.
    */
   public override async getStream(callback?: (state: StreamState) => void): Promise<MediaStream | null> {
-    if (this.stream && this.state === 'loading') {
+    if (this.stream || this.state === 'loading') {
       console.log('LOGS: Медиапоток уже получен.');
 
       return this.stream;
@@ -71,6 +71,8 @@ export class MediaStreamController extends StreamController {
 
       return this.stream;
     }
+
+    this.stream = null;
 
     this.updateState('error', callback);
 

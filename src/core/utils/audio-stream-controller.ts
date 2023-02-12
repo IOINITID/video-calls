@@ -32,7 +32,7 @@ export class AudioStreamController extends StreamController {
    * @returns возвращает аудиопоток.
    */
   public override async getStream(callback?: ((state: StreamState) => void) | undefined): Promise<MediaStream | null> {
-    if (this.stream && this.state === 'loading') {
+    if (this.stream || this.state === 'loading') {
       this.logs && console.log('LOGS: Аудиопоток уже получен.');
 
       return this.stream;
