@@ -1,9 +1,8 @@
+import { useEffect, useRef, useState } from 'react';
 import { css } from '@linaria/core';
 import { Button } from 'core/components/button';
 import { mediaStream } from 'core/utils/media-stream-instance';
-
 import { StreamState } from 'core/utils/stream-controller';
-import { useEffect, useRef, useState } from 'react';
 
 export const MediaSettings = () => {
   const [mediaStreamState, setMediaStreamState] = useState<StreamState>('default');
@@ -11,8 +10,6 @@ export const MediaSettings = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
-    console.log('LOGS:', { mediaStreamState });
-
     if (videoRef.current) {
       videoRef.current.srcObject = mediaStream.stream;
     }
@@ -31,30 +28,78 @@ export const MediaSettings = () => {
       <div
         className={css`
           display: grid;
-          width: 400px;
+          grid-template-columns: repeat(2, 1fr);
+          width: 500px;
           height: 225px;
         `}
       >
         <Button
-          onClick={async () => {
-            if (mediaStreamState === 'active') {
-              mediaStream.closeStream((state) => {
-                setMediaStreamState(state);
-              });
-            } else {
-              await mediaStream.getStream((state) => {
-                setMediaStreamState(state);
-              });
-            }
-          }}
-          disabled={mediaStreamState === 'loading'}
+          onClick={() =>
+            mediaStream.getStream((state) => {
+              console.log({ state });
+              setMediaStreamState(state);
+            })
+          }
         >
-          {mediaStreamState === 'active' ? 'Выключить видео' : 'Включить видео'}
+          Включить видео и аудио поток
+        </Button>
+        <Button
+          onClick={() =>
+            mediaStream.closeStream((state) => {
+              console.log({ state });
+              setMediaStreamState(state);
+            })
+          }
+        >
+          Выключить видео и аудио поток
+        </Button>
+        <Button
+          onClick={() =>
+            mediaStream.audioStreamController.getStream((state) => {
+              console.log({ state });
+              setMediaStreamState(state);
+            })
+          }
+        >
+          Включить аудио поток
+        </Button>
+        <Button
+          onClick={() =>
+            mediaStream.audioStreamController.closeStream((state) => {
+              console.log({ state });
+              setMediaStreamState(state);
+            })
+          }
+        >
+          Вылючить аудио поток
+        </Button>
+        <Button
+          onClick={() =>
+            mediaStream.videoStreamController.getStream((state) => {
+              console.log({ state });
+              setMediaStreamState(state);
+            })
+          }
+        >
+          Включить видео поток
+        </Button>
+        <Button
+          onClick={() =>
+            mediaStream.videoStreamController.closeStream((state) => {
+              console.log({ state });
+              setMediaStreamState(state);
+            })
+          }
+        >
+          Вылючить видео поток
         </Button>
         <video
           className={css`
+            grid-column: 1/-1;
             width: 100%;
+            height: 225px;
             background-color: #ffffff;
+            object-fit: contain;
           `}
           ref={videoRef}
           autoPlay

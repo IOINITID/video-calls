@@ -35,7 +35,6 @@ export class StreamController {
    * @returns возвращает поток.
    */
   public async getStream(callback?: (state: StreamState) => void) {
-    this.closeStream();
     this.updateState('loading', callback);
 
     try {
@@ -43,6 +42,11 @@ export class StreamController {
       this.updateState('active', callback);
     } catch (error) {
       this.updateState('error', callback);
+
+      // TODO: Можно добавить код ошибки и написать метод возвращающий текст ошибки
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
     }
 
     return this.stream;

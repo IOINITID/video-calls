@@ -32,30 +32,51 @@ export class MediaStreamController extends StreamController {
    * @returns возвращает медиапоток.
    */
   public override async getStream(callback?: (state: StreamState) => void): Promise<MediaStream | null> {
+    if (this.stream || this.state === 'loading') {
+      console.log('LOGS: Медиапоток уже получен.');
+
+      return this.stream;
+    }
+
     this.updateState('loading', callback);
+
+    this.stream = new MediaStream();
 
     try {
       const audioStream = await this.audioStreamController.getStream();
-      const videoStream = await this.videoStreamController.getStream();
-
-      this.stream = new MediaStream();
 
       if (audioStream) {
         const audioTrack = audioStream.getTracks()[0];
 
         this.stream.addTrack(audioTrack);
       }
+    } catch (error) {
+      super.closeStream(callback);
+
+      this.updateState('error', callback);
+
+      return null;
+    }
+
+    try {
+      const videoStream = await this.videoStreamController.getStream();
 
       if (videoStream) {
         const videoTrack = videoStream.getTracks()[0];
 
         this.stream.addTrack(videoTrack);
       }
-
-      this.updateState('active', callback);
     } catch (error) {
+      super.closeStream(callback);
+
       this.updateState('error', callback);
+
+      return null;
     }
+
+    this.updateState('active', callback);
+
+    console.log('LOGS: Медиапоток успешно получен.');
 
     return this.stream;
   }
@@ -66,6 +87,14 @@ export class MediaStreamController extends StreamController {
    * @param callback функция которая возвращает состояние медиапотока: 'default' | 'loading' | 'active' | 'error'.
    */
   public override closeStream(callback?: ((state: StreamState) => void) | undefined): void {
-    super.closeStream(callback);
+    if (this.stream === null) {
+      console.log('LOGS: Медиапоток уже закрыт.');
+    } else {
+      super.closeStream(callback);
+      this.audioStreamController.closeStream();
+      this.videoStreamController.closeStream();
+
+      console.log('LOGS: Медиапоток успешно закрыт.');
+    }
   }
 }
