@@ -32,7 +32,7 @@ export class VideoStreamController extends StreamController {
    * @returns возвращает видеопоток.
    */
   public override async getStream(callback?: ((state: StreamState) => void) | undefined): Promise<MediaStream | null> {
-    if (this.stream || this.state === 'loading') {
+    if (this.stream && this.state === 'loading') {
       this.logs && console.log('LOGS: Видеопоток уже получен.');
 
       return this.stream;
@@ -44,7 +44,7 @@ export class VideoStreamController extends StreamController {
       this.logs && console.log('LOGS: Видеопоток успешно получен.');
     } catch (error) {
       if (error instanceof Error) {
-        this.logs && console.log('LOGS: Ошибка при получении видеопотока. Причина: ' + error.message + '.');
+        this.logs && console.error('LOGS: Ошибка при получении видеопотока. Причина: ' + error.message + '.');
       }
 
       return null;

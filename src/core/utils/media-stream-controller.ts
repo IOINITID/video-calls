@@ -8,6 +8,8 @@ import { VideoStreamController } from './video-stream-controller';
 export class MediaStreamController extends StreamController {
   public audioStreamController: AudioStreamController;
   public videoStreamController: VideoStreamController;
+  private audioStreamState: StreamState = 'default';
+  private videoStreamState: StreamState = 'default';
 
   constructor(audioStreamController: AudioStreamController, videoStreamController: VideoStreamController) {
     super();
@@ -32,7 +34,7 @@ export class MediaStreamController extends StreamController {
    * @returns возвращает медиапоток.
    */
   public override async getStream(callback?: (state: StreamState) => void): Promise<MediaStream | null> {
-    if (this.stream || this.state === 'loading') {
+    if (this.stream && this.state === 'loading') {
       console.log('LOGS: Медиапоток уже получен.');
 
       return this.stream;
@@ -42,43 +44,39 @@ export class MediaStreamController extends StreamController {
 
     this.stream = new MediaStream();
 
-    try {
-      const audioStream = await this.audioStreamController.getStream();
+    const audioStream = await this.audioStreamController.getStream((state) => {
+      this.audioStreamState = state;
+    });
 
-      if (audioStream) {
-        const audioTrack = audioStream.getTracks()[0];
+    const videoStream = await this.videoStreamController.getStream((state) => {
+      this.videoStreamState = state;
+    });
 
-        this.stream.addTrack(audioTrack);
-      }
-    } catch (error) {
-      super.closeStream(callback);
+    if (audioStream) {
+      const audioTrack = audioStream.getTracks()[0];
 
-      this.updateState('error', callback);
-
-      return null;
+      this.stream.addTrack(audioTrack);
     }
 
-    try {
-      const videoStream = await this.videoStreamController.getStream();
+    if (videoStream) {
+      const videoTrack = videoStream.getTracks()[0];
 
-      if (videoStream) {
-        const videoTrack = videoStream.getTracks()[0];
-
-        this.stream.addTrack(videoTrack);
-      }
-    } catch (error) {
-      super.closeStream(callback);
-
-      this.updateState('error', callback);
-
-      return null;
+      this.stream.addTrack(videoTrack);
     }
 
-    this.updateState('active', callback);
+    if (this.audioStreamState === 'active' || this.videoStreamState === 'active') {
+      this.updateState('active', callback);
 
-    console.log('LOGS: Медиапоток успешно получен.');
+      console.log('LOGS: Медиапоток успешно получен.');
 
-    return this.stream;
+      return this.stream;
+    }
+
+    this.updateState('error', callback);
+
+    console.error('LOGS: Ошибка при получении медиапотока. Причина: Нет аудио или видео потока.');
+
+    return null;
   }
 
   /**
