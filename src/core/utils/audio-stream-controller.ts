@@ -7,10 +7,21 @@ export class AudioStreamController extends StreamController {
   protected override constraints: MediaStreamConstraints = { audio: true };
   protected logs: boolean = false;
 
-  constructor(logs?: boolean) {
+  constructor(constraints?: MediaStreamConstraints);
+  constructor(logs?: boolean);
+  constructor(constraints?: MediaStreamConstraints, logs?: boolean);
+  constructor(constraintsOrLogs?: MediaStreamConstraints | boolean, logs?: boolean) {
     super();
 
-    if (typeof logs === 'boolean') {
+    if (typeof constraintsOrLogs === 'object') {
+      this.constraints = constraintsOrLogs;
+    }
+
+    if (typeof constraintsOrLogs === 'boolean') {
+      this.logs = constraintsOrLogs;
+    }
+
+    if (logs) {
       this.logs = logs;
     }
   }
