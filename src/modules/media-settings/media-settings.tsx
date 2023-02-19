@@ -111,9 +111,9 @@ export const MediaSettings = () => {
             grid-column: 1/-1;
           `}
           onClick={() =>
-            mediaDevices.getAudioInputDevices((audioInputDevices) => {
-              console.log({ audioInputDevices });
-              setAudioInputDevices(audioInputDevices);
+            mediaDevices.getAudioInputDevices((params) => {
+              console.log({ params });
+              setAudioInputDevices(params.devices);
             })
           }
         >
@@ -124,9 +124,9 @@ export const MediaSettings = () => {
             grid-column: 1/-1;
           `}
           onClick={() =>
-            mediaDevices.getAudioOutputDevices((audioOutputDevices) => {
-              console.log({ audioOutputDevices });
-              setAudioOutputDevices(audioOutputDevices);
+            mediaDevices.getAudioOutputDevices((params) => {
+              console.log({ params });
+              setAudioOutputDevices(params.devices);
             })
           }
         >
@@ -137,9 +137,9 @@ export const MediaSettings = () => {
             grid-column: 1/-1;
           `}
           onClick={() =>
-            mediaDevices.getVideoInputDevices((videoInputDevices) => {
-              console.log({ videoInputDevices });
-              setVideoInputDevices(videoInputDevices);
+            mediaDevices.getVideoInputDevices((params) => {
+              console.log({ params });
+              setVideoInputDevices(params.devices);
             })
           }
         >
