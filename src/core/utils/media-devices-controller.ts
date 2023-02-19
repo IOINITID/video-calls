@@ -2,6 +2,9 @@ class MediaDevicesController {
   private audioInputDevices: MediaDeviceInfo[] | null = null;
   private audioOutputDevices: MediaDeviceInfo[] | null = null;
   private videoInputDevices: MediaDeviceInfo[] | null = null;
+  private audioInputDevicesCallback: ((audioInputDevices: MediaDeviceInfo[] | null) => void) | undefined;
+  private audioOutputDevicesCallback: ((audioOutputDevices: MediaDeviceInfo[] | null) => void) | undefined;
+  private videoInputDevicesCallback: ((videoInputDevices: MediaDeviceInfo[] | null) => void) | undefined;
 
   constructor() {
     this.updateDevices();
@@ -15,15 +18,15 @@ class MediaDevicesController {
       console.log('LOGS: devicechange', { event });
 
       if (this.audioInputDevices) {
-        this.getAudioInputDevices();
+        this.getAudioInputDevices(this.audioInputDevicesCallback);
       }
 
       if (this.audioOutputDevices) {
-        this.getAudioOutputDevices();
+        this.getAudioOutputDevices(this.audioOutputDevicesCallback);
       }
 
       if (this.videoInputDevices) {
-        this.getVideoInputDevices();
+        this.getVideoInputDevices(this.videoInputDevicesCallback);
       }
     });
   }
@@ -37,6 +40,7 @@ class MediaDevicesController {
     const devices = await navigator.mediaDevices.enumerateDevices();
 
     this.audioInputDevices = devices.filter((value) => value.kind === 'audioinput');
+    this.audioInputDevicesCallback = callback;
 
     if (callback) {
       callback(this.audioInputDevices);
@@ -52,6 +56,7 @@ class MediaDevicesController {
     const devices = await navigator.mediaDevices.enumerateDevices();
 
     this.audioOutputDevices = devices.filter((value) => value.kind === 'audiooutput');
+    this.audioOutputDevicesCallback = callback;
 
     if (callback) {
       callback(this.audioOutputDevices);
@@ -67,6 +72,7 @@ class MediaDevicesController {
     const devices = await navigator.mediaDevices.enumerateDevices();
 
     this.videoInputDevices = devices.filter((value) => value.kind === 'videoinput');
+    this.videoInputDevicesCallback = callback;
 
     if (callback) {
       callback(this.videoInputDevices);

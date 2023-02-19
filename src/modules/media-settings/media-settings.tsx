@@ -112,7 +112,7 @@ export const MediaSettings = () => {
           `}
           onClick={() =>
             mediaDevices.getAudioInputDevices((audioInputDevices) => {
-              console.log('LOGS:', { audioInputDevices });
+              console.log({ audioInputDevices });
               setAudioInputDevices(audioInputDevices);
             })
           }
@@ -125,7 +125,7 @@ export const MediaSettings = () => {
           `}
           onClick={() =>
             mediaDevices.getAudioOutputDevices((audioOutputDevices) => {
-              console.log('LOGS:', { audioOutputDevices });
+              console.log({ audioOutputDevices });
               setAudioOutputDevices(audioOutputDevices);
             })
           }
@@ -138,7 +138,7 @@ export const MediaSettings = () => {
           `}
           onClick={() =>
             mediaDevices.getVideoInputDevices((videoInputDevices) => {
-              console.log('LOGS:', { videoInputDevices });
+              console.log({ videoInputDevices });
               setVideoInputDevices(videoInputDevices);
             })
           }
