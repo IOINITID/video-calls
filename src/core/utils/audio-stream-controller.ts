@@ -10,7 +10,7 @@ export class AudioStreamController extends StreamController {
   constructor(constraints?: MediaStreamConstraints);
   constructor(logs?: boolean);
   constructor(constraints?: MediaStreamConstraints, logs?: boolean);
-  constructor(constraintsOrLogs?: MediaStreamConstraints | boolean, logs?: boolean) {
+  constructor(constraintsOrLogs?: MediaStreamConstraints | boolean) {
     super();
 
     if (typeof constraintsOrLogs === 'object') {
@@ -20,29 +20,30 @@ export class AudioStreamController extends StreamController {
     if (typeof constraintsOrLogs === 'boolean') {
       this.logs = constraintsOrLogs;
     }
-
-    if (logs) {
-      this.logs = logs;
-    }
   }
 
   /**
    * Метод который обновляет состояние аудиопотока.
    *
    * @param state состояние аудиопотока: 'default' | 'loading' | 'active' | 'error'.
-   * @param callback функция которая возвращает состояние аудиопотока: 'default' | 'loading' | 'active' | 'error'.
+   * @param callback функция которая возвращает аудиопоток и состояние аудиопотока.
    */
-  protected override updateState(state: StreamState, callback?: ((state: StreamState) => void) | undefined): void {
+  protected override updateState(
+    state: StreamState,
+    callback?: ((params: { stream: MediaStream | null; state: StreamState }) => void) | undefined
+  ): void {
     super.updateState(state, callback);
   }
 
   /**
    * Метод который получает аудиопоток.
    *
-   * @param callback функция которая возвращает состояние аудиопотока: 'default' | 'loading' | 'active' | 'error'.
+   * @param callback функция которая возвращает аудиопоток и состояние аудиопотока.
    * @returns возвращает аудиопоток.
    */
-  public override async getStream(callback?: ((state: StreamState) => void) | undefined): Promise<MediaStream | null> {
+  public override async getStream(
+    callback?: ((params: { stream: MediaStream | null; state: StreamState }) => void) | undefined
+  ): Promise<MediaStream | null> {
     if (this.stream || this.state === 'loading') {
       this.logs && console.log('LOGS: Аудиопоток уже получен.');
 
@@ -65,9 +66,11 @@ export class AudioStreamController extends StreamController {
   /**
    * Метод который закрывает аудиопоток.
    *
-   * @param callback функция которая возвращает состояние аудиопотока: 'default' | 'loading' | 'active' | 'error'.
+   * @param callback функция которая возвращает аудиопоток и состояние аудиопотока.
    */
-  public override closeStream(callback?: ((state: StreamState) => void) | undefined): void {
+  public override closeStream(
+    callback?: ((params: { stream: MediaStream | null; state: StreamState }) => void) | undefined
+  ): void {
     if (this.stream === null) {
       this.logs && console.log('LOGS: Аудиопоток уже закрыт.');
     } else {

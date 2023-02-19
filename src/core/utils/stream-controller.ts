@@ -5,7 +5,7 @@ export type StreamState = 'default' | 'loading' | 'active' | 'error';
  */
 export class StreamController {
   protected state: StreamState = 'default';
-  public stream: MediaStream | null = null;
+  protected stream: MediaStream | null = null;
   protected constraints: MediaStreamConstraints = {};
 
   constructor(constraints?: MediaStreamConstraints) {
@@ -18,23 +18,26 @@ export class StreamController {
    * Метод который обновляет состояние потока.
    *
    * @param state состояние потока: 'default' | 'loading' | 'active' | 'error'.
-   * @param callback функция которая возвращает состояние потока: 'default' | 'loading' | 'active' | 'error'.
+   * @param callback функция которая возвращает поток и состояние потока.
    */
-  protected updateState(state: StreamState, callback?: (state: StreamState) => void) {
+  protected updateState(
+    state: StreamState,
+    callback?: (params: { stream: MediaStream | null; state: StreamState }) => void
+  ) {
     this.state = state;
 
     if (callback) {
-      callback(this.state);
+      callback({ stream: this.stream, state: this.state });
     }
   }
 
   /**
    * Метод который получает поток.
    *
-   * @param callback функция которая возвращает состояние потока: 'default' | 'loading' | 'active' | 'error'.
+   * @param callback функция которая возвращает поток и состояние потока.
    * @returns возвращает поток.
    */
-  public async getStream(callback?: (state: StreamState) => void) {
+  public async getStream(callback?: (params: { stream: MediaStream | null; state: StreamState }) => void) {
     this.updateState('loading', callback);
 
     try {
@@ -55,9 +58,9 @@ export class StreamController {
   /**
    * Метод который закрывает поток.
    *
-   * @param callback функция которая возвращает состояние потока: 'default' | 'loading' | 'active' | 'error'.
+   * @param callback функция которая возвращает поток и состояние потока.
    */
-  public closeStream(callback?: (state: StreamState) => void) {
+  public closeStream(callback?: (params: { stream: MediaStream | null; state: StreamState }) => void) {
     if (this.stream) {
       this.stream.getTracks().forEach((value) => value.stop());
       this.stream = null;

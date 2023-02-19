@@ -3,6 +3,31 @@ class MediaDevicesController {
   private audioOutputDevices: MediaDeviceInfo[] | null = null;
   private videoInputDevices: MediaDeviceInfo[] | null = null;
 
+  constructor() {
+    this.updateDevices();
+  }
+
+  /**
+   * Метод который обновляет список медиаустройств.
+   */
+  private updateDevices(): void {
+    navigator.mediaDevices.addEventListener('devicechange', (event) => {
+      console.log('LOGS: devicechange', { event });
+
+      if (this.audioInputDevices) {
+        this.getAudioInputDevices();
+      }
+
+      if (this.audioOutputDevices) {
+        this.getAudioOutputDevices();
+      }
+
+      if (this.videoInputDevices) {
+        this.getVideoInputDevices();
+      }
+    });
+  }
+
   /**
    * Метод который получает список аудиоустройств ввода.
    *

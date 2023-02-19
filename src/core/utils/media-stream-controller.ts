@@ -21,19 +21,24 @@ export class MediaStreamController extends StreamController {
    * Метод который обновляет состояние медиапотока.
    *
    * @param state состояние медиапотока: 'default' | 'loading' | 'active' | 'error'.
-   * @param callback функция которая возвращает состояние медиапотока: 'default' | 'loading' | 'active' | 'error'.
+   * @param callback функция которая возвращает медиапоток и состояние медиапотока.
    */
-  protected override updateState(state: StreamState, callback?: ((state: StreamState) => void) | undefined): void {
+  protected override updateState(
+    state: StreamState,
+    callback?: ((params: { stream: MediaStream | null; state: StreamState }) => void) | undefined
+  ): void {
     super.updateState(state, callback);
   }
 
   /**
    * Метод который получает медиапоток.
    *
-   * @param callback функция которая возвращает состояние медиапотока: 'default' | 'loading' | 'active' | 'error'.
+   * @param callback функция которая возвращает медиапоток и состояние медиапотока.
    * @returns возвращает медиапоток.
    */
-  public override async getStream(callback?: (state: StreamState) => void): Promise<MediaStream | null> {
+  public override async getStream(
+    callback?: (params: { stream: MediaStream | null; state: StreamState }) => void
+  ): Promise<MediaStream | null> {
     if (this.stream || this.state === 'loading') {
       console.log('LOGS: Медиапоток уже получен.');
 
@@ -44,12 +49,12 @@ export class MediaStreamController extends StreamController {
 
     this.stream = new MediaStream();
 
-    const audioStream = await this.audioStreamController.getStream((state) => {
-      this.audioStreamState = state;
+    const audioStream = await this.audioStreamController.getStream((params) => {
+      this.audioStreamState = params.state;
     });
 
-    const videoStream = await this.videoStreamController.getStream((state) => {
-      this.videoStreamState = state;
+    const videoStream = await this.videoStreamController.getStream((params) => {
+      this.videoStreamState = params.state;
     });
 
     if (audioStream) {
@@ -84,9 +89,11 @@ export class MediaStreamController extends StreamController {
   /**
    * Метод который закрывает медипоток.
    *
-   * @param callback функция которая возвращает состояние медиапотока: 'default' | 'loading' | 'active' | 'error'.
+   * @param callback функция которая возвращает медиапоток и состояние медиапотока.
    */
-  public override closeStream(callback?: ((state: StreamState) => void) | undefined): void {
+  public override closeStream(
+    callback?: ((params: { stream: MediaStream | null; state: StreamState }) => void) | undefined
+  ): void {
     if (this.stream === null) {
       console.log('LOGS: Медиапоток уже закрыт.');
     } else {

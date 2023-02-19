@@ -6,7 +6,8 @@ import { StreamState } from 'core/utils/stream-controller';
 import { mediaDevices } from 'core/utils/media-devices-controller';
 
 export const MediaSettings = () => {
-  const [mediaStreamState, setMediaStreamState] = useState<StreamState>('default');
+  const [streamState, setStreamState] = useState<StreamState>('default');
+  const [stream, setStream] = useState<MediaStream | null>(null);
   const [audioInputDevices, setAudioInputDevices] = useState<MediaDeviceInfo[] | null>(null);
   const [audioOutputDevices, setAudioOutputDevices] = useState<MediaDeviceInfo[] | null>(null);
   const [videoInputDevices, setVideoInputDevices] = useState<MediaDeviceInfo[] | null>(null);
@@ -15,9 +16,13 @@ export const MediaSettings = () => {
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.srcObject = mediaStream.stream;
+      videoRef.current.srcObject = stream;
     }
-  }, [mediaStreamState]);
+  }, [stream]);
+
+  useEffect(() => {
+    console.log({ streamState });
+  }, [streamState]);
 
   return (
     <div
@@ -37,9 +42,10 @@ export const MediaSettings = () => {
       >
         <Button
           onClick={() =>
-            mediaStream.getStream((state) => {
-              console.log({ state });
-              setMediaStreamState(state);
+            mediaStream.getStream((params) => {
+              console.log({ params });
+              setStreamState(params.state);
+              setStream(params.stream);
             })
           }
         >
@@ -47,9 +53,10 @@ export const MediaSettings = () => {
         </Button>
         <Button
           onClick={() =>
-            mediaStream.closeStream((state) => {
-              console.log({ state });
-              setMediaStreamState(state);
+            mediaStream.closeStream((params) => {
+              console.log({ params });
+              setStreamState(params.state);
+              setStream(params.stream);
             })
           }
         >
@@ -57,9 +64,10 @@ export const MediaSettings = () => {
         </Button>
         <Button
           onClick={() =>
-            mediaStream.audioStreamController.getStream((state) => {
-              console.log({ state });
-              setMediaStreamState(state);
+            mediaStream.audioStreamController.getStream((params) => {
+              console.log({ params });
+              setStreamState(params.state);
+              setStream(params.stream);
             })
           }
         >
@@ -67,9 +75,10 @@ export const MediaSettings = () => {
         </Button>
         <Button
           onClick={() =>
-            mediaStream.audioStreamController.closeStream((state) => {
-              console.log({ state });
-              setMediaStreamState(state);
+            mediaStream.audioStreamController.closeStream((params) => {
+              console.log({ params });
+              setStreamState(params.state);
+              setStream(params.stream);
             })
           }
         >
@@ -77,9 +86,10 @@ export const MediaSettings = () => {
         </Button>
         <Button
           onClick={() =>
-            mediaStream.videoStreamController.getStream((state) => {
-              console.log({ state });
-              setMediaStreamState(state);
+            mediaStream.videoStreamController.getStream((params) => {
+              console.log({ params });
+              setStreamState(params.state);
+              setStream(params.stream);
             })
           }
         >
@@ -87,9 +97,10 @@ export const MediaSettings = () => {
         </Button>
         <Button
           onClick={() =>
-            mediaStream.videoStreamController.closeStream((state) => {
-              console.log({ state });
-              setMediaStreamState(state);
+            mediaStream.videoStreamController.closeStream((params) => {
+              console.log({ params });
+              setStreamState(params.state);
+              setStream(params.stream);
             })
           }
         >
