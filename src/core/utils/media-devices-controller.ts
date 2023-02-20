@@ -1,3 +1,6 @@
+import { AudioStreamController } from './audio-stream-controller';
+import { VideoStreamController } from './video-stream-controller';
+
 type DevicesState = 'default' | 'loading' | 'success';
 
 /**
@@ -11,13 +14,13 @@ class MediaDevicesController {
   private audioOutputDevicesState: DevicesState = 'default';
   private videoInputDevicesState: DevicesState = 'default';
   private audioInputDevicesCallback:
-    | ((params: { devices: MediaDeviceInfo[] | null; state: DevicesState }) => void)
+    | ((params: { devices: MediaDeviceInfo[] | null; state: DevicesState; permission: PermissionState | null }) => void)
     | undefined;
   private audioOutputDevicesCallback:
-    | ((params: { devices: MediaDeviceInfo[] | null; state: DevicesState }) => void)
+    | ((params: { devices: MediaDeviceInfo[] | null; state: DevicesState; permission: PermissionState | null }) => void)
     | undefined;
   private videoInputDevicesCallback:
-    | ((params: { devices: MediaDeviceInfo[] | null; state: DevicesState }) => void)
+    | ((params: { devices: MediaDeviceInfo[] | null; state: DevicesState; permission: PermissionState | null }) => void)
     | undefined;
 
   constructor() {
@@ -55,13 +58,18 @@ class MediaDevicesController {
   private updateState(
     type: MediaDeviceKind,
     state: 'default' | 'loading' | 'success',
-    callback?: (params: { devices: MediaDeviceInfo[] | null; state: DevicesState }) => void
+    permission: PermissionState | null,
+    callback?: (params: {
+      devices: MediaDeviceInfo[] | null;
+      state: DevicesState;
+      permission: PermissionState | null;
+    }) => void
   ): void {
     if (type === 'audioinput') {
       this.audioInputDevicesState = state;
 
       if (callback) {
-        callback({ devices: this.audioInputDevices, state: this.audioInputDevicesState });
+        callback({ devices: this.audioInputDevices, state: this.audioInputDevicesState, permission });
       }
     }
 
@@ -69,7 +77,7 @@ class MediaDevicesController {
       this.audioOutputDevicesState = state;
 
       if (callback) {
-        callback({ devices: this.audioOutputDevices, state: this.audioOutputDevicesState });
+        callback({ devices: this.audioOutputDevices, state: this.audioOutputDevicesState, permission });
       }
     }
 
@@ -77,7 +85,7 @@ class MediaDevicesController {
       this.videoInputDevicesState = state;
 
       if (callback) {
-        callback({ devices: this.videoInputDevices, state: this.videoInputDevicesState });
+        callback({ devices: this.videoInputDevices, state: this.videoInputDevicesState, permission });
       }
     }
   }
@@ -88,17 +96,33 @@ class MediaDevicesController {
    * @param callback возвращает список аудиоустройств ввода.
    */
   public async getAudioInputDevices(
-    callback?: (params: { devices: MediaDeviceInfo[] | null; state: DevicesState }) => void
+    callback?: (params: {
+      devices: MediaDeviceInfo[] | null;
+      state: DevicesState;
+      permission: PermissionState | null;
+    }) => void
   ): Promise<void> {
-    this.updateState('audioinput', 'loading', callback);
+    try {
+      this.updateState('audioinput', 'loading', null, callback);
 
-    const devices = await navigator.mediaDevices.enumerateDevices();
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const permission = await navigator.permissions.query({ name: 'microphone' });
 
-    this.audioInputDevices = devices.filter((value) => value.kind === 'audioinput');
+      if (permission.state !== 'granted') {
+        await new AudioStreamController().getPermission();
+      }
 
-    this.audioInputDevicesCallback = callback;
+      const devices = await navigator.mediaDevices.enumerateDevices();
 
-    this.updateState('audioinput', 'success', callback);
+      this.audioInputDevices = devices.filter((value) => value.kind === 'audioinput');
+
+      this.audioInputDevicesCallback = callback;
+
+      this.updateState('audioinput', 'success', permission.state, callback);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /**
@@ -107,17 +131,33 @@ class MediaDevicesController {
    * @param callback возвращает список аудиоустройств вывода.
    */
   public async getAudioOutputDevices(
-    callback?: (params: { devices: MediaDeviceInfo[] | null; state: DevicesState }) => void
+    callback?: (params: {
+      devices: MediaDeviceInfo[] | null;
+      state: DevicesState;
+      permission: PermissionState | null;
+    }) => void
   ): Promise<void> {
-    this.updateState('audiooutput', 'loading', callback);
+    try {
+      this.updateState('audiooutput', 'loading', null, callback);
 
-    const devices = await navigator.mediaDevices.enumerateDevices();
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const permission = await navigator.permissions.query({ name: 'microphone' });
 
-    this.audioOutputDevices = devices.filter((value) => value.kind === 'audiooutput');
+      if (permission.state !== 'granted') {
+        await new AudioStreamController().getPermission();
+      }
 
-    this.audioOutputDevicesCallback = callback;
+      const devices = await navigator.mediaDevices.enumerateDevices();
 
-    this.updateState('audiooutput', 'success', callback);
+      this.audioOutputDevices = devices.filter((value) => value.kind === 'audiooutput');
+
+      this.audioOutputDevicesCallback = callback;
+
+      this.updateState('audiooutput', 'success', permission.state, callback);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /**
@@ -126,17 +166,35 @@ class MediaDevicesController {
    * @param callback возвращает список видеоустройств ввода.
    */
   public async getVideoInputDevices(
-    callback?: (params: { devices: MediaDeviceInfo[] | null; state: DevicesState }) => void
+    callback?: (params: {
+      devices: MediaDeviceInfo[] | null;
+      state: DevicesState;
+      permission: PermissionState | null;
+    }) => void
   ): Promise<void> {
-    this.updateState('videoinput', 'loading', callback);
+    await new VideoStreamController().getPermission();
 
-    const devices = await navigator.mediaDevices.enumerateDevices();
+    try {
+      this.updateState('videoinput', 'loading', null, callback);
 
-    this.videoInputDevices = devices.filter((value) => value.kind === 'videoinput');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const permission = await navigator.permissions.query({ name: 'camera' });
 
-    this.videoInputDevicesCallback = callback;
+      if (permission.state !== 'granted') {
+        await new VideoStreamController().getPermission();
+      }
 
-    this.updateState('videoinput', 'success', callback);
+      const devices = await navigator.mediaDevices.enumerateDevices();
+
+      this.videoInputDevices = devices.filter((value) => value.kind === 'videoinput');
+
+      this.videoInputDevicesCallback = callback;
+
+      this.updateState('videoinput', 'success', permission.state, callback);
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 

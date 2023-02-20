@@ -49,6 +49,7 @@
     "dayjs": "1.10.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dropdown-select": "^4.9.3",
     "react-hooks-kit": "1.3.0",
     "react-redux": "7.2.6",
     "react-router-dom": "6.2.1",

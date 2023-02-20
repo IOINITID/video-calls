@@ -2,11 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { css } from '@linaria/core';
 import { Button } from 'core/components/button';
 import { mediaStream } from 'core/utils/media-stream-instance';
-import { StreamState } from 'core/utils/stream-controller';
 import { mediaDevices } from 'core/utils/media-devices-controller';
+import { Select } from 'core/components/select';
 
 export const MediaSettings = () => {
-  const [streamState, setStreamState] = useState<StreamState>('default');
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [audioInputDevices, setAudioInputDevices] = useState<MediaDeviceInfo[] | null>(null);
   const [audioOutputDevices, setAudioOutputDevices] = useState<MediaDeviceInfo[] | null>(null);
@@ -21,8 +20,65 @@ export const MediaSettings = () => {
   }, [stream]);
 
   useEffect(() => {
-    console.log({ streamState });
-  }, [streamState]);
+    mediaDevices.getAudioInputDevices((params) => {
+      console.log(params);
+
+      if (params.permission === 'denied') {
+        setAudioInputDevices([
+          { label: 'Не найдено', kind: 'audioinput', deviceId: '', groupId: '' } as MediaDeviceInfo,
+        ]);
+        return;
+      }
+
+      setAudioInputDevices(params.devices);
+    });
+
+    mediaDevices.getAudioOutputDevices((params) => {
+      console.log(params);
+
+      if (params.permission === 'denied') {
+        setAudioOutputDevices([
+          { label: 'Не найдено', kind: 'audiooutput', deviceId: '', groupId: '' } as MediaDeviceInfo,
+        ]);
+        return;
+      }
+
+      setAudioOutputDevices(params.devices);
+    });
+
+    mediaDevices.getVideoInputDevices((params) => {
+      console.log(params);
+
+      if (params.permission === 'denied') {
+        setVideoInputDevices([
+          { label: 'Не найдено', kind: 'videoinput', deviceId: '', groupId: '' } as MediaDeviceInfo,
+        ]);
+        return;
+      }
+
+      setVideoInputDevices(params.devices);
+    });
+  }, []);
+
+  /**
+   * Функция для обработки списка устройств.
+   *
+   * @param devices скисок устройств.
+   * @returns обработанные данные.
+   */
+  const transformDevices = (devices: MediaDeviceInfo[] | null) => {
+    if (devices === null || devices?.length === 0) {
+      return [];
+    }
+
+    return devices?.map((value, index) => {
+      return {
+        id: index,
+        label: value.label,
+        value: value.label,
+      };
+    });
+  };
 
   return (
     <div
@@ -43,8 +99,8 @@ export const MediaSettings = () => {
         <Button
           onClick={() =>
             mediaStream.getStream((params) => {
-              console.log({ params });
-              setStreamState(params.state);
+              // console.log({ params });
+              // setStreamState(params.state);
               setStream(params.stream);
             })
           }
@@ -54,8 +110,8 @@ export const MediaSettings = () => {
         <Button
           onClick={() =>
             mediaStream.closeStream((params) => {
-              console.log({ params });
-              setStreamState(params.state);
+              // console.log({ params });
+              // setStreamState(params.state);
               setStream(params.stream);
             })
           }
@@ -65,8 +121,8 @@ export const MediaSettings = () => {
         <Button
           onClick={() =>
             mediaStream.audioStreamController.getStream((params) => {
-              console.log({ params });
-              setStreamState(params.state);
+              // console.log({ params });
+              // setStreamState(params.state);
               setStream(params.stream);
             })
           }
@@ -76,8 +132,8 @@ export const MediaSettings = () => {
         <Button
           onClick={() =>
             mediaStream.audioStreamController.closeStream((params) => {
-              console.log({ params });
-              setStreamState(params.state);
+              // console.log({ params });
+              // setStreamState(params.state);
               setStream(params.stream);
             })
           }
@@ -87,8 +143,8 @@ export const MediaSettings = () => {
         <Button
           onClick={() =>
             mediaStream.videoStreamController.getStream((params) => {
-              console.log({ params });
-              setStreamState(params.state);
+              // console.log({ params });
+              // setStreamState(params.state);
               setStream(params.stream);
             })
           }
@@ -98,15 +154,13 @@ export const MediaSettings = () => {
         <Button
           onClick={() =>
             mediaStream.videoStreamController.closeStream((params) => {
-              console.log({ params });
-              setStreamState(params.state);
               setStream(params.stream);
             })
           }
         >
           Вылючить видео поток
         </Button>
-        <Button
+        {/* <Button
           className={css`
             grid-column: 1/-1;
           `}
@@ -118,8 +172,8 @@ export const MediaSettings = () => {
           }
         >
           Получить список аудиоустройств ввода
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           className={css`
             grid-column: 1/-1;
           `}
@@ -131,8 +185,8 @@ export const MediaSettings = () => {
           }
         >
           Получить список аудиоустройств вывода
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           className={css`
             grid-column: 1/-1;
           `}
@@ -144,7 +198,7 @@ export const MediaSettings = () => {
           }
         >
           Получить список видеоустройств вывода
-        </Button>
+        </Button> */}
         <div
           className={css`
             display: grid;
@@ -162,12 +216,20 @@ export const MediaSettings = () => {
               border-radius: 8px;
             `}
           >
-            Список аудиоустройств ввода:
-            <div>
-              {audioInputDevices?.map((value) => {
-                return <div key={value.deviceId}>{value.label}</div>;
-              })}
+            <div
+              className={css`
+                padding-bottom: 8px;
+              `}
+            >
+              Список аудиоустройств ввода:
             </div>
+            <Select
+              options={transformDevices(audioInputDevices)}
+              values={transformDevices(audioInputDevices).slice(0, 1)}
+              onChange={(value) => {
+                console.log(value);
+              }}
+            />
           </div>
           <div
             className={css`
@@ -177,12 +239,20 @@ export const MediaSettings = () => {
               border-radius: 8px;
             `}
           >
-            Список аудиоустройств вывода:
-            <div>
-              {audioOutputDevices?.map((value) => {
-                return <div key={value.deviceId}>{value.label}</div>;
-              })}
+            <div
+              className={css`
+                padding-bottom: 8px;
+              `}
+            >
+              Список аудиоустройств вывода:
             </div>
+            <Select
+              options={transformDevices(audioOutputDevices)}
+              values={transformDevices(audioOutputDevices).slice(0, 1)}
+              onChange={(value) => {
+                console.log(value);
+              }}
+            />
           </div>
           <div
             className={css`
@@ -192,12 +262,20 @@ export const MediaSettings = () => {
               border-radius: 8px;
             `}
           >
-            Список видеоустройств ввода:
-            <div>
-              {videoInputDevices?.map((value) => {
-                return <div key={value.deviceId}>{value.label}</div>;
-              })}
+            <div
+              className={css`
+                padding-bottom: 8px;
+              `}
+            >
+              Список видеоустройств ввода:
             </div>
+            <Select
+              options={transformDevices(videoInputDevices)}
+              values={transformDevices(videoInputDevices).slice(0, 1)}
+              onChange={(value) => {
+                console.log(value);
+              }}
+            />
           </div>
           <video
             className={css`
@@ -205,6 +283,7 @@ export const MediaSettings = () => {
               height: 225px;
               background-color: #ffffff;
               object-fit: contain;
+              border: 1px solid #000000;
               border-radius: 8px;
             `}
             ref={videoRef}

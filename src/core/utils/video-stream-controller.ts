@@ -36,6 +36,13 @@ export class VideoStreamController extends StreamController {
   }
 
   /**
+   * Метод который получает разрешение на получение видеопотока.
+   */
+  public override async getPermission(): Promise<void> {
+    await super.getPermission();
+  }
+
+  /**
    * Метод который получает видеопоток.
    *
    * @param callback функция которая возвращает видеопоток и состояние видеопотока.

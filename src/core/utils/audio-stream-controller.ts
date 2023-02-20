@@ -36,6 +36,13 @@ export class AudioStreamController extends StreamController {
   }
 
   /**
+   * Метод который получает разрешение на получение аудиопотока.
+   */
+  public override async getPermission(): Promise<void> {
+    await super.getPermission();
+  }
+
+  /**
    * Метод который получает аудиопоток.
    *
    * @param callback функция которая возвращает аудиопоток и состояние аудиопотока.

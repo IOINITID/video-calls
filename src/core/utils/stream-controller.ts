@@ -32,6 +32,31 @@ export class StreamController {
   }
 
   /**
+   * Метод который получает разрешение на получение потока.
+   */
+  public async getPermission(): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if ((await navigator.permissions.query({ name: 'microphone' })).state === 'granted') {
+      return;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if ((await navigator.permissions.query({ name: 'camera' })).state === 'granted') {
+      return;
+    }
+
+    try {
+      await this.getStream();
+    } catch (error) {
+      console.error(error);
+    }
+
+    this.closeStream();
+  }
+
+  /**
    * Метод который получает поток.
    *
    * @param callback функция которая возвращает поток и состояние потока.
