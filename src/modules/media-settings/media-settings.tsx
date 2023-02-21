@@ -23,7 +23,7 @@ export const MediaSettings = () => {
     mediaDevices.getAudioInputDevices((params) => {
       console.log(params);
 
-      if (params.permission === 'denied') {
+      if (params.permission !== 'granted') {
         setAudioInputDevices([
           { label: 'Не найдено', kind: 'audioinput', deviceId: '', groupId: '' } as MediaDeviceInfo,
         ]);
@@ -36,7 +36,7 @@ export const MediaSettings = () => {
     mediaDevices.getAudioOutputDevices((params) => {
       console.log(params);
 
-      if (params.permission === 'denied') {
+      if (params.permission !== 'granted') {
         setAudioOutputDevices([
           { label: 'Не найдено', kind: 'audiooutput', deviceId: '', groupId: '' } as MediaDeviceInfo,
         ]);
@@ -49,7 +49,7 @@ export const MediaSettings = () => {
     mediaDevices.getVideoInputDevices((params) => {
       console.log(params);
 
-      if (params.permission === 'denied') {
+      if (params.permission !== 'granted') {
         setVideoInputDevices([
           { label: 'Не найдено', kind: 'videoinput', deviceId: '', groupId: '' } as MediaDeviceInfo,
         ]);
