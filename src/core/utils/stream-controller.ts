@@ -34,26 +34,15 @@ export class StreamController {
   /**
    * Метод который получает разрешение на получение потока.
    */
-  public async getPermission(): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if ((await navigator.permissions.query({ name: 'microphone' })).state === 'granted') {
-      return;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if ((await navigator.permissions.query({ name: 'camera' })).state === 'granted') {
-      return;
-    }
-
+  public async requestPermission(): Promise<void> {
     try {
       await this.getStream();
+      this.closeStream();
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
     }
-
-    this.closeStream();
   }
 
   /**

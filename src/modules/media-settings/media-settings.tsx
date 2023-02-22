@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { css } from '@linaria/core';
 import { Button } from 'core/components/button';
-import { mediaStream } from 'core/utils/media-stream-instance';
+import { mediaStream } from 'core/utils/media-stream-controller';
 import { mediaDevices } from 'core/utils/media-devices-controller';
 import { Select } from 'core/components/select';
 
@@ -20,43 +20,28 @@ export const MediaSettings = () => {
   }, [stream]);
 
   useEffect(() => {
-    mediaDevices.getAudioInputDevices((params) => {
+    mediaDevices.getDevices('audioinput', (params) => {
       console.log(params);
 
-      if (params.permission !== 'granted') {
-        setAudioInputDevices([
-          { label: 'Не найдено', kind: 'audioinput', deviceId: '', groupId: '' } as MediaDeviceInfo,
-        ]);
-        return;
+      if (params.permissions.microphone === 'granted') {
+        setAudioInputDevices(params.devices);
       }
-
-      setAudioInputDevices(params.devices);
     });
 
-    mediaDevices.getAudioOutputDevices((params) => {
+    mediaDevices.getDevices('audiooutput', (params) => {
       console.log(params);
 
-      if (params.permission !== 'granted') {
-        setAudioOutputDevices([
-          { label: 'Не найдено', kind: 'audiooutput', deviceId: '', groupId: '' } as MediaDeviceInfo,
-        ]);
-        return;
+      if (params.permissions.microphone === 'granted') {
+        setAudioOutputDevices(params.devices);
       }
-
-      setAudioOutputDevices(params.devices);
     });
 
-    mediaDevices.getVideoInputDevices((params) => {
+    mediaDevices.getDevices('videoinput', (params) => {
       console.log(params);
 
-      if (params.permission !== 'granted') {
-        setVideoInputDevices([
-          { label: 'Не найдено', kind: 'videoinput', deviceId: '', groupId: '' } as MediaDeviceInfo,
-        ]);
-        return;
+      if (params.permissions.camera === 'granted') {
+        setVideoInputDevices(params.devices);
       }
-
-      setVideoInputDevices(params.devices);
     });
   }, []);
 

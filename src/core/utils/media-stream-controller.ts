@@ -105,3 +105,8 @@ export class MediaStreamController extends StreamController {
     }
   }
 }
+
+const audioStream = new AudioStreamController(true);
+const videoStream = new VideoStreamController(true);
+
+export const mediaStream = new MediaStreamController(audioStream, videoStream);
