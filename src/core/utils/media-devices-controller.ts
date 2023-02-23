@@ -77,58 +77,132 @@ class MediaDevicesController {
    * @param callback функция которая возвращает список медиаустройств и состояние.
    */
   public async getDevices(type: MediaDeviceKind | 'all', callback?: Callback): Promise<void> {
-    const permissions = await mediaPermissions.getPermissions();
+    if (type === 'audioinput') {
+      const permissions = await mediaPermissions.getPermissions();
 
-    this.updateState([], 'idle', permissions, null, callback);
+      try {
+        this.updateState([], 'idle', permissions, null, callback);
 
-    try {
-      // TODO: Добавить audioStreamController в класс
-      if (permissions.microphone !== 'granted') {
-        await new AudioStreamController().requestPermission();
+        // TODO: Добавить audioStreamController в класс
+        if (permissions.microphone !== 'granted') {
+          await new AudioStreamController().requestPermission();
+        }
+
+        this.updateState([], 'loading', permissions, null, callback);
+
+        const devices = await navigator.mediaDevices.enumerateDevices();
+
+        this.audioInputDevices = devices.filter((value) => value.kind === 'audioinput');
+        this.audioInputDevicesCallback = callback;
+        this.updateState(this.audioInputDevices, 'success', permissions, null, callback);
+      } catch (error) {
+        if (error instanceof DOMException) {
+          this.updateState([], 'error', permissions, error.message, callback);
+          return;
+        }
+
+        if (error instanceof Error) {
+          this.updateState([], 'error', permissions, error.message, callback);
+          return;
+        }
       }
+    }
 
-      // TODO: Добавить videoStreamController в класс
-      if (permissions.camera !== 'granted') {
-        await new VideoStreamController().requestPermission();
+    if (type === 'audiooutput') {
+      const permissions = await mediaPermissions.getPermissions();
+
+      try {
+        this.updateState([], 'idle', permissions, null, callback);
+
+        // TODO: Добавить audioStreamController в класс
+        if (permissions.microphone !== 'granted') {
+          await new AudioStreamController().requestPermission();
+        }
+
+        this.updateState([], 'loading', permissions, null, callback);
+
+        const devices = await navigator.mediaDevices.enumerateDevices();
+
+        this.audioOutputDevices = devices.filter((value) => value.kind === 'audiooutput');
+        this.audioOutputDevicesCallback = callback;
+        this.updateState(this.audioOutputDevices, 'success', permissions, null, callback);
+      } catch (error) {
+        if (error instanceof DOMException) {
+          this.updateState([], 'error', permissions, error.message, callback);
+          return;
+        }
+
+        if (error instanceof Error) {
+          this.updateState([], 'error', permissions, error.message, callback);
+          return;
+        }
       }
+    }
 
-      this.updateState([], 'loading', permissions, null, callback);
+    if (type === 'videoinput') {
+      const permissions = await mediaPermissions.getPermissions();
 
-      const devices = await navigator.mediaDevices.enumerateDevices();
+      try {
+        this.updateState([], 'idle', permissions, null, callback);
 
-      switch (type) {
-        case 'audioinput':
-          this.audioInputDevices = devices.filter((value) => value.kind === 'audioinput');
-          this.audioInputDevicesCallback = callback;
-          this.updateState(this.audioInputDevices, 'success', permissions, null, callback);
-          break;
-        case 'audiooutput':
-          this.audioOutputDevices = devices.filter((value) => value.kind === 'audiooutput');
-          this.audioOutputDevicesCallback = callback;
-          this.updateState(this.audioOutputDevices, 'success', permissions, null, callback);
-          break;
-        case 'videoinput':
-          this.videoInputDevices = devices.filter((value) => value.kind === 'videoinput');
-          this.videoInputDevicesCallback = callback;
-          this.updateState(this.videoInputDevices, 'success', permissions, null, callback);
-          break;
-        case 'all':
-          this.allDevices = devices;
-          this.allDevicesCallback = callback;
-          this.updateState(this.allDevices, 'success', permissions, null, callback);
-          break;
-        default:
-          break;
+        // TODO: Добавить videoStreamController в класс
+        if (permissions.camera !== 'granted') {
+          await new VideoStreamController().requestPermission();
+        }
+
+        this.updateState([], 'loading', permissions, null, callback);
+
+        const devices = await navigator.mediaDevices.enumerateDevices();
+
+        this.videoInputDevices = devices.filter((value) => value.kind === 'videoinput');
+        this.videoInputDevicesCallback = callback;
+        this.updateState(this.videoInputDevices, 'success', permissions, null, callback);
+      } catch (error) {
+        if (error instanceof DOMException) {
+          this.updateState([], 'error', permissions, error.message, callback);
+          return;
+        }
+
+        if (error instanceof Error) {
+          this.updateState([], 'error', permissions, error.message, callback);
+          return;
+        }
       }
-    } catch (error) {
-      if (error instanceof DOMException) {
-        this.updateState([], 'error', permissions, error.message, callback);
-        return;
-      }
+    }
 
-      if (error instanceof Error) {
-        this.updateState([], 'error', permissions, error.message, callback);
-        return;
+    if (type === 'all') {
+      const permissions = await mediaPermissions.getPermissions();
+
+      try {
+        this.updateState([], 'idle', permissions, null, callback);
+
+        // TODO: Добавить audioStreamController в класс
+        if (permissions.microphone !== 'granted') {
+          await new AudioStreamController().requestPermission();
+        }
+
+        // TODO: Добавить videoStreamController в класс
+        if (permissions.camera !== 'granted') {
+          await new VideoStreamController().requestPermission();
+        }
+
+        this.updateState([], 'loading', permissions, null, callback);
+
+        const devices = await navigator.mediaDevices.enumerateDevices();
+
+        this.allDevices = devices;
+        this.allDevicesCallback = callback;
+        this.updateState(this.allDevices, 'success', permissions, null, callback);
+      } catch (error) {
+        if (error instanceof DOMException) {
+          this.updateState([], 'error', permissions, error.message, callback);
+          return;
+        }
+
+        if (error instanceof Error) {
+          this.updateState([], 'error', permissions, error.message, callback);
+          return;
+        }
       }
     }
   }
