@@ -1,4 +1,6 @@
+import { AudioStreamController } from './audio-stream-controller';
 import { mediaPermissions } from './media-permissions-controller';
+import { VideoStreamController } from './video-stream-controller';
 
 type State = 'idle' | 'loading' | 'success' | 'error';
 type Permissions = { microphone: PermissionState; camera: PermissionState };
@@ -53,6 +55,7 @@ class MediaDevicesController {
    * @param devices список медиаустройств.
    * @param state состояние медиаустройств.
    * @param permissions разрешения для медиаустройств.
+   * @param error ошибка получения списка медиаустройств.
    * @param callback функция которая возвращает список медиаустройств и состояние.
    */
   private updateState(
@@ -79,6 +82,16 @@ class MediaDevicesController {
     this.updateState([], 'idle', permissions, null, callback);
 
     try {
+      // TODO: Добавить audioStreamController в класс
+      if (permissions.microphone !== 'granted') {
+        await new AudioStreamController().requestPermission();
+      }
+
+      // TODO: Добавить videoStreamController в класс
+      if (permissions.camera !== 'granted') {
+        await new VideoStreamController().requestPermission();
+      }
+
       this.updateState([], 'loading', permissions, null, callback);
 
       const devices = await navigator.mediaDevices.enumerateDevices();
@@ -108,10 +121,14 @@ class MediaDevicesController {
           break;
       }
     } catch (error) {
-      console.error(error);
+      if (error instanceof DOMException) {
+        this.updateState([], 'error', permissions, error.message, callback);
+        return;
+      }
 
       if (error instanceof Error) {
         this.updateState([], 'error', permissions, error.message, callback);
+        return;
       }
     }
   }

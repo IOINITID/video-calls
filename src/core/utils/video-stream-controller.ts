@@ -62,11 +62,15 @@ export class VideoStreamController extends StreamController {
 
       this.logs && console.log('LOGS: Видеопоток успешно получен.');
     } catch (error) {
-      if (error instanceof Error) {
+      if (error instanceof DOMException) {
         this.logs && console.error('LOGS: Ошибка при получении видеопотока. Причина: ' + error.message + '.');
+        return null;
       }
 
-      return null;
+      if (error instanceof Error) {
+        this.logs && console.error('LOGS: Ошибка при получении видеопотока. Причина: ' + error.message + '.');
+        return null;
+      }
     }
 
     return this.stream;

@@ -36,9 +36,16 @@ export class StreamController {
    */
   public async requestPermission(): Promise<void> {
     try {
-      await this.getStream();
-      this.closeStream();
+      let stream: MediaStream | null = null;
+
+      stream = await navigator.mediaDevices.getUserMedia(this.constraints);
+      stream.getTracks().forEach((value) => value.stop());
+      stream = null;
     } catch (error) {
+      if (error instanceof DOMException) {
+        throw new DOMException(error.message, error.name);
+      }
+
       if (error instanceof Error) {
         throw new Error(error.message);
       }
@@ -59,6 +66,11 @@ export class StreamController {
       this.updateState('active', callback);
     } catch (error) {
       this.updateState('error', callback);
+
+      // TODO: Можно добавить код ошибки и написать метод возвращающий текст ошибки
+      if (error instanceof DOMException) {
+        throw new DOMException(error.message, error.name);
+      }
 
       // TODO: Можно добавить код ошибки и написать метод возвращающий текст ошибки
       if (error instanceof Error) {

@@ -62,8 +62,14 @@ export class AudioStreamController extends StreamController {
 
       this.logs && console.log('LOGS: Аудиопоток успешно получен.');
     } catch (error) {
+      if (error instanceof DOMException) {
+        this.logs && console.error('LOGS: Ошибка при получении аудиопотока. Причина: ' + error.message + '.');
+        return null;
+      }
+
       if (error instanceof Error) {
         this.logs && console.error('LOGS: Ошибка при получении аудиопотока. Причина: ' + error.message + '.');
+        return null;
       }
     }
 
