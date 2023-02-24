@@ -6,6 +6,7 @@ import { StreamController, StreamState } from './stream-controller';
 export class AudioStreamController extends StreamController {
   protected override constraints: MediaStreamConstraints = { audio: true };
   protected logs: boolean = false;
+  private animationFrame: number | null = null;
 
   constructor(constraints?: MediaStreamConstraints);
   constructor(logs?: boolean);
@@ -33,6 +34,46 @@ export class AudioStreamController extends StreamController {
     callback?: ((params: { stream: MediaStream | null; state: StreamState }) => void) | undefined
   ): void {
     super.updateState(state, callback);
+  }
+
+  public closeVisualizer() {
+    this.closeStream();
+
+    if (this.animationFrame) {
+      cancelAnimationFrame(this.animationFrame);
+      this.animationFrame = null;
+    }
+  }
+
+  public async getVisualizer(callback?: (data: number[]) => void) {
+    await this.getStream();
+
+    if (this.stream) {
+      const audioContext = new AudioContext();
+      const analyser = audioContext.createAnalyser();
+
+      analyser.fftSize = 128;
+      analyser.maxDecibels = 100;
+
+      const source = audioContext.createMediaStreamSource(this.stream);
+
+      source.connect(analyser);
+      source.connect(audioContext.destination);
+
+      const data = new Uint8Array(analyser.frequencyBinCount);
+
+      const animationLoop = () => {
+        this.animationFrame = requestAnimationFrame(animationLoop);
+
+        analyser.getByteFrequencyData(data);
+
+        if (callback) {
+          callback(Array.from(data));
+        }
+      };
+
+      animationLoop();
+    }
   }
 
   /**
