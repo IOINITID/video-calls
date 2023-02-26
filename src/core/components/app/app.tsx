@@ -108,7 +108,9 @@ const App = () => {
       </Button>
       <ModalIncomingCall open={isIncomingCall} onClose={() => setIsIncomingCall(false)} user={callingUser} />
       <Portal>
-        <MediaSettingsModal isOpen={isMediaSettingsModal} onClose={() => setIsMediaSettingsModal(false)} />
+        {isMediaSettingsModal ? (
+          <MediaSettingsModal isOpen={isMediaSettingsModal} onClose={() => setIsMediaSettingsModal(false)} />
+        ) : null}
       </Portal>
     </>
   );
