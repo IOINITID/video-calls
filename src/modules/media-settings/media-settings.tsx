@@ -21,14 +21,10 @@ export const MediaSettings = () => {
   }, [stream]);
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
     mediaDevices.getDevices('audioinput', (params) => {
       console.log(params);
 
-      if (params.permissions.microphone === 'granted') {
+      if (params.state === 'success') {
         setAudioInputDevices(params.devices);
       }
     });
@@ -36,7 +32,7 @@ export const MediaSettings = () => {
     mediaDevices.getDevices('audiooutput', (params) => {
       console.log(params);
 
-      if (params.permissions.microphone === 'granted') {
+      if (params.state === 'success') {
         setAudioOutputDevices(params.devices);
       }
     });
@@ -44,7 +40,7 @@ export const MediaSettings = () => {
     mediaDevices.getDevices('videoinput', (params) => {
       console.log(params);
 
-      if (params.permissions.camera === 'granted') {
+      if (params.state === 'success') {
         setVideoInputDevices(params.devices);
       }
     });
@@ -89,8 +85,6 @@ export const MediaSettings = () => {
         <Button
           onClick={() =>
             mediaStream.getStream((params) => {
-              // console.log({ params });
-              // setStreamState(params.state);
               setStream(params.stream);
 
               mediaStream.audioStreamController.getVisualizer((data) => {
@@ -104,11 +98,7 @@ export const MediaSettings = () => {
         <Button
           onClick={() =>
             mediaStream.closeStream((params) => {
-              // console.log({ params });
-              // setStreamState(params.state);
               setStream(params.stream);
-
-              mediaStream.audioStreamController.closeVisualizer();
               setData([]);
             })
           }
@@ -118,8 +108,6 @@ export const MediaSettings = () => {
         <Button
           onClick={() =>
             mediaStream.audioStreamController.getStream((params) => {
-              // console.log({ params });
-              // setStreamState(params.state);
               setStream(params.stream);
 
               mediaStream.audioStreamController.getVisualizer((data) => {
@@ -133,11 +121,7 @@ export const MediaSettings = () => {
         <Button
           onClick={() =>
             mediaStream.audioStreamController.closeStream((params) => {
-              // console.log({ params });
-              // setStreamState(params.state);
               setStream(params.stream);
-
-              mediaStream.audioStreamController.closeVisualizer();
               setData([]);
             })
           }
@@ -147,8 +131,6 @@ export const MediaSettings = () => {
         <Button
           onClick={() =>
             mediaStream.videoStreamController.getStream((params) => {
-              // console.log({ params });
-              // setStreamState(params.state);
               setStream(params.stream);
             })
           }
@@ -245,30 +227,59 @@ export const MediaSettings = () => {
           <div
             className={css`
               display: grid;
-              grid-auto-flow: column;
-              width: 100%;
-              height: 100px;
+              grid-auto-flow: row;
               margin: 8px 0;
               padding: 8px;
               overflow: hidden;
               border: 1px solid #000000;
               border-radius: 8px;
-              transform: rotateX(-180deg);
             `}
           >
-            {data.map((value, index) => {
-              return (
-                <div
-                  key={index}
-                  style={{
-                    width: '2px',
-                    height: value + 'px',
-                    maxHeight: '84px',
-                    backgroundColor: '#df7116',
-                  }}
-                />
-              );
-            })}
+            <div
+              className={css`
+                display: grid;
+                grid-auto-flow: column;
+                width: 100%;
+                height: 50px;
+                transform: rotateX(-180deg);
+              `}
+            >
+              {data.map((value, index) => {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      width: '2px',
+                      height: value + 'px',
+                      maxHeight: '50px',
+                      backgroundColor: value > 50 ? '#fb742d' : '#47464d',
+                    }}
+                  />
+                );
+              })}
+            </div>
+            <div
+              className={css`
+                display: grid;
+                grid-auto-flow: column;
+                width: 100%;
+                height: 50px;
+              `}
+            >
+              {data.map((value, index) => {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      width: '2px',
+                      height: value + 'px',
+                      maxHeight: '50px',
+                      backgroundColor: value > 50 ? '#fb742d' : '#47464d',
+                    }}
+                  />
+                );
+              })}
+            </div>
           </div>
           <video
             className={css`

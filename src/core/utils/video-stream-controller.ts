@@ -51,8 +51,14 @@ export class VideoStreamController extends StreamController {
   public override async getStream(
     callback?: ((params: { stream: MediaStream | null; state: StreamState }) => void) | undefined
   ): Promise<MediaStream | null> {
-    if (this.stream || this.state === 'loading') {
+    if (this.stream) {
       this.logs && console.log('LOGS: Видеопоток уже получен.');
+
+      return this.stream;
+    }
+
+    if (this.state === 'loading') {
+      this.logs && console.log('LOGS: Запрос на получение видеопотока выполняется.');
 
       return this.stream;
     }

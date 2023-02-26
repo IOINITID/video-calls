@@ -37,8 +37,6 @@ export class AudioStreamController extends StreamController {
   }
 
   public closeVisualizer() {
-    this.closeStream();
-
     if (this.animationFrame) {
       cancelAnimationFrame(this.animationFrame);
       this.animationFrame = null;
@@ -46,14 +44,13 @@ export class AudioStreamController extends StreamController {
   }
 
   public async getVisualizer(callback?: (data: number[]) => void) {
-    await this.getStream();
-
     if (this.stream) {
       const audioContext = new AudioContext();
       const analyser = audioContext.createAnalyser();
 
       analyser.fftSize = 128;
-      analyser.maxDecibels = 100;
+      analyser.minDecibels = -85;
+      analyser.maxDecibels = 150;
 
       const source = audioContext.createMediaStreamSource(this.stream);
 
@@ -92,8 +89,14 @@ export class AudioStreamController extends StreamController {
   public override async getStream(
     callback?: ((params: { stream: MediaStream | null; state: StreamState }) => void) | undefined
   ): Promise<MediaStream | null> {
-    if (this.stream || this.state === 'loading') {
+    if (this.stream) {
       this.logs && console.log('LOGS: Аудиопоток уже получен.');
+
+      return this.stream;
+    }
+
+    if (this.state === 'loading') {
+      this.logs && console.log('LOGS: Запрос на получение аудиопотока выполняется.');
 
       return this.stream;
     }
@@ -129,6 +132,8 @@ export class AudioStreamController extends StreamController {
       this.logs && console.log('LOGS: Аудиопоток уже закрыт.');
     } else {
       super.closeStream(callback);
+
+      this.closeVisualizer();
 
       this.logs && console.log('LOGS: Аудиопоток успешно закрыт.');
     }
