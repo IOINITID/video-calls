@@ -8,10 +8,6 @@ import { requestGetUserAction } from 'modules/user/store';
 import { socket } from 'core/utils/socket';
 import { Event } from 'core/constants';
 import { ModalIncomingCall } from 'core/modals/modal-incoming-call';
-import { Portal } from '../portal';
-import { MediaSettingsModal } from 'core/modals/media-settings-modal';
-import { Button } from '../button';
-import { css } from '@linaria/core';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -21,7 +17,6 @@ const App = () => {
 
   const [isIncomingCall, setIsIncomingCall] = useState(false);
   const [callingUser, setIsCallignUser] = useState<User | null>(null);
-  const [isMediaSettingsModal, setIsMediaSettingsModal] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
@@ -96,22 +91,7 @@ const App = () => {
   return (
     <>
       {authorizated ? <PrivateRoutes /> : <PublicRoutes />}
-      <Button
-        className={css`
-          position: fixed;
-          top: 32px;
-          right: 32px;
-        `}
-        onClick={() => setIsMediaSettingsModal(true)}
-      >
-        Настройки
-      </Button>
       <ModalIncomingCall open={isIncomingCall} onClose={() => setIsIncomingCall(false)} user={callingUser} />
-      <Portal>
-        {isMediaSettingsModal ? (
-          <MediaSettingsModal isOpen={isMediaSettingsModal} onClose={() => setIsMediaSettingsModal(false)} />
-        ) : null}
-      </Portal>
     </>
   );
 };
