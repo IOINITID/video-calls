@@ -3,22 +3,31 @@ import { Button } from 'core/components/button';
 import { socket } from 'core/utils/socket';
 import { setMeetAction } from 'modules/meet/store';
 import { User } from 'modules/user/services/types';
-import { memo } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-type ModalIncomingCallProps = {
-  open: boolean;
+type IncomingCallModalProps = {
   onClose: () => void;
   user: User | null;
 };
 
-const ModalIncomingCall = ({ open, onClose, user }: ModalIncomingCallProps) => {
+export const IncomingCallModal = ({ onClose, user }: IncomingCallModalProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log('IncomingCallModal render mount');
+  }, []);
+
+  useLayoutEffect(() => {
+    console.log('IncomingCallModal render layout mount');
+  }, []);
+
+  console.log('IncomingCallModal render');
+
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open onClose={onClose}>
       <Box
         sx={{
           display: 'grid',
@@ -73,5 +82,3 @@ const ModalIncomingCall = ({ open, onClose, user }: ModalIncomingCallProps) => {
     </Modal>
   );
 };
-
-export const ModalIncomingCallMemoized = memo(ModalIncomingCall);

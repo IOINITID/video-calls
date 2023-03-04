@@ -5,15 +5,14 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { css } from '@linaria/core';
-// import { Typography } from '@mui/material';
-import { AuthorizationLayout } from 'core/layouts/authorization-layout';
+import { CenterLayout } from 'core/layouts/center-layout';
 import { Button } from 'core/components/button';
 import { Input } from 'core/components/input';
 import { requestAuthorizationAction } from 'modules/authorization/store';
 import authorizationImage from 'core/assets/images/authorization-image.jpg';
 import { Typography } from '@mui/material';
 
-const Authorization = () => {
+export const Authorization = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,7 +21,7 @@ const Authorization = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
 
   return (
-    <AuthorizationLayout>
+    <CenterLayout>
       <div
         className={css`
           display: grid;
@@ -125,8 +124,6 @@ const Authorization = () => {
           </div>
         </div>
       </div>
-    </AuthorizationLayout>
+    </CenterLayout>
   );
 };
-
-export { Authorization };

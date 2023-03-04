@@ -7,9 +7,9 @@ import { requestRefreshAction } from 'modules/authorization/store';
 import { requestGetUserAction } from 'modules/user/store';
 import { socket } from 'core/utils/socket';
 import { Event } from 'core/constants';
-import { ModalIncomingCall } from 'core/modals/modal-incoming-call';
+import { IncomingCallModal } from 'core/modals/incoming-call-modal';
 
-const App = () => {
+export const App = () => {
   const dispatch = useDispatch();
 
   const { authorizated } = useSelector((state: RootState) => state.authorization);
@@ -91,9 +91,7 @@ const App = () => {
   return (
     <>
       {authorizated ? <PrivateRoutes /> : <PublicRoutes />}
-      <ModalIncomingCall open={isIncomingCall} onClose={() => setIsIncomingCall(false)} user={callingUser} />
+      {isIncomingCall ? <IncomingCallModal onClose={() => setIsIncomingCall(false)} user={callingUser} /> : null}
     </>
   );
 };
-
-export { App };

@@ -6,13 +6,13 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { css } from '@linaria/core';
 import { Typography } from '@mui/material';
-import { AuthorizationLayout } from 'core/layouts/authorization-layout';
+import { CenterLayout } from 'core/layouts/center-layout';
 import { Button } from 'core/components/button';
 import { Input } from 'core/components/input';
 import authorizationImage from 'core/assets/images/authorization-image.jpg';
 import { requestRegistrationAction } from 'modules/authorization/store';
 
-const Registration = () => {
+export const Registration = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ const Registration = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
 
   return (
-    <AuthorizationLayout>
+    <CenterLayout>
       <div
         className={css`
           display: grid;
@@ -156,8 +156,6 @@ const Registration = () => {
           </div>
         </div>
       </div>
-    </AuthorizationLayout>
+    </CenterLayout>
   );
 };
-
-export { Registration };

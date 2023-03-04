@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { css } from '@linaria/core';
 
-const AuthorizationLayout = ({ children }: { children: ReactElement }) => {
+export const CenterLayout = ({ children }: { children: ReactElement }) => {
   return (
     <div
       className={css`
@@ -15,5 +15,3 @@ const AuthorizationLayout = ({ children }: { children: ReactElement }) => {
     </div>
   );
 };
-
-export { AuthorizationLayout };

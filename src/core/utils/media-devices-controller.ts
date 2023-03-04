@@ -33,18 +33,19 @@ class MediaDevicesController {
    */
   private subscribeUpdateDevices(): void {
     navigator.mediaDevices.addEventListener('devicechange', (event) => {
-      console.log('LOGS: Устройства обновлены.', { event });
-
       if (this.audioInputDevices) {
         this.getDevices('audioinput', this.audioInputDevicesCallback);
+        console.log('LOGS: Устройства audioInputDevices обновлены.', { event });
       }
 
       if (this.audioOutputDevices) {
         this.getDevices('audiooutput', this.audioOutputDevicesCallback);
+        console.log('LOGS: Устройства audioOutputDevices обновлены.', { event });
       }
 
       if (this.videoInputDevices) {
         this.getDevices('videoinput', this.videoInputDevicesCallback);
+        console.log('LOGS: Устройства videoInputDevices обновлены.', { event });
       }
 
       if (this.allDevices) {
