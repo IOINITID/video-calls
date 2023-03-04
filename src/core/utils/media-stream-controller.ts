@@ -30,6 +30,26 @@ export class MediaStreamController extends StreamController {
     super.updateState(state, callback);
   }
 
+  public pause() {
+    if (this.stream) {
+      this.stream.getTracks().forEach((value) => {
+        value.enabled = false;
+
+        return value;
+      });
+    }
+  }
+
+  public play() {
+    if (this.stream) {
+      this.stream.getTracks().forEach((value) => {
+        value.enabled = true;
+
+        return value;
+      });
+    }
+  }
+
   /**
    * Метод который получает медиапоток.
    *

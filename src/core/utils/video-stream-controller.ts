@@ -22,6 +22,26 @@ export class VideoStreamController extends StreamController {
     }
   }
 
+  public pause() {
+    if (this.stream) {
+      this.stream.getTracks().forEach((value) => {
+        value.enabled = false;
+
+        return value;
+      });
+    }
+  }
+
+  public play() {
+    if (this.stream) {
+      this.stream.getTracks().forEach((value) => {
+        value.enabled = true;
+
+        return value;
+      });
+    }
+  }
+
   /**
    * Метод который обновляет состояние видеопотока.
    *

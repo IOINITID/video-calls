@@ -36,6 +36,26 @@ export class AudioStreamController extends StreamController {
     super.updateState(state, callback);
   }
 
+  public mute() {
+    if (this.stream) {
+      this.stream.getTracks().forEach((value) => {
+        value.enabled = false;
+
+        return value;
+      });
+    }
+  }
+
+  public unmute() {
+    if (this.stream) {
+      this.stream.getTracks().forEach((value) => {
+        value.enabled = true;
+
+        return value;
+      });
+    }
+  }
+
   public closeVisualizer() {
     if (this.animationFrame) {
       cancelAnimationFrame(this.animationFrame);
