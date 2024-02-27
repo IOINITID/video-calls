@@ -1,0 +1,855 @@
+/*! react/jsx-runtime */
+
+/*! @mui/material */
+
+/*! ./media-settings */
+
+/*! @mui/material */
+
+/*! ./friends-all */
+
+/*! @reduxjs/toolkit */
+
+/*! modules/meet/store */
+
+/*! core/utils/socket */
+
+/*! ./stream-controller */
+
+/*! core-js/modules/esnext.async-iterator.for-each.js */
+
+/*! react-redux */
+
+/*! react-router-dom */
+
+/*! @emotion/css */
+
+/*! modules/friends/pages/friends/components/friends-add */
+
+/*! core-js/modules/esnext.async-iterator.map.js */
+
+/*! react-router-dom */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! core/theme */
+
+/*! ./audio-stream-controller */
+
+/*! react-dropdown-select */
+
+/*! modules/user/store/selectors */
+
+/*! react */
+
+/*! react */
+
+/*! modules/authorization/services */
+
+/*! modules/authorization/store */
+
+/*! ./audio-stream-controller */
+
+/*! core-js/modules/esnext.iterator.constructor.js */
+
+/*! ../constants */
+
+/*! core/theme */
+
+/*! ../store */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! ../../theme */
+
+/*! @reduxjs/toolkit */
+
+/*! react/jsx-runtime */
+
+/*! react/jsx-runtime */
+
+/*! react */
+
+/*! react/jsx-runtime */
+
+/*! @mui/icons-material */
+
+/*! modules/user/hooks */
+
+/*! core/components/button */
+
+/*! modules/user/pages/settings/components/user-settings */
+
+/*! react-router-dom */
+
+/*! react/jsx-runtime */
+
+/*! modules/friends/store */
+
+/*! core/utils/socket */
+
+/*! modules/meet/pages/meet */
+
+/*! react-router-dom */
+
+/*! core/assets/images/authorization-image.jpg */
+
+/*! core/utils/media-stream-controller */
+
+/*! react-router-dom */
+
+/*! ./private-routes */
+
+/*! core/theme */
+
+/*! modules/invitations/constants */
+
+/*! core-js/modules/esnext.async-iterator.map.js */
+
+/*! core/components/user-approvals */
+
+/*! react-toastify */
+
+/*! modules/meet/store */
+
+/*! core/utils/axios-instance */
+
+/*! react/jsx-runtime */
+
+/*! @mui/icons-material */
+
+/*! core/components/input */
+
+/*! ../../../../core/layouts/channels-layout */
+
+/*! @mui/material */
+
+/*! @emotion/css */
+
+/*! @emotion/css */
+
+/*! core/components/user-control */
+
+/*! core/store */
+
+/*! modules/authorization/services */
+
+/*! modules/friends/pages/friends/components/friends-invitations */
+
+/*! modules/authorization/store */
+
+/*! react-router-dom */
+
+/*! react/jsx-runtime */
+
+/*! core-js/modules/web.dom-exception.stack.js */
+
+/*! react */
+
+/*! react/jsx-runtime */
+
+/*! core-js/modules/esnext.async-iterator.for-each.js */
+
+/*! core-js/modules/esnext.array-buffer.transfer-to-fixed-length.js */
+
+/*! ./user-profile */
+
+/*! core/utils/axios-instance */
+
+/*! ./constants */
+
+/*! redux-saga/effects */
+
+/*! core/components/select */
+
+/*! core/components/button */
+
+/*! core-js/modules/esnext.typed-array.unique-by.js */
+
+/*! ../../theme */
+
+/*! core/utils/axios-instance */
+
+/*! modules/friends/store */
+
+/*! ../../utils/socket */
+
+/*! core/components/user-control */
+
+/*! core/utils/socket */
+
+/*! ./stream-controller */
+
+/*! core-js/modules/esnext.iterator.constructor.js */
+
+/*! react */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! ./media-permissions-controller */
+
+/*! react-router-dom */
+
+/*! react-redux */
+
+/*! @reduxjs/toolkit */
+
+/*! react-redux */
+
+/*! ./meet */
+
+/*! modules/friends/store */
+
+/*! core-js/modules/esnext.async-iterator.for-each.js */
+
+/*! react/jsx-runtime */
+
+/*! core-js/modules/esnext.async-iterator.map.js */
+
+/*! ./constants */
+
+/*! @reduxjs/toolkit */
+
+/*! ../services */
+
+/*! ./select */
+
+/*! modules/friends/constants */
+
+/*! @emotion/css */
+
+/*! core-js/modules/web.dom-exception.stack.js */
+
+/*! react */
+
+/*! @mui/material */
+
+/*! modules/invitations/store */
+
+/*! react-router-dom */
+
+/*! ./video-stream-controller */
+
+/*! @mui/icons-material */
+
+/*! react/jsx-runtime */
+
+/*! ./constants */
+
+/*! core-js/modules/esnext.async-iterator.filter.js */
+
+/*! core-js/modules/esnext.async-iterator.for-each.js */
+
+/*! core/theme */
+
+/*! core-js/modules/esnext.async-iterator.map.js */
+
+/*! ../../../../../user/store/selectors */
+
+/*! core/components/navigation */
+
+/*! core/store/sagas */
+
+/*! core-js/modules/esnext.async-iterator.map.js */
+
+/*! core-js/modules/esnext.iterator.constructor.js */
+
+/*! ../../theme */
+
+/*! ./button */
+
+/*! @mui/material */
+
+/*! core/layouts/center-layout */
+
+/*! @mui/icons-material */
+
+/*! react */
+
+/*! modules/friends/constants */
+
+/*! core/components/user-friends */
+
+/*! ./registration */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! react/jsx-runtime */
+
+/*! core-js/modules/esnext.iterator.constructor.js */
+
+/*! core-js/modules/esnext.iterator.for-each.js */
+
+/*! core-js/modules/esnext.async-iterator.filter.js */
+
+/*! redux-saga/effects */
+
+/*! react-redux */
+
+/*! ./user-add-invite-to-friends */
+
+/*! modules/user/pages/settings/components/user-profile */
+
+/*! ./friends-add */
+
+/*! core/components/user-add-to-friends */
+
+/*! react-router-dom */
+
+/*! ./friends */
+
+/*! core/constants */
+
+/*! modules/meet/store */
+
+/*! @mui/material */
+
+/*! core-js/modules/esnext.async-iterator.map.js */
+
+/*! core/utils/socket */
+
+/*! @mui/material */
+
+/*! core/components/input */
+
+/*! react/jsx-runtime */
+
+/*! modules/invitations/store */
+
+/*! core/constants */
+
+/*! modules/friends/store */
+
+/*! core/constants */
+
+/*! ./user-add-to-friends */
+
+/*! ./user-control */
+
+/*! core-js/modules/esnext.iterator.constructor.js */
+
+/*! react */
+
+/*! react */
+
+/*! react/jsx-runtime */
+
+/*! ./user-settings */
+
+/*! modules/authorization/store */
+
+/*! core-js/modules/web.dom-exception.stack.js */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! modules/invitations/constants */
+
+/*! @mui/material */
+
+/*! modules/friends/pages/friends/components/friends-blocked */
+
+/*! react */
+
+/*! ./public-routes */
+
+/*! react-redux */
+
+/*! core-js/modules/esnext.iterator.constructor.js */
+
+/*! core/utils/axios-instance */
+
+/*! ./friends-invitations */
+
+/*! @emotion/css */
+
+/*! @mui/material */
+
+/*! core/assets/images/authorization-image.jpg */
+
+/*! core/constants */
+
+/*! modules/authorization/pages/authorization */
+
+/*! ./private-routes */
+
+/*! react */
+
+/*! react/jsx-runtime */
+
+/*! react */
+
+/*! react-router-dom */
+
+/*! react-redux */
+
+/*! core-js/modules/esnext.async-iterator.for-each.js */
+
+/*! react-redux */
+
+/*! @mui/material */
+
+/*! @mui/material */
+
+/*! ../services */
+
+/*! react/jsx-runtime */
+
+/*! modules/friends/constants */
+
+/*! core/components/user-control */
+
+/*! ./constants */
+
+/*! react/jsx-runtime */
+
+/*! @mui/material */
+
+/*! core/layouts/center-layout */
+
+/*! modules/meet/store */
+
+/*! core-js/modules/esnext.iterator.filter.js */
+
+/*! modules/user/store */
+
+/*! @mui/material */
+
+/*! core-js/modules/esnext.iterator.constructor.js */
+
+/*! react */
+
+/*! react/jsx-runtime */
+
+/*! core/components/video-card */
+
+/*! core/constants */
+
+/*! ./friends-blocked */
+
+/*! react/jsx-runtime */
+
+/*! ./channels */
+
+/*! modules/user/store */
+
+/*! core/utils/socket */
+
+/*! react/jsx-runtime */
+
+/*! modules/authorization/pages/registration */
+
+/*! @mui/material */
+
+/*! core/components/input */
+
+/*! react-router-dom */
+
+/*! core/components/input */
+
+/*! @mui/icons-material */
+
+/*! @mui/material */
+
+/*! react */
+
+/*! core-js/modules/esnext.iterator.for-each.js */
+
+/*! core/store */
+
+/*! modules/user/hooks */
+
+/*! react/jsx-runtime */
+
+/*! ./voice-and-video */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! core-js/modules/esnext.iterator.filter.js */
+
+/*! react */
+
+/*! @emotion/css */
+
+/*! react */
+
+/*! react-redux */
+
+/*! ../../utils/axios-instance */
+
+/*! core/theme */
+
+/*! core/utils/socket */
+
+/*! react/jsx-runtime */
+
+/*! modules/user/store */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! @emotion/css */
+
+/*! react-redux */
+
+/*! core-js/modules/esnext.async-iterator.filter.js */
+
+/*! modules/invitations/store */
+
+/*! ./user-friends */
+
+/*! core/components/button */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! @mui/icons-material */
+
+/*! core/theme */
+
+/*! core/components/button */
+
+/*! core/utils/socket */
+
+/*! ../constants */
+
+/*! @mui/material */
+
+/*! react */
+
+/*! core-js/modules/esnext.typed-array.group-by.js */
+
+/*! react-redux */
+
+/*! react */
+
+/*! modules/user/pages/settings */
+
+/*! core/utils/socket */
+
+/*! core/components/navigation */
+
+/*! modules/user/utils */
+
+/*! ./input */
+
+/*! modules/invitations/store */
+
+/*! ../store */
+
+/*! core/modals/incoming-call-modal */
+
+/*! @emotion/css */
+
+/*! core/components/root */
+
+/*! react */
+
+/*! react/jsx-runtime */
+
+/*! modules/user/pages/settings/components/user-account */
+
+/*! react */
+
+/*! core/components/button */
+
+/*! modules/user/store */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! react/jsx-runtime */
+
+/*! ./public-routes */
+
+/*! react */
+
+/*! react/jsx-runtime */
+
+/*! ../store */
+
+/*! @reduxjs/toolkit */
+
+/*! redux-saga */
+
+/*! modules/friends/pages/friends/components/friends-online */
+
+/*! react-redux */
+
+/*! redux-saga/effects */
+
+/*! @mui/material */
+
+/*! core/components/user-friends */
+
+/*! ./user-account */
+
+/*! ./friends-online */
+
+/*! ./center-layout */
+
+/*! react-redux */
+
+/*! core-js/modules/esnext.async-iterator.map.js */
+
+/*! ./navigation */
+
+/*! react/jsx-runtime */
+
+/*! @mui/material */
+
+/*! core-js/modules/esnext.async-iterator.map.js */
+
+/*! @mui/material */
+
+/*! core/components/navigation */
+
+/*! core/utils/socket */
+
+/*! react/jsx-runtime */
+
+/*! core/components/user-add-invite-to-friends */
+
+/*! react */
+
+/*! ../store */
+
+/*! core-js/modules/esnext.iterator.for-each.js */
+
+/*! ./settings */
+
+/*! react-redux */
+
+/*! ./stream-controller */
+
+/*! react-router-dom */
+
+/*! core/theme */
+
+/*! core/components/input */
+
+/*! react */
+
+/*! core/theme */
+
+/*! modules/friends/store */
+
+/*! modules/user/store */
+
+/*! modules/friends/pages/friends */
+
+/*! ../../modals/modal-change-user-email */
+
+/*! @emotion/css */
+
+/*! react/jsx-runtime */
+
+/*! modules/friends/pages/friends/components/friends-all */
+
+/*! ./video-card */
+
+/*! react-redux */
+
+/*! ./app */
+
+/*! core/components/button */
+
+/*! core-js/modules/esnext.array-buffer.detached.js */
+
+/*! core/components/input */
+
+/*! modules/friends/sagas */
+
+/*! core/components/button */
+
+/*! core-js/modules/esnext.typed-array.to-spliced.js */
+
+/*! core/theme */
+
+/*! @emotion/css */
+
+/*! core/utils/socket */
+
+/*! modules/friends/store */
+
+/*! core-js/modules/web.dom-exception.stack.js */
+
+/*! modules/user/store */
+
+/*! core/components/button */
+
+/*! core-js/modules/esnext.iterator.for-each.js */
+
+/*! core-js/modules/esnext.async-iterator.map.js */
+
+/*! modules/channels/pages/channels */
+
+/*! modules/authorization/store */
+
+/*! core-js/modules/esnext.iterator.filter.js */
+
+/*! ../constants */
+
+/*! modules/user/store */
+
+/*! react/jsx-runtime */
+
+/*! modules/media-settings */
+
+/*! core/components/button */
+
+/*! core-js/modules/esnext.iterator.for-each.js */
+
+/*! modules/authorization/sagas */
+
+/*! react-router-dom */
+
+/*! react/jsx-runtime */
+
+/*! core-js/modules/esnext.typed-array.filter-reject.js */
+
+/*! core-js/modules/esnext.async-iterator.map.js */
+
+/*! react */
+
+/*! @reduxjs/toolkit */
+
+/*! ./user-approvals */
+
+/*! react-redux */
+
+/*! modules/user/store/selectors */
+
+/*! @mui/material */
+
+/*! ./video-stream-controller */
+
+/*! core-js/modules/esnext.async-iterator.for-each.js */
+
+/*! modules/friends/constants */
+
+/*! react-redux */
+
+/*! @emotion/css */
+
+/*! react */
+
+/*! core/theme */
+
+/*! ../button */
+
+/*! core/routes */
+
+/*! core/components/app */
+
+/*! react */
+
+/*! ./channels-layout */
+
+/*! react */
+
+/*! ../constants */
+
+/*! core/constants */
+
+/*! ./incoming-call-modal */
+
+/*! @mui/material */
+
+/*! react-redux */
+
+/*! @mui/material */
+
+/*! react */
+
+/*! react */
+
+/*! core/components/button */
+
+/*! core-js/modules/esnext.iterator.constructor.js */
+
+/*! ./authorization */
+
+/*! socket.io-client */
+
+/*! redux-saga/effects */
+
+/*! ./root */
+
+/*! react */
+
+/*! ../../modals/modal-change-user-name */
+
+/*! modules/user/pages/settings/components/voice-and-video */
+
+/*! react/jsx-runtime */
+
+/*! core-js/modules/esnext.array-buffer.transfer.js */
+
+/*! react/jsx-runtime */
+
+/*! core/constants */
+
+/*! modules/authorization/store */
+
+/*! modules/user/sagas */
+
+/*! react-router-dom */
+
+/*! modules/friends/store */
+
+/*! react-router-dom */
+
+/*! modules/user/services */
+
+/*! core/theme */
+
+/*! redux-saga/effects */
+
+/*! @mui/material */
+
+/*! react/jsx-runtime */
+
+/*! axios */
+
+/*! @mui/icons-material */
+
+/*! core/utils/media-devices-controller */
+
+/*! @mui/material */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! react-redux */
+
+/*! react/jsx-runtime */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! axios */
+
+/*! core-js/modules/esnext.async-iterator.map.js */
+
+/*! core-js/modules/esnext.iterator.for-each.js */
+
+/*! react/jsx-runtime */
+
+/*! react-redux */
+
+/*! core/utils/socket */
+
+/*! ../button */
+
+/*! modules/invitations/sagas */
+
+/*! react/jsx-runtime */
+
+/*! react/jsx-runtime */
+
+/*! react-redux */
+
+/*! modules/authorization/store */
+
+/*! core/components/button */
+
+/*! react-dom/client */
+
+/*! @mui/icons-material */
+
+/*! core/components/button */

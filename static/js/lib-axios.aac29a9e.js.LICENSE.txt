@@ -1,0 +1,109 @@
+/*! ./cancel/Cancel */
+
+/*! ./../utils */
+
+/*! ./enhanceError */
+
+/*! ./dispatchRequest */
+
+/*! ./../helpers/isURLSameOrigin */
+
+/*! ./../helpers/cookies */
+
+/*! ./../defaults */
+
+/*! ./../utils */
+
+/*! ./core/enhanceError */
+
+/*! ../core/buildFullPath */
+
+/*! ./../helpers/buildURL */
+
+/*! ./../core/settle */
+
+/*! ./../utils */
+
+/*! ../utils */
+
+/*! ./mergeConfig */
+
+/*! ./InterceptorManager */
+
+/*! ./helpers/spread */
+
+/*! ./../utils */
+
+/*! ../helpers/validator */
+
+/*! ./defaults */
+
+/*! ./../utils */
+
+/*! ./transformData */
+
+/*! ../helpers/isAbsoluteURL */
+
+/*! ./adapters/http */
+
+/*! ./lib/axios */
+
+/*! ../cancel/Cancel */
+
+/*! ../defaults */
+
+/*! ./createError */
+
+/*! ./../utils */
+
+/*! ./helpers/bind */
+
+/*! ./core/Axios */
+
+/*! ./../utils */
+
+/*! ../utils */
+
+/*! ../env/data */
+
+/*! ./core/mergeConfig */
+
+/*! ./helpers/bind */
+
+/*! ../cancel/isCancel */
+
+/*! ./../utils */
+
+/*! ./../utils */
+
+/*! ../core/createError */
+
+/*! ../helpers/combineURLs */
+
+/*! ./utils */
+
+/*! ./cancel/isCancel */
+
+/*! ./helpers/isAxiosError */
+
+/*! ./utils */
+
+/*! ./cancel/CancelToken */
+
+/*! ./../helpers/parseHeaders */
+
+/*! ./../utils */
+
+/*! ./adapters/xhr */
+
+/*! ./helpers/normalizeHeaderName */
+
+/*! ./Cancel */
+
+/*! ../defaults */
+
+/*! ../cancel/Cancel */
+
+/*! ../helpers/buildURL */
+
+/*! ./env/data */
