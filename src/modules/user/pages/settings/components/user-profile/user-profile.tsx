@@ -1,4 +1,4 @@
-import { css } from '@linaria/core';
+import { css } from '@emotion/css';
 import { AddPhotoAlternateOutlined, CancelOutlined, Check, Colorize, Edit } from '@mui/icons-material';
 import { Box, Link, Slide, Snackbar, Typography } from '@mui/material';
 import { Button } from 'core/components/button';

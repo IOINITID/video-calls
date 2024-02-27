@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { css } from '@linaria/core';
+import { css } from '@emotion/css';
 
 export const CenterLayout = ({ children }: { children: ReactElement }) => {
   return (

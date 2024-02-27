@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userChannelMessagesSelector, userUserSelector } from 'modules/user/store/selectors';
 import { getChannelMessages } from 'core/services/get-channel-messages';
 import { Input } from '../input';
-import { css } from '@linaria/core';
+import { css } from '@emotion/css';
 
 const Messages = () => {
   const navigate = useNavigate();
