@@ -1,0 +1,147 @@
+/*! @mui/material */
+
+/*! @mui/material */
+
+/*! core/utils/socket */
+
+/*! modules/user/store */
+
+/*! core/utils/socket */
+
+/*! core/components/root */
+
+/*! redux-saga/effects */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! ../store */
+
+/*! modules/invitations/store */
+
+/*! modules/user/sagas */
+
+/*! core/store */
+
+/*! react-router-dom */
+
+/*! redux-saga/effects */
+
+/*! core-js/modules/esnext.async-iterator.map.js */
+
+/*! modules/friends/sagas */
+
+/*! modules/authorization/store */
+
+/*! core/utils/axios-instance */
+
+/*! ../constants */
+
+/*! modules/user/services */
+
+/*! core/utils/socket */
+
+/*! axios */
+
+/*! @reduxjs/toolkit */
+
+/*! @reduxjs/toolkit */
+
+/*! modules/user/store */
+
+/*! redux-saga/effects */
+
+/*! react-dom/client */
+
+/*! ../services */
+
+/*! react-redux */
+
+/*! ./constants */
+
+/*! core/store/sagas */
+
+/*! @reduxjs/toolkit */
+
+/*! core/utils/axios-instance */
+
+/*! modules/friends/store */
+
+/*! ../store */
+
+/*! redux-saga */
+
+/*! axios */
+
+/*! @reduxjs/toolkit */
+
+/*! ../constants */
+
+/*! core/constants */
+
+/*! ../constants */
+
+/*! react */
+
+/*! react/jsx-runtime */
+
+/*! socket.io-client */
+
+/*! ./app */
+
+/*! redux-saga/effects */
+
+/*! @reduxjs/toolkit */
+
+/*! core/constants */
+
+/*! modules/meet/store */
+
+/*! core/utils/axios-instance */
+
+/*! ./constants */
+
+/*! modules/authorization/services */
+
+/*! core/components/app */
+
+/*! modules/authorization/services */
+
+/*! modules/invitations/sagas */
+
+/*! modules/authorization/store */
+
+/*! core/utils/axios-instance */
+
+/*! ../store */
+
+/*! ./constants */
+
+/*! redux-saga/effects */
+
+/*! core/theme */
+
+/*! modules/authorization/sagas */
+
+/*! modules/authorization/store */
+
+/*! react/jsx-runtime */
+
+/*! react */
+
+/*! ../services */
+
+/*! react/jsx-runtime */
+
+/*! @reduxjs/toolkit */
+
+/*! ./constants */
+
+/*! ../store */
+
+/*! ./root */
+
+/*! core/store */
+
+/*! ../constants */
+
+/*! react-redux */
