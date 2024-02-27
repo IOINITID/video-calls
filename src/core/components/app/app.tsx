@@ -90,8 +90,8 @@ export const App = () => {
 
   return (
     <>
-      {authorizated ? <PrivateRoutes /> : <PublicRoutes />}
-      {isIncomingCall ? <IncomingCallModal onClose={() => setIsIncomingCall(false)} user={callingUser} /> : null}
+      {/* {authorizated ? <PrivateRoutes /> : <PublicRoutes />} */}
+      {/* {isIncomingCall ? <IncomingCallModal onClose={() => setIsIncomingCall(false)} user={callingUser} /> : null} */}
     </>
   );
 };
