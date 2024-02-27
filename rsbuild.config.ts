@@ -9,4 +9,7 @@ export default defineConfig({
       core: './src/core',
     },
   },
+  output: {
+    assetPrefix: './',
+  },
 });
