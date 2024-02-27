@@ -80,23 +80,7 @@ const UserAccount = () => {
               электронной почты. Если вы не получили письмо или у него истек срок действия, вы можете попросить
               отправить новое.
             </Typography>
-            <Button
-              sx={{
-                textTransform: 'none',
-                backgroundColor: '#686d73',
-
-                '&:hover, &:focus': {
-                  backgroundColor: '#84888d',
-                },
-
-                '&:active': {
-                  backgroundColor: '#6b6e74',
-                },
-              }}
-              variant="contained"
-            >
-              Отправить письмо с подтверждением еще раз
-            </Button>
+            <Button>Отправить письмо с подтверждением еще раз</Button>
           </Box>
         </Box>
         {/* NOTE: Профиль пользователя */}
@@ -155,13 +139,7 @@ const UserAccount = () => {
                 #{user?.id.slice(-4)}
               </Typography>
             </Typography>
-            <Button
-              sx={{ textTransform: 'none' }}
-              variant="contained"
-              onClick={() => navigate('/settings/user-profile')}
-            >
-              Настр. профиль пользователя
-            </Button>
+            <Button onClick={() => navigate('/settings/user-profile')}>Настр. профиль пользователя</Button>
           </Box>
           <Box
             sx={{ display: 'grid', margin: '16px', padding: '16px', backgroundColor: '#43454a', borderRadius: '4px' }}
@@ -187,24 +165,7 @@ const UserAccount = () => {
                   </Typography>
                 </Typography>
               </Box>
-              <Button
-                sx={{
-                  textTransform: 'none',
-                  backgroundColor: '#686d73',
-
-                  '&:hover, &:focus': {
-                    backgroundColor: '#84888d',
-                  },
-
-                  '&:active': {
-                    backgroundColor: '#6b6e74',
-                  },
-                }}
-                variant="contained"
-                onClick={() => setIsModalChangeUserName(true)}
-              >
-                Изменить
-              </Button>
+              <Button onClick={() => setIsModalChangeUserName(true)}>Изменить</Button>
             </Box>
             {/* NOTE: Электронная почта */}
             <Box
@@ -239,24 +200,7 @@ const UserAccount = () => {
                   </Link>
                 </Typography>
               </Box>
-              <Button
-                sx={{
-                  textTransform: 'none',
-                  backgroundColor: '#686d73',
-
-                  '&:hover, &:focus': {
-                    backgroundColor: '#84888d',
-                  },
-
-                  '&:active': {
-                    backgroundColor: '#6b6e74',
-                  },
-                }}
-                variant="contained"
-                onClick={() => setIsModalChangeUserEmail(true)}
-              >
-                Изменить
-              </Button>
+              <Button onClick={() => setIsModalChangeUserEmail(true)}>Изменить</Button>
             </Box>
             {/* NOTE: Номер телефона */}
             <Box
@@ -278,24 +222,7 @@ const UserAccount = () => {
                   Вы еще не указали номер телефона.
                 </Typography>
               </Box>
-              <Button
-                sx={{
-                  textTransform: 'none',
-                  backgroundColor: '#686d73',
-
-                  '&:hover, &:focus': {
-                    backgroundColor: '#84888d',
-                  },
-
-                  '&:active': {
-                    backgroundColor: '#6b6e74',
-                  },
-                }}
-                variant="contained"
-                disabled
-              >
-                Изменить
-              </Button>
+              <Button disabled>Изменить</Button>
             </Box>
           </Box>
         </Box>

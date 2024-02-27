@@ -1,51 +1,74 @@
-import { memo } from 'react';
-import { Box, Typography } from '@mui/material';
-import { theme } from '../../theme';
-import { Navigation } from '../../components/navigation';
-import { UserControl } from '../../components/user-control';
+import { Typography } from '@mui/material';
+import { css } from '@linaria/core';
+import { Navigation } from 'core/components/navigation';
+import { UserControl } from 'core/components/user-control';
 
 const ChannelsLayout = () => {
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: '72px 376px 1fr',
-        height: '100%',
-        backgroundColor: theme.palette.common.white,
-      }}
+    <div
+      className={css`
+        display: grid;
+        grid-template-columns: 72px 376px 1fr;
+        height: 100%;
+        background-color: #ffffff;
+      `}
     >
       {/* Навигация */}
-      <Box sx={{ backgroundColor: theme.palette.grey[200] }}>
+      <div
+        className={css`
+          background-color: #fefefe;
+        `}
+      >
         <Navigation />
-      </Box>
+      </div>
       {/* Личные сообщения*/}
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateRows: '72px 1fr 64px',
-          backgroundColor: theme.palette.grey[400],
-          overflow: 'hidden',
-        }}
+      <div
+        className={css`
+          display: grid;
+          grid-template-rows: 72px 1fr 64px;
+          overflow: hidden;
+          background-color: #fefefe;
+        `}
       >
         {/* Заголовок  */}
-        <Box sx={{ padding: '24px 20px', borderBottom: `1px solid ${theme.palette.grey[600]}` }}>
+        <div
+          className={css`
+            padding: 24px 20px;
+            border-bottom: 1px solid #fefefe;
+          `}
+        >
           <Typography variant="h6">Каналы</Typography>
-        </Box>
+        </div>
         {/* Список сообщений от пользователей */}
-        <Box sx={{ padding: '0 8px', margin: '28px 0', overflow: 'scroll' }}>
-          <Box sx={{ display: 'grid', rowGap: '12px' }}>
+        <div
+          className={css`
+            margin: 28px 0;
+            padding: 0 8px;
+            overflow: scroll;
+          `}
+        >
+          <div
+            className={css`
+              display: grid;
+              row-gap: 12px;
+            `}
+          >
             {Array.from(Array(25).keys()).map((value) => {
-              return <Box key={value} />;
+              return <div key={value} />;
             })}
-          </Box>
-        </Box>
+          </div>
+        </div>
         {/* Управление пользователем */}
         <UserControl />
-      </Box>
+      </div>
       {/* Блок текстовых сообщений или видеочата */}
-      <Box sx={{ backgroundColor: theme.palette.grey[600] }}></Box>
-    </Box>
+      <div
+        className={css`
+          background-color: #fefefe;
+        `}
+      ></div>
+    </div>
   );
 };
 
-export const ChannelsLayoutMemoized = memo(ChannelsLayout);
+export { ChannelsLayout };

@@ -1,1 +1,1 @@
-export { NavigationMemoized as Navigation } from './navigation';
+export { Navigation } from './navigation';

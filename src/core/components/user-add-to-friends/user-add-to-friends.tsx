@@ -68,8 +68,6 @@ const UserAddToFriends = ({ id, name, status, image }: UserAddToFriendsProps) =>
         }}
       >
         <Button
-          variant="contained"
-          color="primary"
           onClick={() => {
             dispatch(requestAddToFriendsAction({ friend_id: id }));
           }}
@@ -77,8 +75,6 @@ const UserAddToFriends = ({ id, name, status, image }: UserAddToFriendsProps) =>
           Добавить
         </Button>
         <Button
-          variant="contained"
-          color="primary"
           onClick={() => {
             dispatch(requestDeclineInvitationsAction({ friend_id: id }));
           }}

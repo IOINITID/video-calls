@@ -1,9 +1,8 @@
-import { css } from '@emotion/css';
+import { css } from '@linaria/core';
 import { AddPhotoAlternateOutlined, CancelOutlined, Check, Colorize, Edit } from '@mui/icons-material';
-import { LoadingButton } from '@mui/lab';
 import { Box, Link, Slide, Snackbar, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
-import { TextField } from 'core/components/text-field';
+import { Input } from 'core/components/input';
 import { theme } from 'core/theme';
 import { useTimer } from 'modules/user/hooks';
 import { requestUpdateUserAction } from 'modules/user/store';
@@ -90,18 +89,19 @@ const UserProfile = () => {
       }}
     >
       {/* NOTE: Input для загрузки изображения */}
-      <TextField
-        sx={{ display: 'none' }}
+      <Input
+        // sx={{ display: 'none' }}
         type="file"
         id="image"
         name="image"
-        label="Изображение профиля"
-        inputProps={{ ref: (input: any) => (imageInput.current = input) }}
+        // label="Изображение профиля"
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // inputProps={{ ref: (input: any) => (imageInput.current = input) }}
         onChange={handleImageChange}
         placeholder="Выберите изображение профиля"
         autoComplete="off"
-        fullWidth
-        focused
+        // fullWidth
+        // focused
       />
       {/* NOTE: Сохранение изменений профиля пользователя */}
       <Snackbar
@@ -149,10 +149,7 @@ const UserProfile = () => {
             >
               <Typography>Сброс</Typography>
             </Link>
-            <LoadingButton
-              sx={{ textTransform: 'initial' }}
-              variant="contained"
-              color="success"
+            <Button
               onClick={() => {
                 dispatch(
                   requestUpdateUserAction({
@@ -168,19 +165,19 @@ const UserProfile = () => {
               }}
             >
               Сохранить изменения
-            </LoadingButton>
+            </Button>
           </Box>
         }
       />
       <Typography
-        className={css`
-          padding-bottom: 20px !important;
-          font-weight: 600 !important;
-          font-size: 20px !important;
-          line-height: 24px !important;
-          color: #ffffff !important;
-          border-bottom: 1px solid #000000;
-        `}
+      // className={css`
+      //   padding-bottom: 20px !important;
+      //   font-weight: 600 !important;
+      //   font-size: 20px !important;
+      //   line-height: 24px !important;
+      //   color: #ffffff !important;
+      //   border-bottom: 1px solid #000000;
+      // `}
       >
         Профиль пользователя
       </Typography>
@@ -211,13 +208,13 @@ const UserProfile = () => {
         <Box>
           <Box sx={{ padding: '20px 0', borderBottom: '1px solid #000000' }}>
             <Typography
-              className={css`
-                margin-bottom: 8px !important;
-                font-weight: 600 !important;
-                font-size: 12px !important;
-                line-height: 16px !important;
-                text-transform: uppercase !important;
-              `}
+            // className={css`
+            //   margin-bottom: 8px !important;
+            //   font-weight: 600 !important;
+            //   font-size: 12px !important;
+            //   line-height: 16px !important;
+            //   text-transform: uppercase !important;
+            // `}
             >
               Аватар
             </Typography>
@@ -230,8 +227,6 @@ const UserProfile = () => {
               }}
             >
               <Button
-                sx={{ textTransform: 'initial' }}
-                variant="contained"
                 onClick={() => {
                   if (imageInput.current) {
                     imageInput.current.click();
@@ -254,13 +249,13 @@ const UserProfile = () => {
           {/* NOTE: Цвет профиля */}
           <Box sx={{ padding: '20px 0', borderBottom: '1px solid #000000' }}>
             <Typography
-              className={css`
-                margin-bottom: 8px !important;
-                font-weight: 600 !important;
-                font-size: 12px !important;
-                line-height: 16px !important;
-                text-transform: uppercase !important;
-              `}
+            // className={css`
+            //   margin-bottom: 8px !important;
+            //   font-weight: 600 !important;
+            //   font-size: 12px !important;
+            //   line-height: 16px !important;
+            //   text-transform: uppercase !important;
+            // `}
             >
               Цвет профиля
             </Typography>
@@ -283,10 +278,10 @@ const UserProfile = () => {
                   {isDefaultColor && <Check sx={{ fill: '#ffffff' }} width={24} height={24} />}
                 </Box>
                 <Typography
-                  className={css`
-                    font-size: 12px !important;
-                    line-height: 16px !important;
-                  `}
+                // className={css`
+                //   font-size: 12px !important;
+                //   line-height: 16px !important;
+                // `}
                 >
                   По умолчанию
                 </Typography>
@@ -332,10 +327,10 @@ const UserProfile = () => {
                 </Box>
                 <Colorize sx={{ position: 'absolute', top: '0', right: '8px' }} width={14} height={14} />
                 <Typography
-                  className={css`
-                    font-size: 12px !important;
-                    line-height: 16px !important;
-                  `}
+                // className={css`
+                //   font-size: 12px !important;
+                //   line-height: 16px !important;
+                // `}
                 >
                   Пользовательские
                 </Typography>
@@ -344,13 +339,13 @@ const UserProfile = () => {
             {/* NOTE: Настройка баннера */}
             <Box sx={{ paddingTop: '20px' }}>
               <Typography
-                className={css`
-                  margin-bottom: 8px !important;
-                  font-weight: 600 !important;
-                  font-size: 12px !important;
-                  line-height: 16px !important;
-                  text-transform: uppercase !important;
-                `}
+              // className={css`
+              //   margin-bottom: 8px !important;
+              //   font-weight: 600 !important;
+              //   font-size: 12px !important;
+              //   line-height: 16px !important;
+              //   text-transform: uppercase !important;
+              // `}
               >
                 Баннер профиля
               </Typography>
@@ -359,48 +354,39 @@ const UserProfile = () => {
                   Мы рекомендуем использовать изображение как минимум 600x240. Доступные форматы PNG, JPG или
                   анимированные GIF размером не более 5МБ.
                 </Typography>
-                <Button
-                  sx={{ textTransform: 'initial' }}
-                  disableRipple
-                  disableElevation
-                  variant="contained"
-                  color="success"
-                  onClick={() => null}
-                >
-                  Загрузить баннер
-                </Button>
+                <Button onClick={() => null}>Загрузить баннер</Button>
               </Box>
             </Box>
           </Box>
           {/* NOTE: Обо мне */}
           <Box sx={{ padding: '20px 0' }}>
             <Typography
-              className={css`
-                margin-bottom: 8px !important;
-                font-weight: 600 !important;
-                font-size: 12px !important;
-                line-height: 16px !important;
-                text-transform: uppercase !important;
-              `}
+            // className={css`
+            //   margin-bottom: 8px !important;
+            //   font-weight: 600 !important;
+            //   font-size: 12px !important;
+            //   line-height: 16px !important;
+            //   text-transform: uppercase !important;
+            // `}
             >
               Обо мне
             </Typography>
             <Typography
-              className={css`
-                margin-bottom: 8px !important;
-                font-size: 14px !important;
-                line-height: 20px !important;
-              `}
+            // className={css`
+            //   margin-bottom: 8px !important;
+            //   font-size: 14px !important;
+            //   line-height: 20px !important;
+            // `}
             >
               Можно использовать разметку теста и ссылки.
             </Typography>
             {/* TODO: Максимальное число символов 190 и иконка открытия emoji. */}
-            <TextField
+            <Input
               value={description}
               onChange={(event) => setDescription(event.target.value)}
-              multiline
-              rows={4}
-              fullWidth
+              // multiline
+              // rows={4}
+              // fullWidth
             />
           </Box>
         </Box>
@@ -408,13 +394,13 @@ const UserProfile = () => {
         <Box>
           <Box sx={{ padding: '20px 0 0 0' }}>
             <Typography
-              className={css`
-                margin-bottom: 8px !important;
-                font-weight: 600 !important;
-                font-size: 12px !important;
-                line-height: 16px !important;
-                text-transform: uppercase !important;
-              `}
+            // className={css`
+            //   margin-bottom: 8px !important;
+            //   font-weight: 600 !important;
+            //   font-size: 12px !important;
+            //   line-height: 16px !important;
+            //   text-transform: uppercase !important;
+            // `}
             >
               Предпросмотр
             </Typography>
@@ -520,20 +506,20 @@ const UserProfile = () => {
             >
               {/* NOTE: Имя пользователя */}
               <Typography
-                className={css`
-                  padding: 16px 0;
-                  color: #ffffff;
-                `}
+              // className={css`
+              //   padding: 16px 0;
+              //   color: #ffffff;
+              // `}
               >
                 {user?.name}
                 {/* NOTE: Тег пользователя */}
                 <Typography
-                  className={css`
-                    font-size: 20px;
-                    line-height: 24px;
-                    color: #b9bbbe;
-                    text-transform: uppercase;
-                  `}
+                  // className={css`
+                  //   font-size: 20px;
+                  //   line-height: 24px;
+                  //   color: #b9bbbe;
+                  //   text-transform: uppercase;
+                  // `}
                   component="span"
                 >
                   #{user?.id.slice(-4)}
@@ -541,16 +527,16 @@ const UserProfile = () => {
               </Typography>
               {/* NOTE: Обо мне */}
               <Typography
-                className={css`
-                  margin-bottom: 8px !important;
-                  padding: 20px 0 0 0 !important;
-                  font-weight: 600 !important;
-                  font-size: 12px !important;
-                  line-height: 16px !important;
-                  color: #b9bbbe;
-                  text-transform: uppercase !important;
-                  border-top: 1px solid ${theme.palette.grey[800]};
-                `}
+                // className={css`
+                //   margin-bottom: 8px !important;
+                //   padding: 20px 0 0 0 !important;
+                //   font-weight: 600 !important;
+                //   font-size: 12px !important;
+                //   line-height: 16px !important;
+                //   color: #b9bbbe;
+                //   text-transform: uppercase !important;
+                //   border-top: 1px solid ${theme.palette.grey[800]};
+                // `}
                 variant="subtitle1"
               >
                 Обо мне
@@ -560,16 +546,16 @@ const UserProfile = () => {
               </Typography>
               {/* NOTE: Настройка профиля */}
               <Typography
-                className={css`
-                  margin-bottom: 8px !important;
-                  padding: 20px 0 0 0 !important;
-                  font-weight: 600 !important;
-                  font-size: 12px !important;
-                  line-height: 16px !important;
-                  color: #b9bbbe;
-                  text-transform: uppercase !important;
-                  border-top: 1px solid ${theme.palette.grey[800]};
-                `}
+                // className={css`
+                //   margin-bottom: 8px !important;
+                //   padding: 20px 0 0 0 !important;
+                //   font-weight: 600 !important;
+                //   font-size: 12px !important;
+                //   line-height: 16px !important;
+                //   color: #b9bbbe;
+                //   text-transform: uppercase !important;
+                //   border-top: 1px solid ${theme.palette.grey[800]};
+                // `}
                 variant="subtitle1"
               >
                 Настройка профиля

@@ -1,13 +1,9 @@
-import { memo } from 'react';
-import { CircularProgress } from '@mui/material';
-import { AuthorizationLayout } from '../../layouts/authorization-layout';
+import { CenterLayout } from 'core/layouts/center-layout';
 
-const Loader = () => {
+export const Loader = () => {
   return (
-    <AuthorizationLayout>
-      <CircularProgress />
-    </AuthorizationLayout>
+    <CenterLayout>
+      <div>Загрузка...</div>
+    </CenterLayout>
   );
 };
-
-export const LoaderMemoized = memo(Loader);

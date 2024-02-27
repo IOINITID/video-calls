@@ -1,2 +1,2 @@
-export { SettingsMemoized as Settings } from './settings';
-export { SettingsMemoized as default } from './settings';
+export { Settings } from './settings';
+export { Settings as default } from './settings';

@@ -1,12 +1,19 @@
-import { memo } from 'react';
-import { Button as MUIButton, ButtonProps as MUIButtonProps } from '@mui/material';
+import { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
+import { css } from '@linaria/core';
 
-const Button = ({ children, sx, ...props }: MUIButtonProps) => {
+type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
+
+const Button = ({ children, ...props }: ButtonProps) => {
   return (
-    <MUIButton disableElevation disableRipple sx={{ padding: '8px 16px', textTransform: 'initial', ...sx }} {...props}>
+    <button
+      className={css`
+        padding: 8px 16px;
+      `}
+      {...props}
+    >
       {children}
-    </MUIButton>
+    </button>
   );
 };
 
-export const ButtonMemoized = memo(Button);
+export { Button };

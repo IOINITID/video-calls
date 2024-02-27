@@ -32,7 +32,6 @@ const UserList = () => {
 
             <Box sx={{ display: 'grid', gridAutoFlow: 'column', columnGap: '16px' }}>
               <Button
-                variant="contained"
                 onClick={async () => {
                   const response = await axiosInstance.post('/add-invite-to-friends', { friendId: user.id });
 
@@ -44,7 +43,6 @@ const UserList = () => {
                 Добавить в друзья
               </Button>
               <Button
-                variant="contained"
                 onClick={async () => {
                   const response = await axiosInstance.post('/add-to-friends', { friendId: user.id });
 
@@ -53,9 +51,7 @@ const UserList = () => {
               >
                 Принять
               </Button>
-              <Button variant="contained" onClick={() => null}>
-                Отклонить
-              </Button>
+              <Button onClick={() => null}>Отклонить</Button>
             </Box>
           </Box>
         );

@@ -38,9 +38,7 @@ const Friends = () => {
         </Box>
         {/* Друзья */}
         <Box sx={{ padding: '16px' }}>
-          <Button fullWidth variant="contained" onClick={() => navigate('/friends')}>
-            Друзья
-          </Button>
+          <Button onClick={() => navigate('/friends')}>Друзья</Button>
         </Box>
         {/* Список сообщений от пользователей */}
         <Box
@@ -99,41 +97,11 @@ const Friends = () => {
         >
           <Typography variant="h6">Друзья</Typography>
           <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(5, max-content)', columnGap: '8px' }}>
-            <Button
-              variant={pathname.includes('online') ? 'contained' : 'outlined'}
-              color="primary"
-              onClick={() => navigate('online')}
-            >
-              В сети
-            </Button>
-            <Button
-              variant={pathname.includes('all') ? 'contained' : 'outlined'}
-              color="primary"
-              onClick={() => navigate('all')}
-            >
-              Все
-            </Button>
-            <Button
-              variant={pathname.includes('invitations') ? 'contained' : 'outlined'}
-              color="primary"
-              onClick={() => navigate('invitations')}
-            >
-              Ожидание
-            </Button>
-            <Button
-              variant={pathname.includes('blocked') ? 'contained' : 'outlined'}
-              color="primary"
-              onClick={() => navigate('blocked')}
-            >
-              Заблокированные
-            </Button>
-            <Button
-              variant={pathname.includes('add') ? 'contained' : 'outlined'}
-              color="success"
-              onClick={() => navigate('add')}
-            >
-              Добавить в друзья
-            </Button>
+            <Button onClick={() => navigate('online')}>В сети</Button>
+            <Button onClick={() => navigate('all')}>Все</Button>
+            <Button onClick={() => navigate('invitations')}>Ожидание</Button>
+            <Button onClick={() => navigate('blocked')}>Заблокированные</Button>
+            <Button onClick={() => navigate('add')}>Добавить в друзья</Button>
           </Box>
         </Box>
         {/* Содержимое вкладки */}

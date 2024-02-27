@@ -1,76 +1,83 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Dashboard, Settings } from '@mui/icons-material';
-import { Box, Divider, Tooltip } from '@mui/material';
-import { theme } from '../../theme';
+import { Tooltip } from '@mui/material';
+import { theme } from 'core/theme';
+import { css } from '@linaria/core';
 
 const Navigation = () => {
   const navigate = useNavigate();
 
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        rowGap: '24px',
-        height: '100%',
-        alignContent: 'start',
-        padding: '25px 16px',
-        justifyContent: 'center',
-      }}
+    <div
+      className={css`
+        display: grid;
+        justify-content: center;
+        align-content: start;
+        row-gap: 24px;
+        height: 100%;
+        padding: 25px 16px;
+      `}
     >
-      <Box sx={{ display: 'grid', rowGap: '16px' }}>
+      <div
+        className={css`
+          display: grid;
+          row-gap: 16px;
+        `}
+      >
         <Tooltip title="Друзья" arrow placement="right">
-          <Box
-            sx={{
-              display: 'grid',
-              padding: '8px',
-              backgroundColor: theme.palette.grey[400],
-              cursor: 'pointer',
-              borderRadius: '8px',
-              justifyContent: 'center',
-              width: '40px',
-            }}
+          <div
+            className={css`
+              display: grid;
+              justify-content: center;
+              width: 40px;
+              padding: 8px;
+              background-color: #fefefe;
+              border-radius: 8px;
+              cursor: pointer;
+            `}
             onClick={() => navigate('/friends')}
           >
-            <Group />
-          </Box>
+            {/* <Group /> */}
+          </div>
         </Tooltip>
         <Tooltip title="Каналы" arrow placement="right">
-          <Box
-            sx={{
-              display: 'grid',
-              padding: '8px',
-              backgroundColor: theme.palette.grey[400],
-              cursor: 'pointer',
-              borderRadius: '8px',
-              justifyContent: 'center',
-              width: '40px',
-            }}
+          <div
+            className={css`
+              display: grid;
+              justify-content: center;
+              width: 40px;
+              padding: 8px;
+              background-color: #fefefe;
+              border-radius: 8px;
+              cursor: pointer;
+            `}
             onClick={() => navigate('/channels')}
           >
-            <Dashboard />
-          </Box>
+            {/* <Dashboard /> */}
+          </div>
         </Tooltip>
-      </Box>
-      <Divider />
+      </div>
+      <hr />
       <Tooltip title="Настройки" arrow placement="right">
-        <Box
-          sx={{
-            display: 'grid',
-            padding: '8px',
-            backgroundColor: theme.palette.grey[400],
-            cursor: 'pointer',
-            borderRadius: '8px',
-            justifyContent: 'center',
-            width: '40px',
-          }}
+        <div
+          className={css`
+            display: grid;
+            justify-content: center;
+            width: 40px;
+            padding: 8px;
+            background-color: #fefefe;
+            border-radius: 8px;
+            cursor: pointer;
+          `}
           onClick={() => navigate('/settings')}
         >
-          <Settings />
-        </Box>
+          {/* <Settings /> */}
+        </div>
       </Tooltip>
-    </Box>
+    </div>
   );
 };
 
-export const NavigationMemoized = memo(Navigation);
+export { Navigation };

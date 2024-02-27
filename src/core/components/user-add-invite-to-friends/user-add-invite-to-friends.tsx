@@ -86,8 +86,6 @@ const UserAddInviteToFriends = ({
         {/* NOTE: Если invitation received есть, написать Ожидает добавления и блокировать кнопку */}
         {!addToFriends && !sentInvitation && !receivedInvitation && (
           <Button
-            variant="contained"
-            color="primary"
             onClick={() => {
               dispatch(requestSentInvitationsAction({ friend_id: id }));
             }}
@@ -97,8 +95,6 @@ const UserAddInviteToFriends = ({
         )}
         {addToFriends && (
           <Button
-            variant="outlined"
-            color="error"
             onClick={() => {
               dispatch(requestRemoveFromFriendsAction({ friend_id: id }));
             }}
@@ -108,8 +104,6 @@ const UserAddInviteToFriends = ({
         )}
         {sentInvitation && (
           <Button
-            variant="outlined"
-            color="error"
             onClick={() => {
               dispatch(requestDeclineInvitationsAction({ friend_id: id }));
             }}
@@ -127,8 +121,6 @@ const UserAddInviteToFriends = ({
             }}
           >
             <Button
-              variant="outlined"
-              color="success"
               onClick={() => {
                 dispatch(requestAddToFriendsAction({ friend_id: id }));
               }}
@@ -136,8 +128,6 @@ const UserAddInviteToFriends = ({
               Принять приглашение
             </Button>
             <Button
-              variant="outlined"
-              color="error"
               onClick={() => {
                 dispatch(requestDeclineInvitationsAction({ friend_id: id }));
               }}

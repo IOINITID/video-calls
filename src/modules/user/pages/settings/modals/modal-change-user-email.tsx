@@ -1,7 +1,7 @@
 import { Close } from '@mui/icons-material';
 import { Box, Link, Modal, Typography } from '@mui/material';
 import { Button } from 'core/components/button';
-import { TextField } from 'core/components/text-field';
+import { Input } from 'core/components/input';
 import { requestUpdateUserAction } from 'modules/user/store';
 import { memo, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -57,70 +57,70 @@ const ModalChangeUserEmail = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
             <Typography sx={{ fontSize: '14px', color: '#c0c1c4', textTransform: 'uppercase' }}>
               Электронная почта
             </Typography>
-            <TextField
-              sx={{
-                backgroundColor: '#36383a',
+            <Input
+              // sx={{
+              //   backgroundColor: '#36383a',
 
-                '.MuiOutlinedInput-input': {
-                  color: '#dfe0e1',
-                },
+              //   '.MuiOutlinedInput-input': {
+              //     color: '#dfe0e1',
+              //   },
 
-                // NOTE: Удаляет светлую тень в браузерных стилях
-                'input:-webkit-autofill': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-                'input:-webkit-autofill:hover': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-                'input:-webkit-autofill:focus': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-                'input:-webkit-autofill:active': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-              }}
+              //   // NOTE: Удаляет светлую тень в браузерных стилях
+              //   'input:-webkit-autofill': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              //   'input:-webkit-autofill:hover': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              //   'input:-webkit-autofill:focus': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              //   'input:-webkit-autofill:active': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              // }}
               type="email"
               id="email"
               name="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               autoComplete="off"
-              fullWidth
+              // fullWidth
             />
           </Box>
           <Box sx={{ display: 'grid', rowGap: '8px' }}>
             <Typography sx={{ fontSize: '14px', color: '#c0c1c4', textTransform: 'uppercase' }}>
               Текущий пароль
             </Typography>
-            <TextField
-              sx={{
-                backgroundColor: '#36383a',
+            <Input
+              // sx={{
+              //   backgroundColor: '#36383a',
 
-                '.MuiOutlinedInput-input': {
-                  color: '#dfe0e1',
-                },
+              //   '.MuiOutlinedInput-input': {
+              //     color: '#dfe0e1',
+              //   },
 
-                // NOTE: Удаляет светлую тень в браузерных стилях
-                'input:-webkit-autofill': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-                'input:-webkit-autofill:hover': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-                'input:-webkit-autofill:focus': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-                'input:-webkit-autofill:active': {
-                  boxShadow: '0 0 0 30px #36383a inset',
-                },
-              }}
+              //   // NOTE: Удаляет светлую тень в браузерных стилях
+              //   'input:-webkit-autofill': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              //   'input:-webkit-autofill:hover': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              //   'input:-webkit-autofill:focus': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              //   'input:-webkit-autofill:active': {
+              //     boxShadow: '0 0 0 30px #36383a inset',
+              //   },
+              // }}
               type="password"
               id="password"
               name="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               autoComplete="off"
-              fullWidth
+              // fullWidth
             />
           </Box>
         </Box>
@@ -146,8 +146,6 @@ const ModalChangeUserEmail = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
             <Typography sx={{ fontSize: '14px' }}>Отмена</Typography>
           </Link>
           <Button
-            sx={{ textTransform: 'initial' }}
-            variant="contained"
             onClick={() => {
               // TODO: Добавить валидацию на email и длину пароля
               if (email.trim() && password.trim()) {
