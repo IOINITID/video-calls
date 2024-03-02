@@ -1,16 +1,26 @@
 /*! core/components/app */
 
+/*! ./media */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! core/components/root */
+
 /*! react/jsx-runtime */
 
-/*! react */
+/*! core-js/modules/web.dom-exception.stack.js */
+
+/*! core-js/modules/esnext.iterator.constructor.js */
 
 /*! react/jsx-runtime */
 
 /*! @emotion/css */
 
-/*! ./media */
+/*! react */
 
 /*! react/jsx-runtime */
+
+/*! ./stream */
 
 /*! react-router-dom */
 
@@ -18,44 +28,36 @@
 
 /*! react/jsx-runtime */
 
+/*! react-router-dom */
+
 /*! react */
 
-/*! react-router-dom */
+/*! modules/media-settings */
 
 /*! core/services */
 
-/*! ../stream */
-
-/*! ./stream */
+/*! react/jsx-runtime */
 
 /*! core-js/modules/esnext.iterator.for-each.js */
 
+/*! react/jsx-runtime */
+
 /*! core-js/modules/esnext.async-iterator.map.js */
 
-/*! modules/media-settings */
+/*! core/routes */
 
 /*! @emotion/css */
 
 /*! react/jsx-runtime */
 
-/*! react/jsx-runtime */
+/*! ../stream */
 
 /*! react-dom/client */
 
 /*! core-js/modules/esnext.async-iterator.for-each.js */
 
-/*! react/jsx-runtime */
-
-/*! core/routes */
+/*! ./private-routes */
 
 /*! core/components/button */
 
-/*! core-js/modules/esnext.iterator.map.js */
-
-/*! core/components/root */
-
-/*! ./private-routes */
-
-/*! core-js/modules/web.dom-exception.stack.js */
-
-/*! core-js/modules/esnext.iterator.constructor.js */
+/*! ../devices */
