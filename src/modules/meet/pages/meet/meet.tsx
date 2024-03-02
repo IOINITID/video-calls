@@ -12,7 +12,7 @@ import { CallEndRounded, Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-m
 import { VideoCard } from 'core/components/video-card';
 import { setMeetStateAction } from 'modules/meet/store';
 import { setMediaAction } from 'modules/user/store';
-import { css } from '@linaria/core';
+import { css } from '@emotion/css';
 
 const Meet = () => {
   const dispatch = useDispatch();

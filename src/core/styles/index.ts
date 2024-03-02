@@ -1,4 +1,4 @@
-import { css } from '@linaria/core';
+import { css } from '@emotion/css';
 
 export const globalStyles = () => css`
   /* stylelint-disable-next-line selector-pseudo-class-no-unknown */

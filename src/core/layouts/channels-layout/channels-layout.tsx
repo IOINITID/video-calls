@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import { css } from '@linaria/core';
+import { css } from '@emotion/css';
 import { Navigation } from 'core/components/navigation';
 import { UserControl } from 'core/components/user-control';
 

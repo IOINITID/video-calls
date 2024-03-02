@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { css } from '@linaria/core';
+import { css } from '@emotion/css';
 import { Button } from 'core/components/button';
 import { mediaStream } from 'core/utils/media-stream-controller';
 import { mediaDevices } from 'core/utils/media-devices-controller';

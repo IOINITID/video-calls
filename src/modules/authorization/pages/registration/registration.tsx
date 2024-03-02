@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { css } from '@linaria/core';
+import { css } from '@emotion/css';
 import { Typography } from '@mui/material';
 import { CenterLayout } from 'core/layouts/center-layout';
 import { Button } from 'core/components/button';

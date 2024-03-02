@@ -4,7 +4,7 @@ import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
 import { theme } from 'core/theme';
-import { css } from '@linaria/core';
+import { css } from '@emotion/css';
 
 const Navigation = () => {
   const navigate = useNavigate();

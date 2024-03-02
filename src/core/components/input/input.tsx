@@ -1,4 +1,4 @@
-import { css } from '@linaria/core';
+import { css } from '@emotion/css';
 import { DetailedHTMLProps, InputHTMLAttributes } from 'react';
 
 type InputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;

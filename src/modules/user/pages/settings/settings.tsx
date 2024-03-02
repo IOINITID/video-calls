@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { css } from '@linaria/core';
+import { css } from '@emotion/css';
 import { UserSettings } from 'modules/user/pages/settings/components/user-settings';
 
 const Settings = () => {
