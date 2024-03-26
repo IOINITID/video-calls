@@ -2,16 +2,30 @@ import { useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/css';
 import { Button } from 'core/components/button';
 import { MediaService } from 'core/services';
+import { SocketService } from 'core/services/socket';
 
 export const MediaSettings = () => {
+  const socket = new SocketService();
+  const media = new MediaService();
+
   const [data, setData] = useState<number[]>([]);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  const media = new MediaService();
-
   useEffect(() => {
+    socket.ping((ping) => {
+      console.log(`Ping is ${ping}ms`);
+    });
+
+    socket.instance.on('connect', () => {
+      console.log('Connect');
+    });
+
+    socket.instance.on('disconnect', () => {
+      console.log('Disconnect');
+    });
+
     window.addEventListener('stream', (event) => {
       console.log(event.detail.params);
 
