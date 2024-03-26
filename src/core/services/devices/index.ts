@@ -1,1 +1,1 @@
-export class Devices {}
+export class DevicesService {}
