@@ -1,12 +1,9 @@
-import { DevicesService } from '../devices';
-import { StreamService } from '../stream';
+import { Stream } from '../stream';
 
-export class MediaService {
-  public stream: StreamService;
-  public devices: DevicesService;
+export class Media {
+  public stream: Stream;
 
   constructor() {
-    this.stream = new StreamService();
-    this.devices = new DevicesService();
+    this.stream = new Stream();
   }
 }

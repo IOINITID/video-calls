@@ -1,30 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/css';
 import { Button } from 'core/components/button';
-import { MediaService } from 'core/services';
+import { Media } from 'core/services';
 
 export const MediaSettings = () => {
   const [data, setData] = useState<number[]>([]);
 
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  const media = new MediaService();
+  const media = new Media();
 
   useEffect(() => {
-    window.addEventListener('stream', (event) => {
+    // @ts-ignore
+    window.addEventListener('stream', (event: CustomEvent) => {
       console.log(event.detail.params);
 
-      if (event.detail.params.type === 'audio') {
-        if (audioRef.current) {
-          audioRef.current.srcObject = event.detail.params.stream;
-        }
-      }
-
-      if (event.detail.params.type === 'video') {
-        if (videoRef.current) {
-          videoRef.current.srcObject = event.detail.params.stream;
-        }
+      if (videoRef.current) {
+        videoRef.current.srcObject = event.detail.params.stream;
       }
     });
   }, []);
@@ -47,48 +39,22 @@ export const MediaSettings = () => {
       >
         <Button
           onClick={() => {
-            media.stream.audio.get();
-            media.stream.video.get();
+            media.stream.get();
           }}
         >
           Включить видео и аудио поток
         </Button>
         <Button
           onClick={() => {
-            media.stream.audio.close();
-            media.stream.video.close();
+            media.stream.close();
           }}
         >
           Выключить видео и аудио поток
         </Button>
-        <Button
-          onClick={() => {
-            media.stream.audio.get();
-          }}
-        >
-          Включить аудио поток
-        </Button>
-        <Button
-          onClick={() => {
-            media.stream.audio.close();
-          }}
-        >
-          Вылючить аудио поток
-        </Button>
-        <Button
-          onClick={() => {
-            media.stream.video.get();
-          }}
-        >
-          Включить видео поток
-        </Button>
-        <Button
-          onClick={() => {
-            media.stream.video.close();
-          }}
-        >
-          Вылючить видео поток
-        </Button>
+        <Button onClick={() => {}}>Включить аудио поток</Button>
+        <Button onClick={() => {}}>Вылючить аудио поток</Button>
+        <Button onClick={() => {}}>Включить видео поток</Button>
+        <Button onClick={() => {}}>Вылючить видео поток</Button>
         <div
           className={css`
             display: grid;
@@ -214,8 +180,8 @@ export const MediaSettings = () => {
             `}
             ref={videoRef}
             autoPlay
+            // muted
           />
-          <audio ref={audioRef} autoPlay />
         </div>
       </div>
     </div>

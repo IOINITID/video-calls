@@ -1,1 +1,2 @@
-export { MediaService } from './media';
+export { Media } from './media';
+export { Stream } from './stream';
