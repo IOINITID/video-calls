@@ -5,13 +5,13 @@ import { MediaService } from 'core/services';
 import { SocketService } from 'core/services/socket';
 
 export const MediaSettings = () => {
+  const socket = new SocketService();
+  const media = new MediaService();
+
   const [data, setData] = useState<number[]>([]);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  const socket = new SocketService();
-  const media = new MediaService();
 
   useEffect(() => {
     socket.instance.on('connect', () => {
