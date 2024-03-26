@@ -1,12 +1,12 @@
-import { Audio } from './classes/audio';
-import { Video } from './classes/video';
+import { AudioService } from './audio';
+import { VideoService } from './video';
 
-export class Stream {
-  public audio: Audio;
-  public video: Video;
+export class StreamService {
+  public audio: AudioService;
+  public video: VideoService;
 
   constructor() {
-    this.audio = new Audio();
-    this.video = new Video();
+    this.audio = new AudioService();
+    this.video = new VideoService();
   }
 }

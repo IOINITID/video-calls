@@ -1,6 +1,6 @@
-import { Base } from '../base';
+import { BaseService } from '../base';
 
-export class Audio extends Base {
+export class AudioService extends BaseService {
   constructor() {
     super({ type: 'audio' });
   }

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/css';
 import { Button } from 'core/components/button';
-import { Media } from 'core/services';
+import { MediaService } from 'core/services';
 
 export const MediaSettings = () => {
   const [data, setData] = useState<number[]>([]);
@@ -9,7 +9,7 @@ export const MediaSettings = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  const media = new Media();
+  const media = new MediaService();
 
   useEffect(() => {
     window.addEventListener('stream', (event) => {

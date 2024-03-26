@@ -5,7 +5,7 @@ export type Params = {
   error: Error | null;
 };
 
-export class Base {
+export class BaseService {
   private instance: CustomEvent<{ params: Params }>;
   private stream: MediaStream | null;
   private status: 'default' | 'loading' | 'active' | 'inactive' | 'error';
