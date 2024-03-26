@@ -1,0 +1,73 @@
+/*! core/components/app */
+
+/*! socket.io-client */
+
+/*! core-js/modules/esnext.iterator.map.js */
+
+/*! core-js/modules/esnext.async-iterator.for-each.js */
+
+/*! ../base */
+
+/*! react/jsx-runtime */
+
+/*! core/components/root */
+
+/*! react/jsx-runtime */
+
+/*! ./public-routes */
+
+/*! ./media */
+
+/*! react/jsx-runtime */
+
+/*! react */
+
+/*! @emotion/css */
+
+/*! react-router-dom */
+
+/*! core-js/modules/esnext.iterator.constructor.js */
+
+/*! react-router-dom */
+
+/*! react/jsx-runtime */
+
+/*! ./video */
+
+/*! modules/media-settings */
+
+/*! core/services/socket */
+
+/*! react/jsx-runtime */
+
+/*! react */
+
+/*! core/services */
+
+/*! react/jsx-runtime */
+
+/*! ../stream */
+
+/*! core-js/modules/esnext.async-iterator.map.js */
+
+/*! ./private-routes */
+
+/*! core/routes */
+
+/*! @emotion/css */
+
+/*! core/constants */
+
+/*! react/jsx-runtime */
+
+/*! react-dom/client */
+
+/*! ../devices */
+
+/*! ./audio */
+
+/*! core-js/modules/esnext.iterator.for-each.js */
+
+/*! core/components/button */
+
+/*! ../base */
