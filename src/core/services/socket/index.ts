@@ -7,4 +7,11 @@ export class SocketService {
   constructor() {
     this.instance = io(API_URL, { transports: ['websocket'], reconnection: false });
   }
+
+  public ping(callback: (ping: number) => void) {
+    this.instance.emit('server:base:ping', Date.now());
+    this.instance.once('client:base:ping', (ping: number) => {
+      callback(ping);
+    });
+  }
 }

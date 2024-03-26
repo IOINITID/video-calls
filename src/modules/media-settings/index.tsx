@@ -14,12 +14,16 @@ export const MediaSettings = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
+    socket.ping((ping) => {
+      console.log(`Ping is ${ping}ms`);
+    });
+
     socket.instance.on('connect', () => {
-      console.log('connect');
+      console.log('Connect');
     });
 
     socket.instance.on('disconnect', () => {
-      console.log('disconnect');
+      console.log('Disconnect');
     });
 
     window.addEventListener('stream', (event) => {
