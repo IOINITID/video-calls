@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/css';
 import { Button } from 'core/components/button';
 import { MediaService } from 'core/services';
+import { SocketService } from 'core/services/socket';
 
 export const MediaSettings = () => {
   const [data, setData] = useState<number[]>([]);
@@ -9,9 +10,18 @@ export const MediaSettings = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
+  const socket = new SocketService();
   const media = new MediaService();
 
   useEffect(() => {
+    socket.instance.on('connect', () => {
+      console.log('connect');
+    });
+
+    socket.instance.on('disconnect', () => {
+      console.log('disconnect');
+    });
+
     window.addEventListener('stream', (event) => {
       console.log(event.detail.params);
 
